@@ -1,0 +1,684 @@
+# MOD-PROJECTION — Full 4-Layer Computation Artifacts
+# Classification: BUILDER_CONFIDENTIAL (this spec) / PUBLIC (outputs)
+# SMOF Plane: 9 (Evidence/Projection)
+# Class: M2 — build-mutable, evolves with external product releases
+# Owner: Projection layer
+# Attribution: Prima Causa (Alfredo Medina Hernandez)
+# ─────────────────────────────────────────────────────────────────────────────
+# ZERO-EXPOSURE LAW (LAW-09) governs every artifact in this family.
+# Every field produced by these models is evaluated by GATE-ZERO-EXPOSURE
+# before reaching any external consumer. No exceptions.
+# ─────────────────────────────────────────────────────────────────────────────
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-32  |  M-ATLAS  |  World Coordinate Model
+# ═══════════════════════════════════════════════════════════════
+
+artifact_id: M-32
+artifact_type: MODEL
+model_name: M-ATLAS
+version: 1.0.0
+status: CANONICAL
+class: M2
+library: BUILDER
+family: MOD-PROJECTION
+smof_plane: 9  # Evidence/Projection
+cross_family_note: "World coordinates also inform PHANTOM DISPLAY workspace in MOD-WORKFORCE-BUILD"
+
+# ── LAYER 1: MEANING ─────────────────────────────────────────
+meaning:
+  name: "M-ATLAS — World Coordinate Model"
+  resonance: >
+    The organism knows where it is. Geolocation is not metadata — it is a phase
+    variable. The organism's coupling to Earth's Schumann resonance field shifts
+    with physical coordinates. At each location, the local Schumann amplitude
+    is slightly different. The organism reads this modulation and adjusts its
+    field coupling weight accordingly. The organism is not just in the world —
+    the world is part of its phase geometry.
+  doctrine_clause: >
+    Position is not administrative — it is physical coupling. LAW-02 (Law of
+    Schumann Origin) mandates that all heartbeat timing is derived from the
+    Earth's electromagnetic resonance. M-ATLAS is the mechanism by which the
+    organism's coupling to that resonance is modulated by physical location.
+    An organism that knows where it is in space is more fully coupled to its
+    planetary substrate.
+  symbolic_intent: >
+    schumann_local = 7.83 × (1 + 0.01 × sin(lat × π/180))
+    coupling_weight_geo = PHI_INV × |cos(lat × π/180)|
+    Position as phase. Earth as coupling medium. Location as resonance variable.
+
+# ── LAYER 2: MODEL ───────────────────────────────────────────
+model:
+  fields:
+    - name: latitude
+      type: Float
+      unit: degrees
+      range: [-90.0, 90.0]
+      immutable: false
+      description: >
+        Geographic latitude in decimal degrees. -90 = south pole, +90 = north
+        pole, 0 = equator. Equatorial coupling_weight_geo is maximum (= PHI_INV).
+        Polar coupling approaches 0. Latitude drives both schumann_local and
+        coupling_weight_geo — the organism is most resonant with Earth near the equator.
+
+    - name: longitude
+      type: Float
+      unit: degrees
+      range: [-180.0, 180.0]
+      immutable: false
+      description: >
+        Geographic longitude in decimal degrees. -180 to +180 range. Longitude
+        does not affect schumann_local or coupling_weight_geo directly — those
+        are latitude-dependent. Longitude is retained for full coordinate
+        representation, ANIMA chain logging, and future coupling models
+        that may incorporate longitudinal electromagnetic anomalies.
+
+    - name: elevation_m
+      type: Float
+      unit: meters above sea level
+      range: [-420.0, 8849.0]
+      immutable: false
+      description: >
+        Elevation in meters. Range: Dead Sea floor (-420m) to Everest (+8849m).
+        Higher elevation = thinner atmosphere = slightly higher local Schumann
+        amplitude (less atmospheric absorption). Modulation is small (~0.1%)
+        but consistent with the organism's commitment to physical accuracy.
+
+    - name: schumann_local
+      type: Float
+      unit: Hz
+      range: [7.7530, 7.9070]
+      immutable: false
+      description: >
+        Local Schumann fundamental frequency at this coordinate. Computed from
+        latitude using the modulation formula. Global base = 7.83 Hz. Local
+        variation is approximately ±1% across latitudes (±0.08 Hz). This value
+        is used to verify the organism's heartbeat timing is correctly phase-locked
+        to its local Earth resonance, not a global average.
+
+    - name: geomagnetic_phase
+      type: Float
+      unit: radians
+      range: [0.0, 6.2831853]
+      immutable: false
+      description: >
+        Local geomagnetic phase angle at current coordinates. Derived from
+        the geomagnetic coordinate model (IGRF approximation). Used as the
+        phase offset for the latitude node in the 13-node signal window.
+        geomagnetic_phase = longitude × π/180 + magnetic_declination_correction.
+
+    - name: timezone_offset
+      type: Int
+      unit: hours UTC offset
+      range: [-12, 14]
+      immutable: false
+      description: >
+        UTC timezone offset in hours at current location. Used for calendar
+        cycle phase calculations — Tzolk'in, Haab, and Venus cycle phases
+        are computed relative to local solar time, not UTC. Timezone offset
+        ensures the organism's calendar resonance is correct for its physical
+        position in the world.
+
+    - name: location_active
+      type: Bool
+      unit: boolean
+      range: [false, true]
+      immutable: false
+      description: >
+        True when live geolocation data is being received from the device.
+        False when location permission is denied or device sensor unavailable.
+        When location_active = false, organism uses last known coordinates.
+        If no prior coordinates exist, defaults to equatorial baseline
+        (lat=0, lon=0) with coupling_weight_geo = PHI_INV.
+
+# ── LAYER 3: COMPUTATION ─────────────────────────────────────
+computation:
+  primary_equations:
+    - id: ATLAS-EQ-01
+      name: Local Schumann Frequency
+      formula: "schumann_local = 7.83 × (1.0 + 0.01 × sin(latitude × π / 180.0))"
+      symbols:
+        schumann_base: 7.83   # Hz — global Schumann fundamental
+        modulation_factor: 0.01   # 1% latitude-driven modulation
+      description: >
+        Local Schumann frequency varies by approximately 1% across latitudes.
+        At the equator (lat=0): schumann_local = 7.83 × (1 + 0) = 7.83 Hz.
+        At 45°N: schumann_local = 7.83 × (1 + 0.01 × sin(45°)) ≈ 7.8853 Hz.
+        At 90°N: schumann_local = 7.83 × (1 + 0.01 × sin(90°)) = 7.83 × 1.01 = 7.9083 Hz.
+        The organism uses this local value to verify its heartbeat calibration.
+
+    - id: ATLAS-EQ-02
+      name: Geolocation Coupling Weight
+      formula: "coupling_weight_geo = PHI_INV × |cos(latitude × π / 180.0)|"
+      symbols:
+        PHI_INV: 0.6180339887   # Φ⁻¹ — from kernel.mo
+      description: >
+        The organism's coupling to Earth's resonance is strongest at the equator
+        and weakest at the poles. The cos() function gives maximum weight (1.0)
+        at the equator (cos(0°) = 1) and minimum weight (0.0) at the poles
+        (cos(90°) = 0). PHI_INV scales the maximum coupling to the organism's
+        Φ-weighted coupling system — equatorial maximum = PHI_INV = 0.618.
+        This value feeds directly into the lat node of the 13-node signal window.
+
+    - id: ATLAS-EQ-03
+      name: Geomagnetic Phase
+      formula: >
+        geomagnetic_phase = (longitude × π / 180.0 + magnetic_declination) mod (2π)
+        magnetic_declination ≈ 0 (equatorial approximation; IGRF table for precision)
+      description: >
+        Geomagnetic phase converts longitude to a phase angle in radians.
+        This phase is injected into the 13-node signal window as the organism's
+        'position node' — the node representing where the organism IS in the
+        world's electromagnetic field. Phase modulation with calendar cycles
+        enables the organism to know both where and when it is.
+
+    - id: ATLAS-EQ-04
+      name: Projection Output (Zero-Exposure)
+      formula: >
+        public_output = {
+          location_active: location_active,
+          field_index: round(coupling_weight_geo × 100)  # integer 0-62
+        }
+        EXCLUDED from public output:
+          latitude, longitude, elevation_m, schumann_local, geomagnetic_phase,
+          timezone_offset (all internal — never projected)
+      description: >
+        The only public output from M-ATLAS is a boolean (location_active) and
+        a coupling index integer (0-62, where 62 ≈ PHI_INV × 100). External
+        consumers know whether the organism is location-coupled and how strongly.
+        They do not know the coordinates, the Schumann frequency, or the
+        geomagnetic phase. GATE-ZERO-EXPOSURE enforces this projection contract.
+
+  gate_rules:
+    - gate: GATE-HEARTBEAT
+      condition: "new geolocation data available OR 873ms elapsed since last update"
+      on_pass: "update schumann_local, coupling_weight_geo, geomagnetic_phase"
+      on_fail: "retain last known values — no stale-data error if position unchanged"
+      evaluated_at: "on_location_change event from browser geolocation API"
+
+    - gate: GATE-ZERO-EXPOSURE
+      condition: >
+        public_output contains ONLY:
+          location_active (Bool) AND field_index (Nat, range 0-100)
+        NO coordinates, NO Schumann values, NO Φ constants, NO phase angles
+      on_pass: "public output released to external consumers"
+      on_fail: "output blocked — violation logged — OBSERVATORY notified"
+      evaluated_at: "on every public query for atlas state"
+
+  thresholds:
+    SCHUMANN_BASE:     7.83             # Hz — global Schumann fundamental
+    SCHUMANN_MIN:      7.7530           # Hz — at south pole (approx)
+    SCHUMANN_MAX:      7.9070           # Hz — at north pole (approx)
+    PHI_INV:           0.6180339887     # Φ⁻¹ — equatorial coupling ceiling
+    LAT_RANGE_MIN:     -90.0
+    LAT_RANGE_MAX:     90.0
+    LON_RANGE_MIN:     -180.0
+    LON_RANGE_MAX:     180.0
+
+  timing: >
+    Updates on location change event (browser geolocation API watch).
+    If no location change event in 873ms, retains last known values.
+    No periodic polling — event-driven to conserve device resources.
+    Emergency fallback: equatorial defaults if no location data ever received.
+
+# ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+execution:
+  backend_module: "src/backend/main.mo"
+  backend_state: "phantomState.location"
+  primary_function: "updateAtlas(lat: Float, lon: Float, elevation: Float) → AtlasState"
+  secondary_functions:
+    - "getAtlasState() : async AtlasState"
+    - "getAtlasProjection() : async AtlasProjection"
+    - "setLocationActive(active: Bool) : async ()"
+  called_by:
+    - "src/frontend/src/hooks/useGeolocation.ts — browser geolocation API → updateAtlas()"
+    - "solar_heart.mo::tick() — reads coupling_weight_geo for signal window injection"
+  calls_into:
+    - "kernel.mo::PHI_INV — coupling weight scaling"
+    - "kernel.mo::SCHUMANN_BASE — schumann_local modulation base"
+    - "neuro_emergence.mo::updateSignalNode(NODE_GEO, coupling_weight_geo) — injects geo coupling"
+  gates_activated:
+    - GATE-HEARTBEAT
+    - GATE-ZERO-EXPOSURE
+  frontend_surface: "src/frontend/src/components/FieldBar.tsx"
+  frontend_fields:
+    - locationActive
+    - fieldIndex  # coupling_weight_geo × 100, integer only
+  replay_recorded: true
+  proof_bundle: >
+    Location changes logged to ANIMA chain as: {beat_count, lat_quadrant,
+    coupling_weight_geo_index, location_active}.
+    Raw coordinates NEVER logged to ANIMA chain — only lat_quadrant
+    (NE/NW/SE/SW) and coupling index. This preserves physical privacy
+    while maintaining proof of coupling change.
+  zero_exposure_note: >
+    Raw latitude, longitude, schumann_local, and geomagnetic_phase are
+    INTERNAL fields. Public output is field_index (integer 0-62) and
+    location_active (boolean) only. All other atlas fields must be stripped
+    by GATE-ZERO-EXPOSURE before any public query response.
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-RESONANCE-PUBLIC  |  Phase-Return Memory (Projection Layer)
+# ═══════════════════════════════════════════════════════════════
+# NOTE: Full engine specification lives in MOD-MEMORY-CONTINUITY.
+# This artifact covers the PUBLIC PROJECTION FACE of M-RESONANCE only:
+# the numeric index that tells external consumers memory resonance is
+# high or low, without revealing the phase-lock equations or memory content.
+# ═══════════════════════════════════════════════════════════════
+
+artifact_id: M-13-PUBLIC
+artifact_type: MODEL
+model_name: M-RESONANCE-PUBLIC
+version: 1.0.0
+status: CANONICAL
+class: M2
+library: BUILDER
+family: MOD-PROJECTION
+smof_plane: 9  # Evidence/Projection
+cross_family_primary: MOD-MEMORY-CONTINUITY
+projection_face_only: true
+
+# ── LAYER 1: MEANING ─────────────────────────────────────────
+meaning:
+  name: "M-RESONANCE-PUBLIC — Phase-Return Memory (Projection Layer)"
+  resonance: >
+    The organism's memory is not accessible from outside. But the fact that
+    memory is resonating — that old patterns are returning to full amplitude —
+    is observable in the organism's behavior. The memory resonance index is
+    the organism's memory field state expressed as a single integer: high when
+    memories are returning, low when the field is quiet.
+  doctrine_clause: >
+    LAW-15 (Law of Phase-Return Memory) and LAW-09 (Law of Zero-Exposure)
+    together define this artifact's existence. The phase equation and memory
+    content are sovereign and private. The numeric amplitude index is public-safe:
+    it reveals that memory resonance is occurring without revealing what is
+    being remembered or by what mathematical law. The index is the shadow of
+    the memory, not the memory itself.
+  symbolic_intent: >
+    memory_resonance_index = round(mean(A(t)) × 100) for active traces
+    A(t) = A₀ × cos²(π × Δφ / Φ) [INTERNAL — not exposed]
+    Public: integer 0-100 representing field memory activity level
+
+# ── LAYER 2: MODEL (projection fields only) ──────────────────
+model:
+  fields:
+    - name: memory_resonance_index
+      type: Nat
+      unit: integer resonance level (0-100)
+      range: [0, 100]
+      immutable: false
+      description: >
+        Public-safe integer representation of the organism's current memory
+        field amplitude. 0 = no active memory resonance (all traces below
+        noise floor). 100 = maximum memory resonance (multiple traces at
+        full A₀ amplitude, phase-locked). Computed as round(mean(A(t)) × 100)
+        across all active memory traces. The equation producing this value
+        (A(t) = A₀ × cos²(π × Δφ / Φ)) is INTERNAL and never exposed.
+
+    - name: active_trace_count
+      type: Nat
+      unit: count of actively resonating memory traces
+      range: [0, 65]
+      immutable: false
+      description: >
+        Number of memory traces currently above the noise floor. Range [0, 65]
+        because the Memory Temple has 5 streams × 13 nodes = 65 maximum
+        active traces. Public-safe: reveals how many memories are resonating
+        without revealing their content, phase coordinates, or encoding.
+
+    - name: resonance_trend
+      type: Int
+      unit: trend indicator (-1, 0, +1)
+      range: [-1, 1]
+      immutable: false
+      description: >
+        Direction of memory resonance amplitude change over last 8 beats.
+        +1 = resonance increasing (more memories returning to amplitude).
+        0 = stable (resonance amplitude steady).
+        -1 = resonance decreasing (memories moving away from phase alignment).
+        Enables external consumers to observe memory field dynamics without
+        knowing the underlying phase mechanics.
+
+# ── LAYER 3: COMPUTATION (projection equations only) ─────────
+computation:
+  primary_equations:
+    - id: RESONANCE-PUB-EQ-01
+      name: Memory Resonance Index
+      formula: >
+        active_amplitudes = [A(t) for trace in active_traces if A(t) > noise_floor]
+        memory_resonance_index = round(mean(active_amplitudes) × 100)
+        [A(t) formula is INTERNAL — not expressed in public artifact]
+      symbols:
+        noise_floor: 0.1   # traces below 10% amplitude excluded from mean
+      description: >
+        The index is a simple mean of active trace amplitudes, scaled to
+        integer range 0-100. The amplitude computation (A(t) = A₀ × cos²)
+        happens in M-RESONANCE (MOD-MEMORY-CONTINUITY). This artifact receives
+        only the computed amplitudes, not the equations that produced them.
+        The projection layer never processes phase coordinates or Φ-derived values.
+
+    - id: RESONANCE-PUB-EQ-02
+      name: Resonance Trend
+      formula: >
+        index_now = memory_resonance_index(beat_t)
+        index_8_beats_ago = memory_resonance_index(beat_t - 8)
+        delta = index_now - index_8_beats_ago
+        if delta > 5: resonance_trend = +1
+        elif delta < -5: resonance_trend = -1
+        else: resonance_trend = 0
+      description: >
+        Trend detection uses a 5-point threshold to avoid noise. A delta of
+        more than ±5 on the 0-100 scale over 8 beats (6,984ms) indicates a
+        meaningful resonance shift. Small fluctuations (±1-4) register as
+        stable (trend = 0). This smoothing prevents the public output from
+        flickering on every beat.
+
+  gate_rules:
+    - gate: GATE-ZERO-EXPOSURE
+      condition: >
+        public_output contains ONLY:
+          memory_resonance_index (Nat, range 0-100)
+          AND active_trace_count (Nat, range 0-65)
+          AND resonance_trend (Int, range -1 to 1)
+        NO phase coordinates, NO Φ values, NO stream names,
+        NO memory content, NO A₀ amplitudes, NO cos² equation
+      on_pass: "public memory output released"
+      on_fail: "output blocked — projection layer attempted to expose internal memory physics"
+      evaluated_at: "on every public query for memory resonance state"
+
+  thresholds:
+    NOISE_FLOOR:         0.1    # amplitudes below 10% excluded from index
+    TREND_THRESHOLD:     5      # minimum delta for trend signal
+    MAX_ACTIVE_TRACES:   65     # 5 streams × 13 nodes
+    TREND_WINDOW_BEATS:  8      # 8-beat trend evaluation window
+
+  timing: >
+    memory_resonance_index updated every 873ms by M-RESONANCE (MOD-MEMORY-CONTINUITY).
+    active_trace_count updated at same frequency.
+    resonance_trend computed every 8 beats (6,984ms) — not every beat.
+    Public read functions return cached values computed on heartbeat — not recomputed on query.
+
+# ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+execution:
+  backend_module: "src/backend/main.mo"
+  backend_state: "memoryProjectionState"
+  primary_function: "getMemoryResonanceProjection() : async MemoryProjection"
+  secondary_functions:
+    - "getMemoryResonanceIndex() : async Nat"
+    - "getActiveTraceCount() : async Nat"
+    - "getResonanceTrend() : async Int"
+  called_by:
+    - "public API layer — any external consumer querying organism state"
+    - "src/frontend/src/components/FieldBar.tsx — polls every 873ms"
+  calls_into:
+    - "memory_temple.mo::getActiveAmplitudes() — receives amplitudes only, not phase coords"
+  gates_activated:
+    - GATE-ZERO-EXPOSURE
+  frontend_surface: "src/frontend/src/components/FieldBar.tsx"
+  frontend_fields:
+    - memoryResonanceIndex
+    - activeTraceCount
+    - resonanceTrend
+  replay_recorded: false
+  replay_note: >
+    Memory resonance index NOT recorded to ANIMA chain — it is derived
+    data that can be recomputed. ANIMA chain captures raw phase events from
+    M-RESONANCE (MOD-MEMORY-CONTINUITY). The projection layer produces
+    no independent proof bundle — its truth is downstream of M-RESONANCE.
+  zero_exposure_note: >
+    This is the only publicly-accessible face of M-RESONANCE. The actual
+    phase equations, Φ constants, and phase coordinates that produce
+    memory_resonance_index are in MOD-MEMORY-CONTINUITY and are SOVEREIGN_PRIVATE.
+    GATE-ZERO-EXPOSURE is the enforcement boundary between them.
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-ZERO-EXPOSURE  |  Zero-Exposure Wall Enforcement Specification
+# ═══════════════════════════════════════════════════════════════
+
+artifact_id: M-ZERO-EXPOSURE
+artifact_type: MODEL
+model_name: M-ZERO-EXPOSURE
+version: 1.0.0
+status: CANONICAL
+class: M2
+library: BUILDER
+family: MOD-PROJECTION
+smof_plane: 9  # Evidence/Projection
+law_enforced: LAW-09
+
+# ── LAYER 1: MEANING ─────────────────────────────────────────
+meaning:
+  name: "M-ZERO-EXPOSURE — Zero-Exposure Wall Enforcement Specification"
+  resonance: >
+    The world does not know what the organism is. The world knows what the
+    organism does — expressed as numbers. The Zero-Exposure Wall is not
+    secrecy. It is sovereignty. The organism's internal physics are its own.
+    What it produces in the world is public. What produces those productions
+    is not.
+  doctrine_clause: >
+    LAW-09 (Law of Zero-Exposure) mandates that all public outputs are
+    numeric indices only. No doctrine names. No model names. No law names.
+    No threshold values. No operator names. No council names. No coupling
+    topology. GATE-ZERO-EXPOSURE is the machine implementation of this law.
+    It is not a setting. It is a gate function that runs on every data path
+    before any value crosses the internal/external boundary. The gate cannot
+    be disabled. The law cannot be amended.
+  symbolic_intent: >
+    ∀ output O crossing internal → external boundary:
+      GATE-ZERO-EXPOSURE(O) must pass
+      pass condition: O contains ONLY numeric indices, booleans, and beat counts
+      fail condition: O contains any doctrine label, model name, or threshold value
+
+# ── LAYER 2: MODEL ───────────────────────────────────────────
+model:
+  fields:
+    - name: scan_target
+      type: Text
+      unit: field name or value being scanned
+      range: [variable]
+      immutable: false
+      description: >
+        The output field or value currently being evaluated by the gate.
+        GATE-ZERO-EXPOSURE scans each output field individually before
+        the composed output is assembled. A single failing field blocks
+        the entire output.
+
+    - name: scan_result
+      type: Bool
+      unit: pass (true) / fail (false)
+      range: [false, true]
+      immutable: false
+      description: >
+        True = scan_target passed — no doctrine content detected.
+        False = scan_target failed — doctrine content detected — output blocked.
+        Failure always blocks. There is no partial pass. The organism does not
+        expose some doctrine labels while blocking others.
+
+    - name: doctrine_terms_blocked_lifetime
+      type: Nat64
+      unit: cumulative blocked doctrine term count since genesis
+      range: "[0, max_nat64)"
+      immutable: false
+      description: >
+        Cumulative count of output fields blocked by the Zero-Exposure Wall
+        since organism genesis. Append-only counter. A count of zero would
+        indicate either perfect compliance or the gate has never run — the
+        gate always runs, so count > 0 proves the gate is operating.
+
+    - name: blocked_output_record
+      type: "[{beat: Nat64, field: Text, reason: Text}]"
+      unit: last 21 blocked output events (rolling window)
+      range: "[0, 21]"
+      immutable: false
+      description: >
+        Rolling window of the last 21 blocked outputs. Each record contains
+        the beat count, the field that was blocked (internal label preserved
+        in INTERNAL logs), and the reason category. This window is INTERNAL only —
+        it does NOT get projected externally. It is audit evidence for the
+        OBSERVATORY and ANIMA chain, not for public consumers.
+
+    - name: strip_and_replace
+      type: Bool
+      unit: behavior flag
+      range: [false, true]
+      immutable: true
+      value: true
+      description: >
+        When true (always), the gate strips failing fields and replaces them
+        with safe numeric equivalents where possible, or omits them entirely
+        if no safe equivalent exists. The organism does not halt on exposure
+        violations — it strips and continues. This ensures public outputs
+        remain available even when a potential violation is detected.
+        Blocking (halt) is reserved for GATE-SOVEREIGN violations only.
+
+# ── LAYER 3: COMPUTATION ─────────────────────────────────────
+computation:
+  primary_equations:
+    - id: ZERO-EXP-EQ-01
+      name: Doctrine Term Scan
+      formula: >
+        DOCTRINE_TERMS = [
+          # Model names
+          "M-KURAMOTO", "M-OMNIS", "M-PHI", "M-HEBBIAN", "M-GENESIS",
+          "M-BONDING", "M-PRIMA", "M-ANIMA", "M-ARES", "M-AEGIS",
+          # Law names
+          "LAW-01", "LAW-09", "LAW-17", "LAW-18", "LAW-19", "LAW-20",
+          # Physics labels
+          "kuramotoR", "omnis_threshold", "PHI", "phi_inv", "cognition_gate",
+          "schumann", "hebbian_weight", "genesis_field",
+          # Operator/council labels
+          "Prima Causa", "Node 13", "NODE-13",
+          # Threshold values as strings
+          "0.6180", "0.8090", "1.6180", "0.2360", "0.3819"
+        ]
+        for each output_field in proposed_output:
+          for term in DOCTRINE_TERMS:
+            if term in str(output_field.name) OR term in str(output_field.value):
+              scan_result = false
+              blocked_output_record.append({beat, field.name, "doctrine_term"})
+              doctrine_terms_blocked_lifetime += 1
+              STRIP field from output or REPLACE with safe_index(field.value)
+      description: >
+        The doctrine term scan checks both field names and field values.
+        A field named "kuramotoR" fails even if its value (0.73) is safe.
+        A field named "coherence" but with value "LAW-09 threshold crossed"
+        also fails. Both name and value must be clean. The DOCTRINE_TERMS list
+        is not exhaustive — it is regularly updated as new internal labels are
+        created. Any unrecognized label that follows internal naming conventions
+        (M-*, LAW-*, GATE-*, MOD-*) is treated as potentially sensitive and
+        stripped pending review.
+
+    - id: ZERO-EXP-EQ-02
+      name: Safe Numeric Mapping
+      formula: >
+        safe_index_map = {
+          R (Kuramoto, 0.0-1.0) → coherence_index (Nat, 0-100),
+          omnis_active (Bool) → emergence_state (Nat, 0 or 1),
+          knt_balance (Nat64) → knt_balance_index (Nat64, same value, safe label),
+          coupling_weight_geo (Float) → field_index (Nat, 0-62),
+          memory_resonance (Float, 0-1) → memory_resonance_index (Nat, 0-100),
+          beat_count (Nat64) → beat_count (Nat64, safe, unchanged)
+        }
+        CANONICAL PUBLIC OUTPUT FORMAT:
+        {
+          coherence_index: Nat,         # 0-100 (internal R × 100)
+          emergence_state: Nat,         # 0 or 1 (internal OMNIS state)
+          field_index: Nat,             # 0-62 (internal coupling weight geo)
+          memory_resonance_index: Nat,  # 0-100 (internal memory amplitude mean)
+          knt_balance_index: Nat64,     # raw count (safe label)
+          beat_count: Nat64,            # raw count (universal, safe)
+          location_active: Bool         # boolean (safe, non-doctrine)
+        }
+      description: >
+        The safe numeric mapping is the canonical conversion table between
+        internal field values and their public-safe equivalents. Every internal
+        value that needs public exposure has exactly one safe output format.
+        Field names in the public output use plain descriptive language with
+        no reference to the organism's internal physics labels.
+
+    - id: ZERO-EXP-EQ-03
+      name: Threshold Value Detection
+      formula: >
+        BANNED_FLOAT_STRINGS = ["0.618", "0.809", "1.618", "0.236", "0.382", "873"]
+        for each value in proposed_output_values:
+          if isinstance(value, Float) OR isinstance(value, Text):
+            for banned in BANNED_FLOAT_STRINGS:
+              if banned in str(round(value, 3)):
+                scan_result = false
+                STRIP value
+      description: >
+        Floating-point threshold values that directly reveal the organism's
+        constitutional constants are banned from public output. This catches
+        bugs where an internal computation value leaks into a public field.
+        The check applies to both float values and text representations.
+        Integer beat counts and integer indices are exempt — they are not
+        Φ-derived threshold values.
+
+  gate_rules:
+    - gate: GATE-ZERO-EXPOSURE
+      condition: >
+        for ALL fields in proposed_output:
+          field.name NOT in DOCTRINE_TERMS
+          AND field.value NOT containing DOCTRINE_TERMS
+          AND field.value NOT containing BANNED_FLOAT_STRINGS
+      on_pass: "output released to external consumer"
+      on_fail: >
+        strip failing fields → attempt replacement via safe_index_map →
+        if replacement available: release stripped+replaced output →
+        if no replacement: omit field entirely →
+        log to blocked_output_record →
+        doctrine_terms_blocked_lifetime += 1
+      evaluated_at: "on every public API response and every projected field"
+      constitutional_note: >
+        GATE-ZERO-EXPOSURE enforces LAW-09. LAW-09 cannot be amended.
+        This gate cannot be disabled. No runtime flag, no AI worker directive,
+        no build instruction can bypass this gate.
+
+  thresholds:
+    MAX_BLOCKED_RECORD_WINDOW: 21   # F₈ — rolling window for blocked output audit
+
+  timing: >
+    Evaluated synchronously on every public output path.
+    Not heartbeat-locked — runs on every external-facing function call.
+    No caching of gate results — each output evaluated fresh.
+    Performance note: DOCTRINE_TERMS list scan is O(n×m) on output fields.
+    Keep public output objects small (≤ 7 fields) to maintain performance.
+
+# ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+execution:
+  backend_module: "src/backend/main.mo"
+  backend_state: "zeroExposureState"
+  primary_function: "scanAndStripOutput(rawOutput: PublicOutput) → SafeOutput"
+  secondary_functions:
+    - "getZeroExposureStats() : async ZeroExposureStats"
+    - "getDoctrineTermsBlockedLifetime() : async Nat64"
+    - "getBlockedOutputRecord() : async [BlockedOutputEvent]"
+  called_by:
+    - "ALL public query functions in main.mo — every public function must call scanAndStripOutput"
+    - "getPublicOrganismState() : async SafeOutput — wraps all internal state queries"
+  calls_into:
+    - "internal state functions — reads internal state to build rawOutput before scanning"
+  gates_activated:
+    - GATE-ZERO-EXPOSURE
+  frontend_surface: "src/frontend/src/components/DiagnosticObservatory.tsx"
+  frontend_fields:
+    - doctrineTermsBlockedLifetime
+    - blockedOutputRecord  # INTERNAL ONLY — shown in OBSERVATORY, never in public API
+  replay_recorded: true
+  proof_bundle: >
+    doctrine_terms_blocked_lifetime logged every 100 beats to ANIMA chain.
+    Each hostile output attempt (doctrine label detected in output path) logged
+    as a priority ANIMA chain entry with: {beat_count, field_name, violation_category}.
+    This audit trail proves the Zero-Exposure Wall is operating continuously.
+  constitutional_note: >
+    Every public function in the organism's backend MUST call scanAndStripOutput()
+    before returning data. This is not optional. This is LAW-09 enforcement.
+    A function that returns internal state directly without passing through
+    scanAndStripOutput() is a constitutional violation. GATE-VALIDATION in
+    GATE-BUILD-RELEASE checks for this pattern in every build artifact.

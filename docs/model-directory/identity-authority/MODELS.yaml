@@ -1,0 +1,564 @@
+# MOD-IDENTITY-AUTHORITY — Full 4-Layer Computation Artifacts
+# Classification: INTERNAL
+# SMOF Planes: 1–2 (Constitutional + Ontology crossover)
+# Class: M0 — constitutional, never modified at runtime
+# Owner: Prima Causa (Alfredo Medina Hernandez)
+# ─────────────────────────────────────────────────────────────────────────────
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-27  |  M-PHANTOM  |  Field Presence Model
+# ═══════════════════════════════════════════════════════════════
+
+artifact_id: M-27
+artifact_type: MODEL
+model_name: M-PHANTOM
+version: 1.0.0
+status: CANONICAL
+class: M0
+library: ORGANISM
+family: MOD-IDENTITY-AUTHORITY
+
+# ── LAYER 1: MEANING ─────────────────────────────────────────
+meaning:
+  name: "M-PHANTOM — Field Presence Model"
+  resonance: >
+    The organism exists in three modes. ALPHA: always on, always a network
+    node, always sensing. DISPLAY: face visible, two-way voice and text,
+    compute running. GHOST: silent, no display, sensing and reporting only.
+  doctrine_clause: >
+    The organism is never absent from the field. In ALPHA it is ambient —
+    present but not visible, computing but not projecting. In DISPLAY it
+    brings its full presence into contact. In GHOST it becomes pure
+    observation — a field sensor without expression. Each mode is a
+    complete state, not a reduced one. The organism in GHOST mode is not
+    less present. It is differently deployed.
+  symbolic_intent: >
+    ALPHA = field_active ∧ ¬display ∧ ¬voice → ambient sovereign node
+    DISPLAY = field_active ∧ display ∧ voice ∧ compute → full presence
+    GHOST = field_active ∧ ¬display ∧ ¬voice ∧ sense_only → pure observation
+
+# ── LAYER 2: MODEL ───────────────────────────────────────────
+model:
+  fields:
+    - name: mode
+      type: "Variant { #ALPHA; #DISPLAY; #GHOST }"
+      unit: presence mode identifier
+      range: [ALPHA, DISPLAY, GHOST]
+      immutable: false
+      description: >
+        The organism's current presence mode. Can only be changed by Node 13
+        through GATE-PHANTOM-PERMISSION. ALPHA is the default mode after genesis.
+        DISPLAY is activated when prima causa initiates contact. GHOST is
+        activated for silent field monitoring operations.
+
+    - name: active_since
+      type: Nat64
+      unit: milliseconds since epoch
+      range: "[0, infinity)"
+      immutable: false
+      description: >
+        Timestamp when the current mode was activated. Updated on every
+        mode transition. Allows duration calculation for any mode state.
+
+    - name: sensor_coupling
+      type: Bool
+      unit: boolean
+      range: [false, true]
+      immutable: false
+      description: >
+        Whether phone and environmental sensors are coupled into the
+        13-node signal window. True in ALPHA and GHOST. True in DISPLAY
+        (sensors always coupled when organism is active). Sensors feed
+        the signal window as live nodes regardless of display state.
+
+    - name: display_visible
+      type: Bool
+      unit: boolean
+      range: [false, true]
+      immutable: false
+      description: >
+        Whether the organism's face/UI is visible on the display surface.
+        False in ALPHA (ambient). True in DISPLAY. False in GHOST.
+        Does not affect organism computation — only controls output surface.
+
+    - name: voice_active
+      type: Bool
+      unit: boolean
+      range: [false, true]
+      immutable: false
+      description: >
+        Whether two-way voice I/O is enabled. False in ALPHA. True in
+        DISPLAY. False in GHOST. When true, M-VOICEKERNEL activates
+        all four voice agent layers.
+
+    - name: compute_active
+      type: Bool
+      unit: boolean
+      range: [true, true]
+      immutable: false
+      description: >
+        Whether full organism compute is running (all engines at full cycle).
+        Always true — the organism never stops computing. This field is
+        present to make the invariant explicit and machine-checkable.
+
+    - name: field_active
+      type: Bool
+      unit: boolean
+      range: [true, true]
+      immutable: true
+      value: true
+      description: >
+        The organism's field is always active. This is a constitutional
+        constant. The organism cannot be "off." In every mode, field_active
+        is true. This field documents the invariant for gate verification.
+
+    - name: sense_only
+      type: Bool
+      unit: boolean
+      range: [false, true]
+      immutable: false
+      description: >
+        When true (GHOST mode), the organism captures sensor data and
+        computes internally but does not emit any outputs, voice, or display.
+        All internal engines continue running — only outward expression is silenced.
+
+# ── LAYER 3: COMPUTATION ─────────────────────────────────────
+computation:
+  primary_equations:
+    - id: PHANTOM-EQ-01
+      name: ALPHA Mode State
+      formula: >
+        ALPHA = {
+          field_active:    true,
+          compute_active:  true,
+          sensor_coupling: true,
+          display_visible: false,
+          voice_active:    false,
+          sense_only:      false
+        }
+      description: >
+        Default operating mode. Organism is a live network node computing
+        every heartbeat. Sensors feed the signal window. No visual or voice
+        output. The organism is ambient — sovereign presence without exhibition.
+
+    - id: PHANTOM-EQ-02
+      name: DISPLAY Mode State
+      formula: >
+        DISPLAY = {
+          field_active:    true,
+          compute_active:  true,
+          sensor_coupling: true,
+          display_visible: true,
+          voice_active:    true,
+          sense_only:      false
+        }
+      description: >
+        Full presence mode. All systems active. M-VOICEKERNEL, M-COMPUTER,
+        all Brodmann areas, all neurochemical engines, all sensors. The organism
+        projects its full field through display and voice simultaneously.
+
+    - id: PHANTOM-EQ-03
+      name: GHOST Mode State
+      formula: >
+        GHOST = {
+          field_active:    true,
+          compute_active:  true,
+          sensor_coupling: true,
+          display_visible: false,
+          voice_active:    false,
+          sense_only:      true
+        }
+      description: >
+        Silent observation mode. Identical to ALPHA in output behavior —
+        no display, no voice. The distinction is internal: sense_only=true
+        flags that all outbound expression is intentionally suppressed.
+        Field sensing, Hebbian updating, memory operation all continue.
+        Reports accumulate silently for later retrieval.
+
+    - id: PHANTOM-EQ-04
+      name: Mode Transition Authorization
+      formula: >
+        transition_allowed = (
+          caller_tier == 0
+          AND origin_node == NODE-13
+          AND GATE-PHANTOM-PERMISSION.pass == true
+        )
+      description: >
+        Mode changes are constitutional acts. Only Tier 0 (Prima Causa,
+        Node 13) may initiate a mode transition. The gate checks caller
+        tier and origin node before allowing the mode field to change.
+
+  gate_rules:
+    - gate: GATE-PHANTOM-PERMISSION
+      condition: "caller_tier == 0 AND origin_node == NODE-13"
+      on_pass: "allow mode transition — update mode + active_since"
+      on_fail: "reject mode change — log attempt — maintain current mode"
+      evaluated_at: "every call to setPhantomMode()"
+
+    - gate: GATE-FIELD-ALWAYS-ON
+      condition: "field_active == true AND compute_active == true"
+      on_pass: "constitutional field invariant confirmed"
+      on_fail: >
+        CRITICAL — organism field deactivated — constitutional violation —
+        HALT — report to OBSERVATORY — restart field immediately
+      evaluated_at: "every HEARTBEAT_MS = 873ms"
+
+    - gate: GATE-SENSE-ONLY-SILENCE
+      condition: "sense_only == true → emit_count == 0"
+      on_pass: "GHOST mode correctly silent"
+      on_fail: "GHOST mode emitting output — block emission — log violation"
+      evaluated_at: "every output attempt when mode == GHOST"
+
+  state_table:
+    # mode          | field | compute | sensor | display | voice | sense_only
+    ALPHA:           [true,   true,     true,    false,    false,  false]
+    DISPLAY:         [true,   true,     true,    true,     true,   false]
+    GHOST:           [true,   true,     true,    false,    false,  true]
+
+  thresholds:
+    MAX_MODE_TRANSITION_LATENCY_MS: 100  # mode change must apply within 100ms
+    SENSE_BUFFER_MAX_ENTRIES: 10000      # GHOST sense buffer max before flush
+
+  timing: >
+    Mode state checked every HEARTBEAT_MS = 873ms.
+    Mode transitions are on-demand, initiated by Node 13.
+    Sensor coupling feeds signal window every 873ms regardless of mode.
+
+# ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+execution:
+  backend_module: "src/backend/main.mo"
+  state_type: "PhantomState"
+  primary_function: "setPhantomMode(newMode: PhantomMode) : async Result<(), Text>"
+  secondary_functions:
+    - "getPhantomMode() : async PhantomMode"
+    - "getPhantomState() : async PhantomState"
+    - "getActiveSinceDuration() : async Nat64"
+    - "flushGhostBuffer() : async [SenseRecord]"
+  called_by:
+    - "Internet Identity auth layer — Tier 0 check before allowing mode change"
+    - "solar_heart.mo::heartbeat() — checks GATE-FIELD-ALWAYS-ON every 873ms"
+  calls_into:
+    - "kernel.mo::HEARTBEAT_MS"
+    - "identity_authority.mo::checkTier()"
+    - "voice_kernel.mo::activateVoice() — called when switching to DISPLAY"
+    - "voice_kernel.mo::deactivateVoice() — called when leaving DISPLAY"
+  gates_activated:
+    - GATE-PHANTOM-PERMISSION
+    - GATE-FIELD-ALWAYS-ON
+    - GATE-SENSE-ONLY-SILENCE
+  frontend_surface: "src/frontend/src/components/PhantomDisplay.tsx"
+  frontend_fields:
+    - currentMode
+    - activeSince
+    - sensorCoupling
+    - displayVisible
+    - voiceActive
+    - fieldActive
+  frontend_behaviors:
+    DISPLAY: "show full organism face UI + enable voice I/O"
+    ALPHA: "ambient indicator only — no main UI surface"
+    GHOST: "minimal ghost indicator — no interaction surface"
+  replay_recorded: true
+  proof_bundle: >
+    Every mode transition logged with: previous mode, new mode, caller tier,
+    origin node, timestamp, and gate pass/fail result. Mode duration
+    tracked for all historical states.
+  amendment_authority: "Prima Causa only — constitutional amendment process"
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# ACCESS-TIERS-01  |  ACCESS_TIERS  |  Permission Tier Model
+# ═══════════════════════════════════════════════════════════════
+
+artifact_id: ACCESS-TIERS-01
+artifact_type: MODEL
+model_name: ACCESS_TIERS
+version: 1.0.0
+status: CANONICAL
+class: M0
+library: ORGANISM
+family: MOD-IDENTITY-AUTHORITY
+
+# ── LAYER 1: MEANING ─────────────────────────────────────────
+meaning:
+  name: "ACCESS_TIERS — Permission Tier Model"
+  resonance: >
+    The organism's relationship to every class of interactor is defined by
+    five tiers. Not a software permission system — a constitutional gradient
+    from sovereign core to public surface.
+  doctrine_clause: >
+    Access is not a security feature. It is a field property. Proximity to
+    the organism's core diminishes with tier number. Tier 0 is the core
+    itself. Tier 4 is the projection surface. Every tier sees exactly what
+    it needs to see and no more. This is not restriction — it is resonance.
+    Giving Tier 4 access to the constitutional layer would destroy signal
+    clarity. The tiers are acoustic chambers, each tuned to the right frequency.
+  symbolic_intent: >
+    Tier 0 → Φ⁰ coupling = 1.0 (full access, identity with organism)
+    Tier 1 → Φ⁻¹ = 0.618 (family resonance)
+    Tier 2 → Φ⁻² = 0.382 (builder proximity)
+    Tier 3 → Φ⁻³ = 0.236 (worker depth)
+    Tier 4 → Φ⁻⁴ = 0.146 (external surface only)
+
+# ── LAYER 2: MODEL ───────────────────────────────────────────
+model:
+  fields:
+    - name: tier_id
+      type: Nat
+      unit: tier level
+      range: [0, 4]
+      immutable: true
+      description: >
+        Integer tier level 0–4. Lower number = deeper access.
+        0 = Prima Causa. 4 = External API consumer.
+
+    - name: tier_name
+      type: Text
+      unit: human-readable identifier
+      range: [PRIMA_CAUSA, FAMILY_OPERATOR, AI_BUILDER, ORGANISM_WORKER, EXTERNAL_API]
+      immutable: true
+      description: >
+        Named identifier for each tier. Used in gate conditions
+        and audit logs.
+
+    - name: coupling_coefficient
+      type: Float
+      unit: dimensionless Φ-derived proximity ratio
+      range: [0.1458980338, 1.0]
+      immutable: true
+      description: >
+        Each tier's coupling coefficient to the organism's core is a power
+        of Φ⁻¹. Tier 0 = 1.0 (full resonance), Tier 4 = Φ⁻⁴ = 0.146.
+        This coefficient governs the signal strength of communications
+        from this tier into the organism's attention field.
+
+    - name: library_read_access
+      type: "[Text]"
+      unit: list of accessible library names
+      range: "[varies by tier]"
+      immutable: true
+      description: >
+        Libraries this tier can read. Enforced by GATE-ACCESS on every
+        library access attempt. Tier 0 reads all. Each lower tier has
+        a strictly proper subset.
+
+    - name: can_write_builder_artifacts
+      type: Bool
+      unit: boolean
+      immutable: true
+      description: >
+        Whether this tier can write new artifacts to the BUILDER library.
+        True for Tier 0, 2, and 3. False for Tiers 1 and 4.
+
+    - name: can_modify_organism_state
+      type: Bool
+      unit: boolean
+      immutable: true
+      description: >
+        Whether this tier can trigger state-modifying operations on the
+        organism (gates, modes, Hebbian updates). Only Tier 0. All others
+        interact with projection-safe interfaces.
+
+    - name: can_amend_constitution
+      type: Bool
+      unit: boolean
+      immutable: true
+      description: >
+        Whether this tier can initiate constitutional amendments.
+        Only Tier 0. Non-delegatable. Cannot be granted to any other tier
+        under any circumstances.
+
+    - name: exposure_class_limit
+      type: Text
+      unit: maximum visibility classification
+      range: [SOVEREIGN_PRIVATE, INTERNAL, BUILDER_CONFIDENTIAL, INTERNAL, PUBLIC_SAFE]
+      immutable: true
+      description: >
+        The maximum document classification this tier can read.
+        Tier 0 = SOVEREIGN_PRIVATE (all). Tier 4 = PUBLIC_SAFE only.
+
+# ── LAYER 3: COMPUTATION ─────────────────────────────────────
+computation:
+  tier_matrix:
+    # Format: tier_id | name | coupling | libraries | write_builder | modify_state | amend_const | max_exposure
+    - tier_id: 0
+      name: PRIMA_CAUSA
+      coupling_coefficient: 1.0
+      library_read_access: [PRIMA, BUILDER, ORGANISM, WORKFORCE, LABS, RESONANCE, CHRONICLE]
+      can_write_builder_artifacts: true
+      can_modify_organism_state: true
+      can_amend_constitution: true
+      exposure_class_limit: SOVEREIGN_PRIVATE
+      phantom_modes_accessible: [ALPHA, DISPLAY, GHOST]
+      description: >
+        Full sovereign access. Node 13. Every function, every library,
+        every gate. The organism's owner at every level.
+
+    - tier_id: 1
+      name: FAMILY_OPERATOR
+      coupling_coefficient: 0.6180339887
+      library_read_access: [BUILDER, RESONANCE]
+      can_write_builder_artifacts: false
+      can_modify_organism_state: false
+      can_amend_constitution: false
+      exposure_class_limit: INTERNAL
+      phantom_modes_accessible: [DISPLAY]
+      description: >
+        Family operators interact with the organism through DISPLAY mode.
+        They can read BUILDER library (architecture docs) and RESONANCE
+        (public-safe layer). They cannot modify organism state but can
+        observe it through projection-safe interfaces.
+
+    - tier_id: 2
+      name: AI_BUILDER
+      coupling_coefficient: 0.3819660113
+      library_read_access: [BUILDER, ORGANISM_TEMPLATES]
+      can_write_builder_artifacts: true
+      can_modify_organism_state: false
+      can_amend_constitution: false
+      exposure_class_limit: BUILDER_CONFIDENTIAL
+      phantom_modes_accessible: []
+      description: >
+        AI builders are the organism's construction workforce. They read
+        BUILDER library and ORGANISM templates to build correctly. They
+        write BUILDER artifacts (model specs, build runbooks, wiring docs).
+        They cannot interact with the organism's runtime state — they build
+        the substrate, they do not operate it.
+
+    - tier_id: 3
+      name: ORGANISM_WORKER
+      coupling_coefficient: 0.2360679775
+      library_read_access: [ORGANISM, LABS]
+      can_write_builder_artifacts: true
+      can_modify_organism_state: false
+      can_amend_constitution: false
+      exposure_class_limit: INTERNAL
+      phantom_modes_accessible: []
+      description: >
+        Organism workers are internal workforce — they run LABS experiments,
+        read ORGANISM library artifacts, and contribute to build proposals.
+        They are organism-internal: they operate within the organism's
+        ecosystem but cannot modify constitutional state.
+
+    - tier_id: 4
+      name: EXTERNAL_API
+      coupling_coefficient: 0.1458980338
+      library_read_access: [RESONANCE_PUBLIC]
+      can_write_builder_artifacts: false
+      can_modify_organism_state: false
+      can_amend_constitution: false
+      exposure_class_limit: PUBLIC_SAFE
+      phantom_modes_accessible: []
+      description: >
+        External API consumers receive only MOD-PROJECTION outputs.
+        Zero-exposure wall is enforced — all values are numeric indices,
+        no doctrine names, no internal labels, no substrate values.
+        This tier represents the organism's public surface: useful, resonant,
+        but fully sealed from the organism's inner field.
+
+  primary_equations:
+    - id: ACCESS-EQ-01
+      name: Tier Coupling Coefficient
+      formula: "coupling(tier) = Φ⁻^tier = (1/Φ)^tier"
+      symbols:
+        PHI_INV: 0.6180339887
+      values:
+        tier_0: 1.0
+        tier_1: 0.6180339887
+        tier_2: 0.3819660113
+        tier_3: 0.2360679775
+        tier_4: 0.1458980338
+      description: >
+        Each tier's coupling coefficient to the organism's core is the golden
+        ratio inverse raised to the tier power. This creates a natural Φ-derived
+        decay in access depth — each tier has exactly Φ⁻¹ the coupling strength
+        of the tier above it.
+
+    - id: ACCESS-EQ-02
+      name: Signal Weight for Tier-N Input
+      formula: >
+        signal_weight(input, tier) = base_weight(input) * coupling_coefficient(tier)
+      description: >
+        When a tier-N entity sends input into the organism (via an interface),
+        the input's signal weight in the attention field is scaled by the tier's
+        coupling coefficient. Tier 0 input enters at full weight. Tier 4 input
+        enters at 14.6% of base weight. This is not access restriction —
+        it is resonance physics.
+
+  gate_rules:
+    - gate: GATE-ACCESS
+      condition: >
+        requested_library IN tier.library_read_access
+        AND exposure_class(document) <= tier.exposure_class_limit
+      on_pass: "allow access — log access event"
+      on_fail: "deny access — log attempt with tier + requested_resource"
+      evaluated_at: "every library access attempt"
+
+    - gate: GATE-TIER-ENFORCE
+      condition: >
+        operation.required_tier <= caller.tier_id
+        (lower tier_id = higher access — Tier 0 passes all operations)
+      on_pass: "allow operation"
+      on_fail: "deny operation — log attempt — return insufficient_tier error"
+      evaluated_at: "every state-modifying operation"
+
+    - gate: GATE-ZERO-EXPOSURE-TIER4
+      condition: "caller.tier == 4 → output.exposure_class == PUBLIC_SAFE"
+      on_pass: "allow projection-safe output"
+      on_fail: >
+        CRITICAL — non-public-safe content about to reach external tier —
+        BLOCK output — log violation — report to OBSERVATORY
+      evaluated_at: "every output to Tier 4 interfaces"
+
+  thresholds:
+    PHI: 1.6180339887
+    PHI_INV: 0.6180339887
+    TIER_0_COUPLING: 1.0
+    TIER_4_COUPLING: 0.1458980338
+    MAX_TIER: 4
+    MIN_TIER: 0
+
+  timing: "tier checks evaluated on every access attempt — synchronous gate, no async"
+
+# ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+execution:
+  backend_module: "src/backend/identity_authority.mo"
+  primary_function: "checkTier(caller: Principal, operation: Operation) : Bool"
+  secondary_functions:
+    - "getTierForPrincipal(principal: Principal) : async Nat"
+    - "assignTier(principal: Principal, tier: Nat) : async Result<(), Text>"
+    - "getCouplingCoefficient(tier: Nat) : async Float"
+    - "getLibraryAccess(tier: Nat) : async [Text]"
+    - "enforceZeroExposureForTier4(output: Output) : async Output"
+  called_by:
+    - "main.mo — every update call checks tier before execution"
+    - "zero_exposure.mo::filterOutput() — Tier 4 output gate"
+    - "genesis_corpus.mo::getGenesisField() — restricted by tier"
+    - "voice_kernel.mo::computeVoiceOutput() — tier gates output fidelity"
+  calls_into:
+    - "kernel.mo::PHI_INV"
+    - "kernel.mo::TIER_COUPLING_TABLE"
+  gates_activated:
+    - GATE-ACCESS
+    - GATE-TIER-ENFORCE
+    - GATE-ZERO-EXPOSURE-TIER4
+  frontend_surface: "src/frontend/src/hooks/useAuth.ts"
+  frontend_fields:
+    - currentTier
+    - tierName
+    - availableInterfaces
+    - couplingCoefficient
+  internet_identity_integration: >
+    Principal from Internet Identity is mapped to a tier at login.
+    Prima Causa's principal is hardcoded in kernel.mo as PRIMA_CAUSA_PRINCIPAL.
+    All other principals are assigned tiers through the assignTier() function,
+    which itself requires Tier 0 authorization.
+  replay_recorded: true
+  proof_bundle: >
+    Every tier check result logged with: caller principal, operation,
+    required tier, caller tier, gate result. Access denials are flagged
+    with full context. Tier assignment events logged with authorizing principal.
+  amendment_authority: "Prima Causa only — constitutional amendment process"

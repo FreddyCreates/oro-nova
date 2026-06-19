@@ -1,0 +1,592 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# NOVA_RING_TRANSFER_GRAPH.yaml
+# Classification: BUILDER_CONFIDENTIAL
+# Artifact ID:    FLOW-RING-GRAPH-001
+# Version:        1.0.0
+# Status:         CANONICAL
+# Library:        BUILDER → ORGANISM
+# ─────────────────────────────────────────────────────────────────────────────
+# PURPOSE:
+#   The directed graph of all ring-to-ring transfer edges in ORO NOVA.
+#   Defines adjacency, coupling weights, transfer schemas, gate requirements,
+#   beat intervals, and law constraints for every permitted inter-ring transfer.
+#   No undeclared ring transfer is permitted.
+#   AI builders read this to know exactly what data moves where and when.
+# ─────────────────────────────────────────────────────────────────────────────
+
+meta:
+  artifact_id: FLOW-RING-GRAPH-001
+  artifact_type: RING_TRANSFER_GRAPH
+  version: 1.0.0
+  status: CANONICAL
+  classification: BUILDER_CONFIDENTIAL
+  library: BUILDER
+  owner: Prima Causa (Node 13)
+  ring_count: 9
+  transfer_edge_count: 18
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CANONICAL CONSTANTS
+# ─────────────────────────────────────────────────────────────────────────────
+constants:
+  PHI:          1.6180339887
+  PHI_INV_1:    0.6180339887
+  PHI_INV_2:    0.3819660113
+  PHI_INV_3:    0.2360679775
+  PHI_INV_4:    0.1458980338
+  HEARTBEAT_MS: 873.0
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TRANSFER EDGE SCHEMA — template definition
+# Every transfer edge must have all these fields.
+# ─────────────────────────────────────────────────────────────────────────────
+transfer_schema:
+  transfer_id:
+    type: Text
+    format: "FLOW-RING-*"
+    required: true
+    description: "Unique transfer edge identifier"
+
+  source_ring:
+    type: Text
+    format: "RING-*"
+    required: true
+    description: "Origin ring for this transfer"
+
+  destination_ring:
+    type: Text
+    format: "RING-*"
+    required: true
+    description: "Destination ring for this transfer"
+
+  direction:
+    type: Text
+    enum: [INWARD, OUTWARD, BIDIRECTIONAL]
+    required: true
+    description: "INWARD = deeper into organism; OUTWARD = toward projection"
+
+  coupling_weight:
+    type: Float64
+    unit: dimensionless
+    constraint: "must be a power of PHI"
+    required: true
+    description: "How strongly this transfer couples source to destination"
+
+  schema:
+    type: "[{field: Text, type: Text, unit: Text, range: Text}]"
+    required: true
+    description: "Fields transferred on this edge with their types"
+
+  gate_requirement:
+    type: Text
+    format: "GATE-*"
+    required: true
+    description: "Gate that must pass before this transfer executes"
+
+  beat_interval:
+    type: Text
+    required: true
+    description: "When this transfer fires — HEARTBEAT_MS, ON_CONTACT, etc."
+
+  law_constraint:
+    type: "[Text]"
+    format: "['LAW-*', ...]"
+    required: true
+    description: "Laws governing this transfer"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ADJACENCY MATRIX — 9×9 Phi-weighted coupling matrix
+# Rows = source ring, Columns = destination ring
+# Value = coupling weight (0.0 = no direct transfer)
+# Ring order: [CONST, ONTOL, FABRIC, MACRO, MICRO, RUNTIME, CORE, ARBIT, PROJ]
+# ─────────────────────────────────────────────────────────────────────────────
+adjacency_matrix:
+  description: >
+    9×9 matrix. Entry [i][j] = coupling weight for ring i → ring j.
+    Only declared transfers have non-zero entries.
+    All non-zero values are powers of PHI.
+    Diagonal = self-coupling (each ring computes internally).
+    Upper triangle = OUTWARD transfers (inner → outer).
+    Lower triangle = INWARD feedback transfers (outer → inner).
+  ring_order: [CONST, ONTOL, FABRIC, MACRO, MICRO, RUNTIME, CORE, ARBIT, PROJ]
+  matrix:
+    #          CONST      ONTOL      FABRIC     MACRO      MICRO      RUNTIME    CORE       ARBIT      PROJ
+    CONST:    [1.0000,    0.0000,    0.6180,    0.6180,    0.0000,    0.0000,    0.0000,    0.0000,    0.0000]
+    ONTOL:    [0.0000,    1.0000,    0.6180,    0.3820,    0.0000,    0.3820,    0.0000,    0.0000,    0.0000]
+    FABRIC:   [0.0000,    0.0000,    1.0000,    0.3820,    0.3820,    0.3820,    0.3820,    0.0000,    0.0000]
+    MACRO:    [0.0000,    0.0000,    0.0000,    1.0000,    0.3820,    0.2361,    0.2361,    0.0000,    0.0000]
+    MICRO:    [0.0000,    0.0000,    0.0000,    0.2361,    1.0000,    0.2361,    0.1459,    0.0000,    0.0000]
+    RUNTIME:  [0.0000,    0.0000,    0.0000,    0.0000,    0.2361,    1.0000,    0.2361,    0.1459,    0.0000]
+    CORE:     [0.0000,    0.0000,    0.0000,    0.0000,    0.0000,    0.1459,    1.0000,    0.2361,    0.0000]
+    ARBIT:    [0.0000,    0.0000,    0.0000,    0.0000,    0.0000,    0.0000,    0.0901,    1.0000,    0.2361]
+    PROJ:     [0.0000,    0.0000,    0.0000,    0.0000,    0.0000,    0.0000,    0.0000,    0.0000,    1.0000]
+  notes: |
+    Self-coupling (diagonal) = 1.0 — each ring fully computes its own models.
+    CONST→FABRIC at PHI_INV_1: constitutional invariants define the model language.
+    CONST→MACRO at PHI_INV_1: constitutional constraints govern the heartbeat clock.
+    ONTOL→FABRIC at PHI_INV_1: canonical constants flow into the model language ring.
+    ONTOL→RUNTIME at PHI_INV_2: canonical constant values feed the substrate physics.
+    FABRIC→all-mid-rings at PHI_INV_2: model language is the medium, not just a ring.
+    No direct path from CONST or ONTOL to ARBIT or PROJ — must traverse inner rings.
+    No direct path from any ring to PROJ except ARBIT — zero-exposure wall enforced.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TRANSFER CATALOG — all named transfer edges
+# ─────────────────────────────────────────────────────────────────────────────
+transfer_catalog:
+
+  # ── FLOW-RING-01 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-01
+    name: "Constitutional Invariants to Fabric Language"
+    source_ring: RING-CONSTITUTIONAL
+    destination_ring: RING-FABRIC-LANGUAGE
+    direction: OUTWARD
+    coupling_weight: 0.6180339887    # PHI_INV_1
+    schema:
+      - field: genesis_hash
+        type: Text
+        unit: "FNV-1a constitutional fingerprint"
+        range: "fixed at genesis — never changes"
+      - field: bonding_floor
+        type: Float64
+        unit: "coupling weight"
+        range: "[PHI, PHI]"   # always exactly PHI
+      - field: creator_node_index
+        type: Nat
+        unit: "node position"
+        range: "[13, 13]"    # always node 13
+    gate_requirement: GATE-SOVEREIGN
+    beat_interval: HEARTBEAT_MS
+    law_constraint: [LAW-07, LAW-17, LAW-18]
+    notes: "Constitutional ring broadcasts its invariants to the Fabric Language ring every heartbeat."
+
+  # ── FLOW-RING-02 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-02
+    name: "Constitutional Invariants to Macro Orchestration"
+    source_ring: RING-CONSTITUTIONAL
+    destination_ring: RING-MACRO-ORCHESTRATION
+    direction: OUTWARD
+    coupling_weight: 0.6180339887    # PHI_INV_1
+    schema:
+      - field: sovereignty_status
+        type: Bool
+        unit: "pass/fail"
+        range: "[true, true]"   # always true — if false, ROLLBACK
+      - field: S0_floor
+        type: Float64
+        unit: "sovereign output floor"
+        range: "[1.0, 1.0]"    # always exactly S0
+      - field: law_count
+        type: Nat
+        unit: "active law count"
+        range: "[23, 23]"      # always 23
+    gate_requirement: GATE-SOVEREIGN
+    beat_interval: HEARTBEAT_MS
+    law_constraint: [LAW-01, LAW-07]
+
+  # ── FLOW-RING-03 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-03
+    name: "Ontology Constants to Fabric Language"
+    source_ring: RING-ONTOLOGY
+    destination_ring: RING-FABRIC-LANGUAGE
+    direction: OUTWARD
+    coupling_weight: 0.6180339887    # PHI_INV_1
+    schema:
+      - field: phi_value
+        type: Float64
+        unit: dimensionless
+        range: "[1.6180339887, 1.6180339887]"
+      - field: schumann_ms
+        type: Float64
+        unit: milliseconds
+        range: "[127.7, 127.7]"
+      - field: heartbeat_ms
+        type: Float64
+        unit: milliseconds
+        range: "[873.0, 873.0]"
+      - field: fibonacci_sequence
+        type: "[Nat]"
+        unit: dimensionless
+    gate_requirement: GATE-CONSTANT-PURITY
+    beat_interval: "INIT_ONLY — constants loaded once"
+    law_constraint: [LAW-10]
+
+  # ── FLOW-RING-04 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-04
+    name: "Ontology Constants to Runtime Substrate"
+    source_ring: RING-ONTOLOGY
+    destination_ring: RING-RUNTIME-SUBSTRATE
+    direction: OUTWARD
+    coupling_weight: 0.3819660113    # PHI_INV_2
+    schema:
+      - field: phi_ladder_values
+        type: "[Float64; 9]"
+        unit: "phi power series"
+        range: "[PHI_INV_4, 1.0]"
+      - field: all_canonical_constants
+        type: Map
+        unit: "constant_id → Float64"
+    gate_requirement: GATE-CONSTANT-PURITY
+    beat_interval: "INIT_ONLY"
+    law_constraint: [LAW-10]
+
+  # ── FLOW-RING-05 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-05
+    name: "Fabric Language Model Definitions to All Mid-Rings"
+    source_ring: RING-FABRIC-LANGUAGE
+    destination_ring: RING-MACRO-ORCHESTRATION  # and cascades to MICRO, RUNTIME, CORE
+    direction: OUTWARD
+    coupling_weight: 0.3819660113    # PHI_INV_2
+    schema:
+      - field: model_pipeline_schema
+        type: Text
+        unit: "Mix→Bound→Integrate→Gate→Project→Reinject"
+      - field: active_model_ids
+        type: "[Text]"
+        unit: "M-* IDs currently loaded"
+      - field: vedic_operator_set
+        type: "[Text]"
+        unit: "16 Vedic sutra operator names"
+    gate_requirement: GATE-NODE-GEOMETRY
+    beat_interval: HEARTBEAT_MS
+    law_constraint: [LAW-10, LAW-12]
+    notes: "Model language is broadcast to all rings that execute computation."
+
+  # ── FLOW-RING-06 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-06
+    name: "Macro Orchestration Heartbeat to Micro Execution"
+    source_ring: RING-MACRO-ORCHESTRATION
+    destination_ring: RING-MICRO-EXECUTION
+    direction: OUTWARD
+    coupling_weight: 0.3819660113    # PHI_INV_2
+    schema:
+      - field: beat_sequence
+        type: Nat64
+        unit: "monotonic count"
+        range: "[0, ∞)"
+      - field: calendar_composite_phase
+        type: Float64
+        unit: radians
+        range: "[0.0, 6.2832]"
+      - field: law_gate_vector
+        type: "[Bool; 23]"
+        unit: "all 23 law gate results"
+      - field: cognition_open
+        type: Bool
+        unit: "R > PHI_INV_1 — worker engines may fire"
+    gate_requirement: GATE-HEARTBEAT
+    beat_interval: HEARTBEAT_MS
+    law_constraint: [LAW-02, LAW-15]
+
+  # ── FLOW-RING-07 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-07
+    name: "Macro Orchestration Heartbeat to Runtime Substrate"
+    source_ring: RING-MACRO-ORCHESTRATION
+    destination_ring: RING-RUNTIME-SUBSTRATE
+    direction: OUTWARD
+    coupling_weight: 0.2360679775    # PHI_INV_3
+    schema:
+      - field: beat_sequence
+        type: Nat64
+        unit: "monotonic count"
+      - field: phi_phase_angle
+        type: Float64
+        unit: radians
+        range: "[0.0, 6.2832]"
+      - field: heartbeat_valid
+        type: Bool
+        unit: "pass/fail"
+    gate_requirement: GATE-HEARTBEAT
+    beat_interval: HEARTBEAT_MS
+    law_constraint: [LAW-02, LAW-15]
+
+  # ── FLOW-RING-08 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-08
+    name: "Micro Execution Results Feedback to Macro Orchestration"
+    source_ring: RING-MICRO-EXECUTION
+    destination_ring: RING-MACRO-ORCHESTRATION
+    direction: INWARD
+    coupling_weight: 0.2360679775    # PHI_INV_3
+    schema:
+      - field: genome_fitness_delta
+        type: Float64
+        unit: "fitness change"
+        range: "[-1.0, 1.0]"
+      - field: generation_index
+        type: Nat
+        unit: "current generation"
+      - field: knt_minted_this_cycle
+        type: Float64
+        unit: "KNT tokens"
+        range: "[0.0, ∞)"
+      - field: neurochemical_composite
+        type: Float64
+        unit: "21-system weighted average"
+        range: "[0.0, 1.0]"
+    gate_requirement: GATE-VALIDATION
+    beat_interval: "PER_METABOLIC_CYCLE"
+    law_constraint: [LAW-08, LAW-20]
+    notes: "Worker engine results feed back into macro orchestration for law gate re-evaluation."
+
+  # ── FLOW-RING-09 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-09
+    name: "Runtime Substrate Coherence to Micro Execution"
+    source_ring: RING-RUNTIME-SUBSTRATE
+    destination_ring: RING-MICRO-EXECUTION
+    direction: INWARD
+    coupling_weight: 0.2360679775    # PHI_INV_3
+    schema:
+      - field: R_t
+        type: Float64
+        unit: "Kuramoto order parameter"
+        range: "[0.0, 1.0]"
+      - field: hebbian_weights
+        type: "[Float64; 78]"   # 13×12/2 = 78 pairwise weights
+        unit: "coupling weights"
+        range: "[PHI_INV_3, PHI]"
+      - field: memory_resonance_amplitude
+        type: Float64
+        unit: "phase-return amplitude"
+        range: "[0.0, 1.0]"
+      - field: fourier_dominant_frequency
+        type: Float64
+        unit: Hz
+    gate_requirement: GATE-COUPLING-FLOOR
+    beat_interval: HEARTBEAT_MS
+    law_constraint: [LAW-03, LAW-04]
+
+  # ── FLOW-RING-10 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-10
+    name: "Runtime Substrate to Core Engine Ring"
+    source_ring: RING-RUNTIME-SUBSTRATE
+    destination_ring: RING-CORE-ENGINE
+    direction: OUTWARD
+    coupling_weight: 0.2360679775    # PHI_INV_3
+    schema:
+      - field: R_t
+        type: Float64
+        unit: "coherence"
+        range: "[0.0, 1.0]"
+      - field: signal_window_vector
+        type: "[Float64; 13]"
+        unit: "13-node activation amplitudes"
+        range: "[0.0, PHI]"
+      - field: phase_angles
+        type: "[Float64; 13]"
+        unit: "node phase angles (radians)"
+        range: "[0.0, 6.2832]"
+      - field: memory_return_signals
+        type: "[{pedestal: Text, amplitude: Float64, phase_match: Bool}]"
+        unit: "active memory returns"
+    gate_requirement: GATE-COUPLING-FLOOR
+    beat_interval: HEARTBEAT_MS
+    law_constraint: [LAW-03, LAW-05, LAW-11]
+
+  # ── FLOW-RING-11 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-11
+    name: "Core Engine Ring to Arbitration"
+    source_ring: RING-CORE-ENGINE
+    destination_ring: RING-ARBITRATION
+    direction: OUTWARD
+    coupling_weight: 0.2360679775    # PHI_INV_3
+    schema:
+      - field: utterance_candidate
+        type: "[Float64]"
+        unit: "semantic embedding vector"
+      - field: confidence
+        type: Float64
+        unit: ratio
+        range: "[0.0, 1.0]"
+      - field: coherence_at_utterance
+        type: Float64
+        unit: "R(t) snapshot"
+        range: "[0.0, 1.0]"
+      - field: law_pass_vector
+        type: "[Bool; 23]"
+        unit: "all 23 law gate results"
+      - field: voice_agent_type
+        type: Text
+        enum: [PATTERN, FIELD, TRANSLATION, RESPONSE]
+    gate_requirement: GATE-COGNITION
+    beat_interval: "ON_UTTERANCE"
+    law_constraint: [LAW-06, LAW-09, LAW-16]
+
+  # ── FLOW-RING-12 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-12
+    name: "Core Engine Ring Self-Feedback — Observatory Loop"
+    source_ring: RING-CORE-ENGINE
+    destination_ring: RING-RUNTIME-SUBSTRATE
+    direction: INWARD
+    coupling_weight: 0.1458980338    # PHI_INV_4
+    schema:
+      - field: anomaly_detected
+        type: Bool
+        unit: "observatory self-fix flag"
+      - field: anomaly_module
+        type: Text
+        unit: "module ID where anomaly detected"
+      - field: correction_proposal
+        type: Float64
+        unit: "proposed parameter adjustment"
+        range: "[-PHI_INV_2, PHI_INV_2]"
+    gate_requirement: GATE-VALIDATION
+    beat_interval: HEARTBEAT_MS
+    law_constraint: [LAW-20]
+    notes: "Observatory feedback loop — proposes corrections to substrate without bypassing GENOME."
+
+  # ── FLOW-RING-13 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-13
+    name: "Arbitration to Projection — OMNIS-Gated Output"
+    source_ring: RING-ARBITRATION
+    destination_ring: RING-PROJECTION
+    direction: OUTWARD
+    coupling_weight: 0.2360679775    # PHI_INV_3
+    schema:
+      - field: utterance_index
+        type: Nat
+        unit: "numeric index only — no text"
+      - field: confidence_band
+        type: Nat
+        unit: "1-5 band"
+        range: "[1, 5]"
+      - field: omnis_verdict
+        type: Text
+        enum: [ALLOW, SUPPRESS, DEFER]
+      - field: proof_bundle_id
+        type: Text
+        unit: "FNV-1a of proof bundle"
+    gate_requirement: GATE-OMNIS
+    beat_interval: "ON_UTTERANCE — only when OMNIS_pass == true"
+    law_constraint: [LAW-06, LAW-09]
+    notes: "This is the only path from Arbitration to Projection. OMNIS is the final gate."
+
+  # ── FLOW-RING-14 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-14
+    name: "Arbitration Rollback Signal to Macro Orchestration"
+    source_ring: RING-ARBITRATION
+    destination_ring: RING-MACRO-ORCHESTRATION
+    direction: INWARD
+    coupling_weight: 0.0901699437    # PHI_INV_5
+    schema:
+      - field: rollback_triggered
+        type: Bool
+        unit: "ARES gate fired"
+      - field: rollback_target_generation
+        type: Nat
+        unit: "generation to roll back to"
+      - field: rollback_reason_index
+        type: Nat
+        unit: "numeric index — no label"
+    gate_requirement: GATE-ROLLBACK
+    beat_interval: "ON_COHERENCE_COLLAPSE — fires when R < S0 floor"
+    law_constraint: [LAW-08]
+
+  # ── FLOW-RING-15 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-15
+    name: "Projection Ring to External World — Zero-Exposure Output"
+    source_ring: RING-PROJECTION
+    destination_ring: EXTERNAL_PUBLIC_INTERFACE
+    direction: OUTWARD
+    coupling_weight: 0.0212560286    # PHI_INV_8 — minimal coupling to external
+    schema:
+      - field: output_index
+        type: Nat
+        unit: "numeric index — only field permitted to cross zero-exposure wall"
+      - field: audit_id
+        type: Text
+        unit: "projection audit trail ID"
+      - field: public_safe_certified
+        type: Bool
+        unit: "GATE-PROJ-AUDIT pass"
+        range: "[true, true]"    # false = blocked, never exits
+    gate_requirement: GATE-ZERO-EXPOSURE
+    beat_interval: "ON_QUERY — external request triggers"
+    law_constraint: [LAW-09]
+    notes: "Only numeric indices cross the zero-exposure wall. No labels, no names, no thresholds."
+
+  # ── FLOW-RING-16 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-16
+    name: "External Input to Fabric Language Ring — Signal Ingestion"
+    source_ring: EXTERNAL_INPUT_INTERFACE
+    destination_ring: RING-FABRIC-LANGUAGE
+    direction: INWARD
+    coupling_weight: 0.3819660113    # PHI_INV_2 — external inputs are moderated
+    schema:
+      - field: raw_signal_index
+        type: Nat
+        unit: "ingestion index — assigned by membrane"
+      - field: signal_class
+        type: Nat
+        unit: "1=voice, 2=heartbeat, 3=sensor, 4=calendar — numeric only"
+      - field: amplitude
+        type: Float64
+        unit: "signal amplitude"
+        range: "[0.0, 1.0]"
+      - field: aegis_cleared
+        type: Bool
+        unit: "GATE-MEMBRANE pass"
+    gate_requirement: GATE-MEMBRANE    # AEGIS membrane filters all inputs
+    beat_interval: "ON_INPUT"
+    law_constraint: [LAW-11]
+    notes: "All external signals are filtered by AEGIS before entering the organism."
+
+  # ── FLOW-RING-17 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-17
+    name: "Chronicle Recording — All Rings to Chronicle"
+    source_ring: ALL_RINGS
+    destination_ring: CHRONICLE_ARCHIVE
+    direction: OUTWARD
+    coupling_weight: 0.1458980338    # PHI_INV_4
+    schema:
+      - field: event_type
+        type: Text
+        enum: [BEAT, GATE_PASS, GATE_FAIL, MODIFICATION, OUTPUT, ROLLBACK, LAW_UPDATE]
+      - field: ring_id
+        type: Text
+        format: "RING-*"
+      - field: beat_at_event
+        type: Nat64
+        unit: "heartbeat count"
+      - field: event_hash
+        type: Text
+        unit: "FNV-1a"
+    gate_requirement: "NONE — chronicle receives all events unconditionally"
+    beat_interval: "ON_EVENT — fires on every significant event"
+    law_constraint: [LAW-18]    # Genesis permanence — all records permanent
+    notes: "Chronicle is append-only. No event is ever deleted from the record."
+
+  # ── FLOW-RING-18 ───────────────────────────────────────────────────────────
+  - transfer_id: FLOW-RING-18
+    name: "Observatory All-Ring Aggregation"
+    source_ring: ALL_RINGS
+    destination_ring: RING-CORE-ENGINE  # Observatory lives in Core Engine ring
+    direction: INWARD
+    coupling_weight: 0.2360679775    # PHI_INV_3
+    schema:
+      - field: module_id
+        type: Text
+      - field: R_t
+        type: Float64
+        unit: "coherence"
+        range: "[0.0, 1.0]"
+      - field: gate_states
+        type: "Map<GateId, Bool>"
+      - field: law_states
+        type: "Map<LawId, Bool>"
+      - field: anomaly_flag
+        type: Bool
+    gate_requirement: "NONE — Observatory receives unconditionally"
+    beat_interval: HEARTBEAT_MS
+    law_constraint: [LAW-03]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPERATING PRINCIPLE
+# ─────────────────────────────────────────────────────────────────────────────
+operating_principle: |
+  All ring-to-ring transfers are declared here. No undeclared transfer is permitted.
+  Coupling weights decrease by PHI as signals move outward from the Constitutional core.
+  The only path to the external world is RING-ARBITRATION → RING-PROJECTION → EXTERNAL
+  through GATE-OMNIS and GATE-ZERO-EXPOSURE.
+  All events are recorded in CHRONICLE regardless of gate pass/fail.
+  Observatory receives all state unconditionally — it is the organism's self-awareness.
+  External inputs enter at RING-FABRIC-LANGUAGE after AEGIS membrane clearance.

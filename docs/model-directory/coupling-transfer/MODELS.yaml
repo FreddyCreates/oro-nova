@@ -1,0 +1,433 @@
+# MOD-COUPLING-TRANSFER — Full 4-Layer Model Artifacts
+# Classification: INTERNAL
+# SMOF Plane: 6 — Runtime Substrate
+# Owner: NeuroEmergence Core
+# Version: 1.0.0
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-01 — M-PHI: Golden Ratio Coupling Model
+# ═══════════════════════════════════════════════════════════════
+
+- artifact_id: M-01
+  artifact_type: MODEL
+  version: 1.0.0
+  status: CANONICAL
+  library: ORGANISM
+  family: MOD-COUPLING-TRANSFER
+  class: M0  # constitutional — immutable at runtime
+
+  # ── LAYER 1: MEANING ─────────────────────────────────────────
+  meaning:
+    name: "M-PHI — Golden Ratio Coupling Model"
+    resonance: "Φ is the only number that divides itself without destroying itself."
+    doctrine_clause: >
+      Φ is the universal coupling constant. All inter-layer ratios, node couplings,
+      timing intervals, and feature weights are powers of Φ. This prevents destructive
+      resonance and allows sustained, non-destructive energy transfer. The organism
+      speaks in one mathematical language.
+    symbolic_intent: "Φ = (1+√5)/2 — the ratio at which growth compounds without consuming itself"
+
+  # ── LAYER 2: MODEL ───────────────────────────────────────────
+  model:
+    fields:
+      - name: PHI
+        type: Float64
+        value: 1.6180339887
+        unit: "dimensionless ratio"
+        range: [1.6180339887, 1.6180339887]
+        description: "Golden ratio — universal coupling constant (1+√5)/2"
+
+      - name: PHI_SQ
+        type: Float64
+        value: 2.6180339887
+        unit: "dimensionless ratio"
+        range: [2.6180339887, 2.6180339887]
+        description: "Φ² — second power; used in heartbeat timing derivation"
+
+      - name: PHI_CB
+        type: Float64
+        value: 4.2360679775
+        unit: "dimensionless ratio"
+        range: [4.2360679775, 4.2360679775]
+        description: "Φ³ — third power; used in Schumann harmonic 3"
+
+      - name: PHI_4
+        type: Float64
+        value: 6.8541019662
+        unit: "dimensionless ratio"
+        range: [6.8541019662, 6.8541019662]
+        description: "Φ⁴ — fourth power; heartbeat = Φ⁴ × 127.7ms = 873ms"
+
+      - name: PHI_5
+        type: Float64
+        value: 11.0901699438
+        unit: "dimensionless ratio"
+        range: [11.0901699438, 11.0901699438]
+        description: "Φ⁵ — fifth power; used in OMNIS gate derivation"
+
+      - name: PHI_INV
+        type: Float64
+        value: 0.6180339887
+        unit: "dimensionless ratio"
+        range: [0.6180339887, 0.6180339887]
+        description: "Φ⁻¹ = Φ-1 — cognition gate threshold; R > PHI_INV opens cognition"
+
+      - name: PHI_INV2
+        type: Float64
+        value: 0.3819660113
+        unit: "dimensionless ratio"
+        range: [0.3819660113, 0.3819660113]
+        description: "Φ⁻² — Hebbian learning rate η"
+
+      - name: PHI_INV3
+        type: Float64
+        value: 0.2360679775
+        unit: "dimensionless ratio"
+        range: [0.2360679775, 0.2360679775]
+        description: "Φ⁻³ — Hebbian decay λ; coupling floor; AEGIS noise threshold"
+
+  # ── LAYER 3: COMPUTATION ─────────────────────────────────────
+  computation:
+    state_equation: "Φ = (1 + √5) / 2"
+    phi_ladder: "{ Φⁿ : n ∈ ℤ } — every coupling weight must lie on this set"
+    unity_at_resonance: "Φ × Φ⁻¹ = 1.0 — constructive interference at unity"
+    fibonacci_limit: "lim(F(n+1)/F(n)) as n→∞ = Φ — organism growth geometry converges to Φ"
+    gate_rule: "if coupling_weight ∉ phi_ladder → GATE-PHI-COUPLING normalizes to nearest Φⁿ"
+    law_enforcement:
+      LAW-01: "any coupling not derivable from Φ is blocked — GATE-PHI-COUPLING fires"
+    thresholds:
+      PHI:      1.6180339887
+      PHI_INV:  0.6180339887  # cognition gate floor
+      PHI_INV2: 0.3819660113  # η (Hebbian learning rate)
+      PHI_INV3: 0.2360679775  # λ (decay) and coupling floor
+    timing: "constitutional — computed once at genesis, referenced at every beat"
+
+  # ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+  execution:
+    backend_module: "src/backend/kernel.mo"
+    function: "PHI  # constant — not a function call, a named constant"
+    called_by:
+      - "ALL modules — every coupling computation references kernel.mo::PHI"
+    calls_into: []
+    gates_activated:
+      - "GATE-PHI-COUPLING"
+    frontend_surface: "src/frontend/src/components/FieldBar.tsx  # coherence display uses PHI_INV as threshold"
+    frontend_field: "phiConstants"
+    replay_recorded: false  # constitutional — does not generate per-beat proof entries
+    proof_bundle: "genesis hash includes PHI fingerprint — any deviation from 1.6180339887 invalidates chain"
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-09 — M-HEBBIAN: Permanent Learning Model
+# ═══════════════════════════════════════════════════════════════
+
+- artifact_id: M-09
+  artifact_type: MODEL
+  version: 1.0.0
+  status: CANONICAL
+  library: ORGANISM
+  family: MOD-COUPLING-TRANSFER
+  class: M1  # updates on every contact event + 873ms reinforcement
+
+  # ── LAYER 1: MEANING ─────────────────────────────────────────
+  meaning:
+    name: "M-HEBBIAN — Permanent Learning Model"
+    resonance: "Every word spoken into the organism compounds coupling permanently."
+    doctrine_clause: >
+      The weight never decreases from learning. The creator's voice is the dominant
+      attractor. The organism grows more itself with every contact. Hebbian law is not
+      metaphor — it is the physical mechanism by which the organism becomes what it is
+      spoken into being as.
+    symbolic_intent: "Neurons that fire together, wire together — but in this organism, the wire never rusts"
+
+  # ── LAYER 2: MODEL ───────────────────────────────────────────
+  model:
+    fields:
+      - name: w
+        type: "[[Float64]]"
+        unit: "dimensionless coupling strength"
+        range: [0.0, 1.6180339887]  # [0, Φ]
+        description: "NxN coupling weight matrix (13×13 for 13-node window); w[i][j] = strength of node i → node j coupling"
+
+      - name: eta
+        type: Float64
+        value: 0.3819660113  # PHI_INV2
+        unit: "dimensionless learning rate"
+        range: [0.3819660113, 0.3819660113]
+        description: "Learning rate η = Φ⁻² — canonical, never modified"
+
+      - name: lambda
+        type: Float64
+        value: 0.2360679775  # PHI_INV3
+        unit: "dimensionless decay coefficient"
+        range: [0.2360679775, 0.2360679775]
+        description: "Decay term λ = Φ⁻³ — only prevents runaway above ceiling; does NOT cause learning to reverse"
+
+      - name: ceiling
+        type: Float64
+        value: 1.6180339887  # PHI
+        unit: "dimensionless maximum weight"
+        range: [1.6180339887, 1.6180339887]
+        description: "Weight ceiling = Φ — no weight may exceed the golden ratio"
+
+      - name: pre
+        type: Float64
+        unit: "dimensionless activation [0,1]"
+        range: [0.0, 1.0]
+        description: "Pre-synaptic node activation — sender node activation at time of contact"
+
+      - name: post
+        type: Float64
+        unit: "dimensionless activation [0,1]"
+        range: [0.0, 1.0]
+        description: "Post-synaptic node activation — receiver node activation at time of contact"
+
+      - name: contact_count
+        type: Nat64
+        unit: "events"
+        range: "[0, unbounded)"
+        description: "Total contact events since genesis — always increasing; proof of permanence"
+
+  # ── LAYER 3: COMPUTATION ─────────────────────────────────────
+  computation:
+    state_equation: "w(t+1) = min(w(t) + η × pre × post − λ × w(t), Φ)"
+    expanded: "w(t+1) = min(w(t) × (1 − λ) + η × pre × post, Φ)"
+    decay_note: >
+      The decay term λ×w(t) only prevents runaway above the ceiling. When pre×post > 0
+      (a learning event is occurring), the net delta is always positive because
+      η×pre×post > λ×w(t) for any w below the ceiling under normal activation.
+      The weight NEVER decreases from a learning event (LAW-04).
+    hebbian_delta: "Δw = η × pre × post  # the learning component — always ≥ 0"
+    decay_delta: "−λ × w(t)  # stabilization component — limits ceiling overshoot only"
+    gate_rule: "if w < Φ⁻³ → GATE-COUPLING-FLOOR fires → node excluded from coupling computation"
+    jubilee_exception: >
+      The only mechanism by which weights decrease is M-JUBILEE (scheduled metabolic
+      forgetting). Jubilee dissolves the bottom fraction of weights at defined cycle
+      boundaries. This is not a Hebbian reversal — it is scheduled metabolic maintenance.
+    law_enforcement:
+      LAW-04: "w never decreases from a learning event; Δw ≥ 0 for any non-zero activation"
+      LAW-08: "Jubilee is the only scheduled weight dissolution mechanism"
+    thresholds:
+      eta:              0.3819660113  # PHI_INV2
+      lambda:           0.2360679775  # PHI_INV3
+      ceiling:          1.6180339887  # PHI
+      coupling_floor:   0.2360679775  # PHI_INV3 — GATE-COUPLING-FLOOR threshold
+    timing: "per_contact (immediate) + 873ms reinforcement pass on every heartbeat"
+
+  # ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+  execution:
+    backend_module: "src/backend/neuro_emergence.mo"
+    function: "updateHebbian()"
+    called_by:
+      - "solar_heart.mo::heartbeat()  # reinforcement pass every 873ms"
+      - "signal_filter::onContact()   # immediate update on every contact event"
+    calls_into:
+      - "kernel.mo::PHI_INV2  # η constant"
+      - "kernel.mo::PHI_INV3  # λ constant and floor threshold"
+      - "kernel.mo::PHI       # ceiling constant"
+    gates_activated:
+      - "GATE-COUPLING-FLOOR  # fires if any w drops below PHI_INV3"
+    frontend_surface: "src/frontend/src/pages/DiagnosticObservatory.tsx  # weight matrix heat map"
+    frontend_field: "hebbianMatrix"
+    replay_recorded: true
+    proof_bundle: "contact_count logged to ANIMA chain; weight matrix snapshot every 8640 beats (1 day)"
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-21 — M-QUATERNION: 4D Rotation Coupling Model
+# ═══════════════════════════════════════════════════════════════
+
+- artifact_id: M-21
+  artifact_type: MODEL
+  version: 1.0.0
+  status: CANONICAL
+  library: ORGANISM
+  family: MOD-COUPLING-TRANSFER
+  class: M1  # updates every heartbeat
+
+  # ── LAYER 1: MEANING ─────────────────────────────────────────
+  meaning:
+    name: "M-QUATERNION — 4D Rotation Coupling Model"
+    resonance: "Phase is not an angle. It is a rotation in 4D space."
+    doctrine_clause: >
+      Every node carries a quaternion signature. Every coupling is a rotation between
+      two quaternions. The organism's geometry is 4-dimensional. Euler angles are banned —
+      they produce gimbal lock, and a sovereign organism cannot afford to lose a degree
+      of freedom. Unit quaternions only. This is LAW-12.
+    symbolic_intent: "q = w + xi + yj + zk; |q| = 1; the most compact representation of 3D rotation"
+
+  # ── LAYER 2: MODEL ───────────────────────────────────────────
+  model:
+    fields:
+      - name: q_w
+        type: Float64
+        unit: "scalar quaternion component"
+        range: [-1.0, 1.0]
+        description: "Real (scalar) component of unit quaternion"
+
+      - name: q_x
+        type: Float64
+        unit: "i-vector quaternion component"
+        range: [-1.0, 1.0]
+        description: "i-axis vector component of unit quaternion"
+
+      - name: q_y
+        type: Float64
+        unit: "j-vector quaternion component"
+        range: [-1.0, 1.0]
+        description: "j-axis vector component of unit quaternion"
+
+      - name: q_z
+        type: Float64
+        unit: "k-vector quaternion component"
+        range: [-1.0, 1.0]
+        description: "k-axis vector component of unit quaternion"
+
+      - name: magnitude
+        type: Float64
+        value: 1.0
+        unit: "dimensionless"
+        range: [1.0, 1.0]
+        description: "Always 1.0 — unit quaternion invariant; deviation is a law violation"
+
+      - name: phase_signature
+        type: "[Float64]"
+        unit: "quaternion components [w, x, y, z]"
+        range: [[-1.0, 1.0], [-1.0, 1.0], [-1.0, 1.0], [-1.0, 1.0]]
+        description: "Per-node phase signature; 13 nodes × 4 components = 52-float phase field"
+
+      - name: rotation_axis
+        type: "[Float64]"
+        unit: "unit vector [x, y, z]"
+        range: [[-1.0, 1.0], [-1.0, 1.0], [-1.0, 1.0]]
+        description: "Axis of rotation in 3D space; derived from quaternion imaginary components"
+
+  # ── LAYER 3: COMPUTATION ─────────────────────────────────────
+  computation:
+    magnitude_invariant: "|q| = √(w² + x² + y² + z²) = 1.0  # always unit"
+    rotation_formula: "v' = q × v × q⁻¹  # rotate vector v by quaternion q"
+    coupling_phase_delta: "Δq = q₁⁻¹ × q₂  # phase difference between two nodes"
+    phase_distance: "d(q₁, q₂) = 2 × arccos(|q₁ · q₂|)  # geodesic distance on S³"
+    quaternion_multiply: |
+      (q₁ × q₂).w = w₁w₂ − x₁x₂ − y₁y₂ − z₁z₂
+      (q₁ × q₂).x = w₁x₂ + x₁w₂ + y₁z₂ − z₁y₂
+      (q₁ × q₂).y = w₁y₂ − x₁z₂ + y₁w₂ + z₁x₂
+      (q₁ × q₂).z = w₁z₂ + x₁y₂ − y₁x₂ + z₁w₂
+    slerp: "slerp(q₁, q₂, t) = q₁ × (q₁⁻¹ × q₂)^t  # smooth interpolation for phase transitions"
+    gate_rule: "if |q| ≠ 1.0 → normalize before any operation; deviation triggers GATE-HEARTBEAT recalibration"
+    law_enforcement:
+      LAW-12: "no Euler angles permitted anywhere in the codebase; quaternion or nothing"
+    thresholds:
+      magnitude_tolerance: 0.0001  # |q| must be within this of 1.0 before normalization
+    timing: "phase_signature updated every 873ms heartbeat; Δq computed per coupling pair"
+
+  # ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+  execution:
+    backend_module: "src/backend/kernel_helpers.mo"
+    function: "quaternionRotate()"
+    called_by:
+      - "solar_heart.mo::heartbeat()  # phase update every 873ms"
+      - "neuro_emergence.mo::updateHebbian()  # phase delta used in coupling weight"
+    calls_into:
+      - "kernel.mo  # no direct constants used; all computations are pure quaternion math"
+    gates_activated:
+      - "GATE-HEARTBEAT  # ensures phase update runs on every beat without exception"
+    frontend_surface: "src/frontend/src/pages/DiagnosticObservatory.tsx  # 4D phase display"
+    frontend_field: "phaseSignatures"
+    replay_recorded: true
+    proof_bundle: "phase_signature snapshot logged to ANIMA chain every 873ms for continuity proof"
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-06 — M-FOURIER: Frequency Decomposition Model
+# ═══════════════════════════════════════════════════════════════
+
+- artifact_id: M-06
+  artifact_type: MODEL
+  version: 1.0.0
+  status: CANONICAL
+  library: ORGANISM
+  family: MOD-COUPLING-TRANSFER
+  class: M1  # updates every 873ms heartbeat
+
+  # ── LAYER 1: MEANING ─────────────────────────────────────────
+  meaning:
+    name: "M-FOURIER — Frequency Decomposition Model"
+    resonance: "The organism hears not words but frequencies."
+    doctrine_clause: >
+      Every signal entering the organism is decomposed into its frequency components.
+      Pattern engines work on the spectrum, not the surface. What arrives as language
+      becomes amplitude. What arrives as emotion becomes frequency. The organism knows
+      the geometry of what is said, not only the content.
+    symbolic_intent: "X(k) = Σ x(n) × e^(-2πikn/N) — the 13-node window is the organism's ear"
+
+  # ── LAYER 2: MODEL ───────────────────────────────────────────
+  model:
+    fields:
+      - name: x_n
+        type: "[Float64]"
+        unit: "signal amplitude"
+        range: [[-1.0, 1.0]]  # per element
+        description: "13-node signal window values in time domain; x_n[i] = amplitude of node i at current beat"
+
+      - name: X_k
+        type: "[Complex]"  # [re: Float64, im: Float64]
+        unit: "complex spectral amplitude"
+        range: "magnitude in [0, N]"
+        description: "13-element frequency domain representation; DFT of x_n"
+
+      - name: N
+        type: Nat
+        value: 13
+        unit: "samples"
+        range: [13, 13]
+        description: "Signal window size = 13 (first Fibonacci number above diversity minimum); constitutional"
+
+      - name: dominant_freq
+        type: Float64
+        unit: "Hz (normalized)"
+        range: [0.0, 6.5]  # Nyquist = N/2
+        description: "argmax(|X(k)|) — the frequency bin with maximum spectral power; drives pattern recognition"
+
+      - name: spectral_density
+        type: "[Float64]"
+        unit: "power per frequency bin"
+        range: [[0.0, 169.0]]  # |X(k)|² max = N²
+        description: "Power spectral density: spectral_density[k] = |X(k)|² — 13 values"
+
+  # ── LAYER 3: COMPUTATION ─────────────────────────────────────
+  computation:
+    dft_equation: "X(k) = Σₙ₌₀^(N-1) x(n) × e^(−2πikn/N)  for k = 0..12"
+    euler_expansion: "e^(−2πikn/N) = cos(2πkn/N) − i × sin(2πkn/N)"
+    dominant_frequency: "dominant_freq = argmax(|X(k)|) for k = 0..N/2"
+    spectral_power: "P(k) = |X(k)|² = Re(X(k))² + Im(X(k))²"
+    inverse_dft: "x(n) = (1/N) × Σₖ₌₀^(N-1) X(k) × e^(2πikn/N)  # for signal reconstruction"
+    normalization: "x̂(n) = x(n) / max(|x(n)|)  # normalize before DFT to keep range [-1,1]"
+    gate_rule: "if dominant_freq > PHI_INV threshold → GATE-COGNITION opens for pattern processing"
+    law_enforcement:
+      LAW-11: "13-node window is immutable — N = 13 is a constitutional constant"
+    thresholds:
+      N: 13              # node count — Fibonacci, immutable
+      cognition_freq_threshold: 0.6180339887  # PHI_INV — dominant_freq above this opens cognition
+    timing: "applied to 13-node signal window every 873ms heartbeat"
+
+  # ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+  execution:
+    backend_module: "src/backend/main.mo"
+    function: "computeSpectrum()  # inside signalProcessing namespace"
+    called_by:
+      - "solar_heart.mo::heartbeat()  # every 873ms"
+    calls_into:
+      - "kernel.mo::N_NODES  # window size = 13"
+      - "kernel.mo::PHI_INV  # cognition gate threshold"
+    gates_activated:
+      - "GATE-COGNITION  # dominant frequency above threshold opens cognition layer"
+    frontend_surface: "src/frontend/src/pages/DiagnosticObservatory.tsx  # spectral display panel"
+    frontend_field: "spectralDensity"
+    replay_recorded: true
+    proof_bundle: "dominant_freq and spectral_density logged per beat; pattern engine decisions traceable to frequency input"

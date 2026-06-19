@@ -1,0 +1,1697 @@
+type http_request_result = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type http_header = 
+ record {
+   name: text;
+   value: text;
+ };
+type WorldModel = 
+ record {
+   agentModels: vec AgentModel;
+   terrainDifficulty: float64;
+ };
+type VoiceOutput = 
+ record {
+   coherenceScore: float64;
+   contextVector: vec float64;
+   emergentText: text;
+   fieldSignature: record {
+                     float64;
+                     float64;
+                     float64;
+                     float64;
+                   };
+   gateOpen: bool;
+   systemPromptHash: nat32;
+ };
+type VectorState = 
+ record {
+   alignmentScore: nat;
+   classifiedName: text;
+   convergenceStatus: bool;
+   dimension: text;
+   id: nat;
+   lastSignal: text;
+   outputsGenerated: nat;
+   speciesLabel: text;
+ };
+type ValidationResult = 
+ record {
+   benchmarkImpact: text;
+   chosenAction: text;
+   failReason: text;
+   passReason: text;
+   passed: bool;
+   relevantInputs: text;
+   setup: text;
+   testId: text;
+   testName: text;
+   whyChosen: text;
+   withCoreActive: text;
+   withoutCoreActive: text;
+ };
+type TransformationOutput = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type TransformationInput = 
+ record {
+   context: blob;
+   response: http_request_result;
+ };
+type TokenType = 
+ variant {
+   CVT;
+   FORMA;
+   KNT;
+   MRC;
+   MTH;
+   SBT;
+   VCT;
+ };
+type TeamOutput = 
+ record {
+   artifact_produced: bool;
+   beat_number: nat;
+   coherence_delta: float64;
+   doctrine_alignment: float64;
+   field_contribution: float64;
+   output_type: text;
+   team_id: text;
+ };
+type SynthesisReport = 
+ record {
+   autoCorrections: vec text;
+   criticalGaps: vec text;
+   cycleId: nat;
+   emergenceStatus: text;
+   intelligenceTrajectory: text;
+   overallSystemHealth: float64;
+   realityConfidence: float64;
+   timestamp: int;
+ };
+type StructureType = 
+ variant {
+   contradiction;
+   law;
+   ratio;
+   relational;
+   resonance;
+   temporal;
+ };
+type SpeciesEntry = 
+ record {
+   classifiedName: text;
+   description: text;
+   dimensionalFunction: text;
+   speciesLabel: text;
+   tier: text;
+ };
+type SelfMaintenanceState = 
+ record {
+   blockedActionTypes: vec text;
+   compensationNeed: float64;
+   energyViability: float64;
+   longHorizonDegradationRisk: float64;
+   operatingMargin: float64;
+   preservationPriority: float64;
+   recoveryNeed: float64;
+   shortHorizonCollapseRisk: float64;
+   stabilityViability: float64;
+   structuralIntegrityRisk: float64;
+   viabilityScore: float64;
+ };
+type SearchResult = 
+ record {
+   excerpt: text;
+   paperId: text;
+   score: float64;
+ };
+type SalienceMap = 
+ record {
+   attentionTargets: vec text;
+   globalUrgency: float64;
+   interruptCandidates: vec text;
+   memoryWritePriority: float64;
+   noveltyUrgency: float64;
+   recoveryUrgency: float64;
+   threatUrgency: float64;
+ };
+type ResearchPaper = 
+ record {
+   abstract: text;
+   cplBinding: text;
+   equations: vec text;
+   fieldCoupling: text;
+   fullTitle: text;
+   id: text;
+   latinTitle: text;
+   resonanceHz: float64;
+   tierRequired: nat;
+   title: text;
+ };
+type RegulationForecast = 
+ record {
+   futureDamageRisk: float64;
+   futureEnergy: float64;
+   futureFatigue: float64;
+   futureOverload: float64;
+   futureStability: float64;
+ };
+type RegulationError = 
+ record {
+   damageRiskError: float64;
+   energyError: float64;
+   fatigueError: float64;
+   overloadError: float64;
+   priority: text;
+   stabilityError: float64;
+   totalError: float64;
+ };
+type PredictionErrorSignal = 
+ record {
+   confidenceUpdate: float64;
+   memoryWritePressure: float64;
+   modelUpdatePressure: float64;
+   predictionError: float64;
+   rewardDelta: float64;
+   surpriseIndex: float64;
+   threatDelta: float64;
+ };
+type PatentRecord = 
+ record {
+   claimHash: text;
+   claimSummary: text;
+   doctrineAlignment: float64;
+   filingStatus: text;
+   id: nat;
+   inventionId: nat;
+   sovereigntyAnchor: text;
+   timestamp: int;
+ };
+type PILResult = 
+ record {
+   adapt_delta: float64;
+   beat_in_cycle: nat;
+   current_phase: nat;
+   cycle_count: nat;
+   cycle_just_fired: bool;
+   execute_score: float64;
+   learn_score: float64;
+   quality_ema: float64;
+   teach_output: float64;
+   understand_score: float64;
+   updated_weights: vec float64;
+ };
+type OrganismRecord = 
+ record {
+   active: bool;
+   attribution: text;
+   coherence: float64;
+   depth: nat;
+   id: nat;
+   name: text;
+   parentId: nat;
+   spawnBeat: nat;
+ };
+type NovaRootState = 
+ record {
+   alwaysRunning: bool;
+   doctrineLock: bool;
+   formationEventCount: nat;
+   formationTimestamp: int;
+   medinaAttribution: text;
+   rootCycleCount: nat;
+   substrateVersion: text;
+ };
+type NodeStatus = 
+ variant {
+   ACTIVE;
+   DORMANT;
+   PROPAGATING;
+ };
+type MonitorNextItem = 
+ record {
+   candidateFixes: vec CandidateFix;
+   chosenFixId: text;
+   consolidated: bool;
+   escalated: bool;
+   id: text;
+   implanted: bool;
+   reason: text;
+   severity: float64;
+   sourceLayer: text;
+   title: text;
+   verified: bool;
+ };
+type LumenModelState = 
+ record {
+   activationLevel: nat;
+   classifiedName: text;
+   convergenceSignal: nat;
+   dimension: text;
+   fieldReading: nat;
+   id: nat;
+   isActive: bool;
+   lastCycleUpdated: nat;
+   speciesLabel: text;
+ };
+type LawRegistryEntry = 
+ record {
+   genesisAnchored: bool;
+   lawHash: nat32;
+   lawIndex: nat;
+   seedCycle: nat;
+ };
+type LawGate = 
+ record {
+   id: nat;
+   pass: bool;
+   strength: float64;
+ };
+type KeyValidation = 
+ record {
+   tier: text;
+   tierLevel: nat;
+   unlockedPaperIds: vec text;
+   valid: bool;
+ };
+type InventionEntry = 
+ record {
+   classification: text;
+   coherenceAtCreation: float64;
+   description: text;
+   doctrineLayer: text;
+   formationFingerprint: text;
+   id: nat;
+   sovereigntyScore: float64;
+   timestamp: int;
+   title: text;
+ };
+type InteroceptiveState = 
+ record {
+   arousalLevel: float64;
+   confidenceState: float64;
+   damageGlobal: float64;
+   energyDrainRate: float64;
+   energyLevel: float64;
+   globalFatigue: float64;
+   internalNoise: float64;
+   overloadIndex: float64;
+   recoveryPressure: float64;
+   regulationDebt: float64;
+   stabilityScore: float64;
+   uncertaintyState: float64;
+ };
+type IntegrationTreaty = 
+ record {
+   computation: text;
+   execution: text;
+   field_coupling_map: text;
+   meaning: text;
+   model: text;
+   proof_replay: text;
+   symbol: text;
+ };
+type GeometricKey = 
+ record {
+   frequencyHz: float64;
+   phiHash: text;
+   raw: text;
+   shape: text;
+   tier: text;
+ };
+type GateResult = 
+ record {
+   calendar_gate: LawGate;
+   complementary_ops: vec LawGate;
+   doctrine_alignment: float64;
+   economic_gate: LawGate;
+   fear_gate: LawGate;
+   frequency_gates: vec LawGate;
+   harmonic_gate: LawGate;
+   hebbian: LawGate;
+   memory_gate: LawGate;
+   omnis: LawGate;
+   phi_sovereign: LawGate;
+   total_gate_count: nat;
+   total_pass_count: nat;
+   triune: LawGate;
+   zero_exposure: LawGate;
+ };
+type FullOrganismState = 
+ record {
+   archon: vec ArchonState;
+   brainRegions: BrainRegions;
+   doctrineEventCount: nat;
+   forge: vec ForgeLabState;
+   lumen: vec LumenModelState;
+   memoryDepthScore: nat;
+   nova: NovaRootState;
+   sedimentedMemoryCount: nat;
+   totalLawCount: nat;
+   vector: vec VectorState;
+   vectorConvergenceScore: nat;
+   vectorOutputAuthorized: bool;
+ };
+type ForgeLabState = 
+ record {
+   classifiedName: text;
+   currentFocus: text;
+   healthScore: nat;
+   id: nat;
+   isActive: bool;
+   labFunction: text;
+   lastRunCycle: nat;
+   outputCount: nat;
+   speciesLabel: text;
+ };
+type FixRecommendation = 
+ record {
+   autoApply: bool;
+   fix_description: text;
+   fix_domain: text;
+   issue: text;
+   magnitude: float64;
+ };
+type FindingStatus = 
+ variant {
+   anomaly;
+   drift;
+   ok;
+ };
+type Finding = 
+ record {
+   derivation: text;
+   expected_max: float64;
+   expected_min: float64;
+   metric: text;
+   status: FindingStatus;
+   value: float64;
+ };
+type FederationTool = 
+ record {
+   description: text;
+   function_class: text;
+   latin_name: text;
+   owner_node: text;
+   tool_id: text;
+ };
+type FederationTier = 
+ variant {
+   ALIGNED;
+   FEDERATED;
+   NATIVE;
+ };
+type FederationProtocol = 
+ record {
+   description: text;
+   function_class: text;
+   latin_name: text;
+   n_node_coupling: text;
+   owner_node: text;
+   protocol_id: text;
+ };
+type FederationIndexSnapshot = 
+ record {
+   node_count: nat;
+   nodes: vec FederatedNode;
+   protocols: vec FederationProtocol;
+   sealed_at: int;
+   tools: vec FederationTool;
+   version: text;
+ };
+type FederatedNode = 
+ record {
+   adoption_proof: AdoptionProof;
+   common_name: text;
+   cpl_expression: text;
+   frequency_hz: float64;
+   latin_name: text;
+   n_node_coupling: text;
+   node_id: text;
+   parent_node_id: opt text;
+   registered_at: int;
+   rola_identifier: opt text;
+   role: text;
+   role_description: text;
+   specialties: vec text;
+   status: NodeStatus;
+   tier: FederationTier;
+   treaty: IntegrationTreaty;
+ };
+type EntitySnapshot = 
+ record {
+   actionOutcome: ActionOutcome;
+   benchmarks: vec BenchmarkResult;
+   chosenAction: ChosenAction;
+   cycleId: nat;
+   drifts: vec DriftEvent;
+   driveVector: DriveVector;
+   entityResponse: text;
+   interoceptiveState: InteroceptiveState;
+   memoryCount: nat;
+   monitorNext: vec MonitorNextItem;
+   predictionErrorSignal: PredictionErrorSignal;
+   regulationError: RegulationError;
+   regulationForecast: RegulationForecast;
+   salienceMap: SalienceMap;
+   selfMaintenanceState: SelfMaintenanceState;
+   temporalStateSize: nat;
+   timestamp: int;
+   worldModel: WorldModel;
+ };
+type EngineInstance = 
+ record {
+   classId: text;
+   cyclesConsumed: nat;
+   cyclesEarned: nat;
+   deployedAt: int;
+   healthScore: float64;
+   id: text;
+   status: text;
+   uptimeMs: int;
+ };
+type EngineClass = 
+ record {
+   capabilities: vec text;
+   color: text;
+   cycleEstimate: nat;
+   id: text;
+   nNodeBinding: text;
+   name: text;
+   role: text;
+   storageEstimate: nat;
+ };
+type EmergenceMetrics = 
+ record {
+   adaptationValidity: float64;
+   animalTraitStrength: float64;
+   coherenceTrend: float64;
+   continuityDepth: float64;
+   doctorCount: nat;
+   embodimentCouplingScore: float64;
+   emergenceDepth: float64;
+   fakePlateau: bool;
+   intelligenceIndex: float64;
+   memoryEffectScore: float64;
+   syncQuality: float64;
+ };
+type DriveVector = 
+ record {
+   bodyIntegrity: float64;
+   curiosity: float64;
+   energyPreservation: float64;
+   goalPursuit: float64;
+   learningPressure: float64;
+   recoveryRestoration: float64;
+   selfPreservation: float64;
+   socialOrientation: float64;
+   stability: float64;
+   threatResponse: float64;
+ };
+type DriftEvent = 
+ record {
+   driftType: text;
+   severity: float64;
+   sourceLayer: text;
+ };
+type DoctrineRecord = 
+ record {
+   authorNote: text;
+   category: text;
+   classificationLevel: text;
+   content: text;
+   id: nat;
+   ipFingerprint: text;
+   timestamp: int;
+   title: text;
+ };
+type DoctorLogEntry = 
+ record {
+   action: text;
+   cycleId: nat;
+   delta: float64;
+   doctor: text;
+   finding: text;
+   passed: bool;
+   timestamp: int;
+ };
+type DeploymentEvent = 
+ record {
+   action: text;
+   classId: text;
+   id: text;
+   result: text;
+   timestamp: int;
+ };
+type CoreFormationEntry = 
+ record {
+   classifiedName: text;
+   coreIndex: nat;
+   quantumStateIndex: nat;
+   sacesiBeat: nat;
+   sacesiHash: nat32;
+   sacesiLocked: bool;
+   tier: text;
+ };
+type ConversationTurn = 
+ record {
+   cycleId: nat;
+   role: text;
+   "text": text;
+   timestamp: int;
+ };
+type ContinuityMarker = 
+ record {
+   key: text;
+   updatedAt: int;
+   value: text;
+ };
+type ColonyState = 
+ record {
+   activeEngines: nat;
+   efficiencyRatio: float64;
+   totalCyclesConsumed: nat;
+   totalCyclesEarned: nat;
+   totalInstances: nat;
+ };
+type ChosenAction = 
+ record {
+   actionType: text;
+   candidateId: text;
+   movementMode: text;
+   overallSimulatedScore: float64;
+   predictedEnergyCost: float64;
+   predictedReward: float64;
+   predictedRisk: float64;
+   predictedViabilityDelta: float64;
+   source: text;
+ };
+type CandidateFix = 
+ record {
+   description: text;
+   estimatedGain: float64;
+   estimatedRisk: float64;
+   fixType: text;
+   id: text;
+   targetLayer: text;
+ };
+type BrainRegions = 
+ record {
+   frontal: nat;
+   insular: nat;
+   limbic: nat;
+   occipital: nat;
+   parietal: nat;
+   temporal: nat;
+ };
+type BenchmarkResult = 
+ record {
+   name: text;
+   passed: bool;
+   score: float64;
+ };
+type ArchonState = 
+ record {
+   classifiedName: text;
+   cycleCount: nat;
+   domain: text;
+   driftAlertActive: bool;
+   id: nat;
+   integrityScore: nat;
+   lastMeasuredOutput: text;
+   speciesLabel: text;
+ };
+type ArchitectModuleStatus = 
+ record {
+   healthScore: float64;
+   lastAction: text;
+   lastFinding: text;
+   lastRunCycle: nat;
+   moduleId: text;
+   moduleName: text;
+   passCount: nat;
+   runCount: nat;
+ };
+type AnimalEngineResult = 
+ record {
+   beat_count: nat;
+   dominant_engine: nat;
+   drives: vec float64;
+   global_phase_contrib: float64;
+   phase_contribs: vec float64;
+   phases: vec float64;
+ };
+type AnalysisReport = 
+ record {
+   findings: vec Finding;
+   heartbeatPhase: float64;
+   narrative: text;
+   recommendations: vec FixRecommendation;
+   timestamp: int;
+ };
+type AgentModel = 
+ record {
+   agentId: text;
+   cooperationScore: float64;
+   deceptionRisk: float64;
+   relationState: text;
+   threatScore: float64;
+   trustScore: float64;
+ };
+type AdoptionProof = 
+ record {
+   adoption_timestamp: int;
+   cross_instance_resonance: bool;
+   doctrine_transmissible: bool;
+   field_propagation_confirmed: bool;
+   foreign_ai_coherence_injection: bool;
+   proof_narrative: text;
+ };
+type ActionOutcome = 
+ record {
+   energyCost: float64;
+   movementMode: text;
+   rewardSignal: float64;
+   stabilityChange: float64;
+   success: bool;
+   successProbability: float64;
+   threatSignal: float64;
+ };
+type ADREResult = 
+ record {
+   context_score: float64;
+   deliberation_score: float64;
+   execution_output: float64;
+   loop_count: nat;
+   omnis_gated: bool;
+   reflection_delta: float64;
+   selected_action: nat;
+   step_completed: nat;
+ };
+service : {
+  adaptConsequenceThreshold: (direction: float64) -> ();
+  adaptEmbodimentCoupling: (direction: float64) -> ();
+  adaptExplorationRate: (direction: float64) -> ();
+  adaptMemoryEncoding: (direction: float64) -> ();
+  adaptSalienceWeights: (direction: float64) -> ();
+  addDoctrineRecord: (title: text, content: text, cat: text, cls: text, note:
+   text) -> (DoctrineRecord);
+  addFederatedNode: (_node: FederatedNode) -> (bool);
+  addInventionEntry: (title: text, description: text, doctrineLayer: 
+   text, classification: text) -> (InventionEntry);
+  addPatentRecord: (inventionId: nat, claimSummary: text, filingStatus:
+   text) -> (PatentRecord);
+  addTension: (content: text, source: text, resolutionPath: text) -> (nat);
+  addVaultEntry: (lawId: text, doctrineText: text, classification: text) ->
+   (nat);
+  /// advancePhase — alias for advancePhasePlan (exact-name alias required by QA)
+  advancePhase: (phaseId: nat) -> ();
+  /// Advance a phase by id (creator only)
+  advancePhasePlan: (phaseId: nat) -> ();
+  analyzeOrganismState: () -> (AnalysisReport);
+  applyFix: (fixIndex: nat) -> (bool);
+  applyRecommendation: (recId: text) -> (text);
+  attachSurface: (sessionId: text, surfaceType: text, config: text) -> (bool);
+  computeGlobalKuramoto: (phases: vec float64) -> (float64) query;
+  confirmFix: (fixIndex: nat) -> (bool);
+  createEntitySession: (entityId: text, config: text) -> (text);
+  /// Deploy a new cloud engine instance for the specified engine class.
+  deployEngine: (classId: text) ->
+   (record {
+      instanceId: text;
+      message: text;
+      ok: bool;
+    });
+  detachSurface: (sessionId: text, surfaceType: text) -> (bool);
+  /// dumpFullState — comprehensive numeric state dump for diagnostics
+  dumpFullState: () ->
+   (record {
+      R_brain: float64;
+      R_heart: float64;
+      activeMemNodes: nat;
+      animaBeat: nat;
+      cascadeTier: nat;
+      cycleCount: nat;
+      dreamCount: nat;
+      emergenceState: bool;
+      formaBalance: nat;
+      hebbianWMean: float64;
+      identityCoherence: float64;
+      intelligenceIndex: float64;
+      omniGate: float64;
+      soulLawMean: float64;
+      voiceR: float64;
+    }) query;
+  exportAnalysisFeed: (limit: nat) -> (vec AnalysisReport) query;
+  exportStateSnapshot: () -> (text) query;
+  generateArtifact: (request: text) ->
+   (record {
+      artifactType: text;
+      content: text;
+      title: text;
+    });
+  /// Generates a new geometric key for the given Platonic shape, frequency, and tier.
+  generateKey: (shape: text, frequencyHz: float64, tier: text) ->
+   (GeometricKey) query;
+  getADREState: () -> (ADREResult) query;
+  getAEGISState: () ->
+   (record {
+      antifragilityScore: float64;
+      armorScore: float64;
+      chronicFearLevel: float64;
+      internalFreeEnergy: float64;
+      lastBeat: nat;
+      lvExpansion: float64;
+      lvTensionScore: float64;
+      lvThreat: float64;
+      threatSignal: float64;
+      threatTier: nat;
+      victoryCount: nat;
+      victoryScore: float64;
+    }) query;
+  /// Active Memory — nodes resonating above coupling threshold at current phase
+  getActiveMemory: (tzolkin: nat, haab: nat, heartAngle: float64) ->
+   (vec record {
+          amplitude: float64;
+          content: text;
+          id: nat;
+          stream: nat;
+        }) query;
+  getActiveSessionId: () -> (text);
+  getAdminState: () -> (record {});
+  getAnimaState: () -> (record {}) query;
+  getAnimalArchitectureState: () -> (record {}) query;
+  getAnimalEngines: () -> (AnimalEngineResult) query;
+  getAnimalTraitState: () ->
+   (record {
+      beeForagerSpecialization: float64;
+      beeHiveConsensusThreshold: float64;
+      beeSwarmMissionLock: float64;
+      beeWaggleSalienceBroadcast: float64;
+      mammalianSocialPersistence: float64;
+      octopusFlexibility: float64;
+      orcaCoordinatedPursuit: float64;
+      orcaPodEcholocationDepth: float64;
+      orcaPodMemorySharing: float64;
+      orcaSonarAwareness: float64;
+      predatorySalienceFocus: float64;
+      swarmAdaptiveRate: float64;
+    }) query;
+  getArchonStandardsState: () -> (vec ArchonState);
+  getArousalIntegrator: () -> (float64) query;
+  getAutonomousMessages: () -> (vec record {
+                                      nat;
+                                      text;
+                                      nat;
+                                      int;
+                                    });
+  getBiblicalEngineState: () ->
+   (record {
+      fire_pillar_boost_idx: nat;
+      jubilee_count: nat;
+      jubilee_last_beat: nat;
+      prophet_collapse: bool;
+      prophet_projection: float64;
+      seven_spirits: float64;
+      shema_beat: nat;
+      shema_unity: float64;
+    });
+  getBodyOrganState: () -> (record {}) query;
+  /// Return aggregate colony state: totals, active count, efficiency ratio.
+  getColonyState: () -> (ColonyState) query;
+  getConversation: () -> (vec ConversationTurn);
+  getCoreFlags: () ->
+   (record {
+      counterfactualDisabled: bool;
+      selfMaintenanceDisabled: bool;
+      socialModelDisabled: bool;
+    }) query;
+  getCoreFormationRegistry: () -> (vec CoreFormationEntry) query;
+  getCouncilState: () ->
+   (record {
+      aurum:
+       record {
+         beat: nat;
+         blended_apr: float64;
+         coherence: float64;
+         forma: float64;
+         mct: nat;
+         mrc: nat;
+       };
+      cognus:
+       record {
+         beat: nat;
+         coherence: float64;
+         cvt: nat;
+         forma: float64;
+         knt: nat;
+         mrc: nat;
+       };
+      lexis:
+       record {
+         beat: nat;
+         coherence: float64;
+         drt: nat;
+         forma: float64;
+         lgt: nat;
+         mrc: nat;
+         patent_count: nat;
+       };
+      meridian:
+       record {
+         beat: nat;
+         coherence: float64;
+         cvt: nat;
+         forma: float64;
+         mrc: nat;
+         sbt: nat;
+       };
+      nexus:
+       record {
+         beat: nat;
+         coherence: float64;
+         forma: float64;
+         mrc: nat;
+         regime: nat;
+         sbt: nat;
+         vct: nat;
+       };
+      solus:
+       record {
+         beat: nat;
+         coherence: float64;
+         forma: float64;
+         gtk: nat;
+         mrc: nat;
+         omt: nat;
+         spawn_recommended: bool;
+       };
+      vetus:
+       record {
+         alert: bool;
+         beat: nat;
+         coherence: float64;
+         drt: nat;
+         forma: float64;
+         mrc: nat;
+         sbt: nat;
+       };
+    });
+  getCrowState: () ->
+   (record {
+      causalDepth: nat;
+      selfModel: float64;
+      tier: nat;
+      toolCount: nat;
+      toolUse: bool;
+    }) query;
+  /// Return the full immutable deployment event history.
+  getDeploymentHistory: () -> (vec DeploymentEvent) query;
+  getDoctrineRecords: () -> (vec DoctrineRecord);
+  getDolphinState: () ->
+   (record {
+      coord: float64;
+      echoRes: float64;
+      hemisphereAlpha: bool;
+      tier: nat;
+      whistleSealed: bool;
+    }) query;
+  getDreamArchive: () ->
+   (vec
+     record {
+       beatStamp: nat;
+       compressionId: nat;
+       dreamQuality: float64;
+       formationFingerprint: nat32;
+       hebbMeanSnapshot: float64;
+       kfEngSnapshot: float64;
+       reserveAtDischarge: float64;
+       top5Acts: vec float64;
+       top5Nodes: vec nat;
+     });
+  getDreamCycleState: () ->
+   (record {
+      compressions: nat;
+      lastQuality: float64;
+      qmemQps: float64;
+      reserve: float64;
+    }) query;
+  getDriveMode: () ->
+   (record {
+      cycleCount: nat;
+      modeIndex: nat;
+      score: float64;
+    }) query;
+  getEDIReport: () -> (record {}) query;
+  getENTANGLAState: () ->
+   (record {
+      breathRegister: float64;
+      broadcastCount: nat;
+      deepRegister: float64;
+      externalSignalWeight: float64;
+      internalCoherWeight: float64;
+      lastBeat: nat;
+      mediationCoeff: float64;
+      salienceBusLoad: float64;
+      signalsHeld: nat;
+      signalsRouted: nat;
+      skyRegister: float64;
+    }) query;
+  /// Return economy metrics: per-class breakdown and colony-wide projections.
+  getEconomyMetrics: () ->
+   (record {
+      netOutput: float64;
+      perClass: vec record {
+                      text;
+                      nat;
+                      nat;
+                      float64;
+                    };
+      projectedThirtyDay: nat;
+      totalConsumed: nat;
+      totalEarned: nat;
+    }) query;
+  getEconomyState: () ->
+   (record {
+      attribution: text;
+      btcMilestone: nat;
+      e0: nat;
+      e0v: nat;
+      e1: nat;
+      e1c: nat;
+      e1f: float64;
+      e1m: nat;
+      e1r: nat;
+      e1s: float64;
+      e1t: nat;
+      e2: nat;
+      e2m: nat;
+      e3: nat;
+      e3m: nat;
+      e4: nat;
+      e4m: nat;
+      e5: nat;
+      e6: nat;
+      e7: nat;
+      e8: nat;
+      e9: nat;
+      pass12Complete: bool;
+    }) query;
+  getElephantState: () ->
+   (record {
+      episodicDepth: nat;
+      infrasoundActive: bool;
+      infrasoundLevel: float64;
+      mourning: bool;
+      preserved: nat;
+      tier: nat;
+    }) query;
+  getEmergenceMetrics: () -> (EmergenceMetrics) query;
+  getEmergenceReport: () ->
+   (record {
+      cycleCount: nat;
+      f0: float64;
+      f1: float64;
+      f2: float64;
+      f3: float64;
+      f4: float64;
+      f5: float64;
+      f6: float64;
+      f7: float64;
+      n0: nat;
+      n1: nat;
+      n2: nat;
+    }) query;
+  /// Return the six canonical engine class definitions.
+  getEngineClasses: () -> (vec EngineClass) query;
+  /// Return all engine instances across all classes and lifecycle states.
+  getEngineInstances: () -> (vec EngineInstance) query;
+  getEntitySession: (sessionId: text) -> (opt record {}) query;
+  getEntityStatus: () ->
+   (record {
+      cycleCount: nat;
+      memoryCount: nat;
+      running: bool;
+    }) query;
+  getFederationIndex: () -> (FederationIndexSnapshot) query;
+  /// getFieldResonance — current OMNIS gate proximity and R_heart
+  getFieldResonance: () -> (float64) query;
+  /// getFieldState — full field state snapshot (alias for getLifeState + soul law summary)
+  getFieldState: () ->
+   (record {
+      R_brain: float64;
+      R_heart: float64;
+      calendarHaab: nat;
+      calendarTzolkin: nat;
+      cascadeTier: nat;
+      emergenceState: bool;
+      identityCoherence: float64;
+      soulLawMean: float64;
+      voiceR: float64;
+    }) query;
+  getFiveIntelligenceLevels: () ->
+   (record {
+      level1_field: float64;
+      level1_schumann: float64;
+      level2_heart_rate: float64;
+      level2_neurochems: vec float64;
+      level2_r_heart: float64;
+      level3_doctrine_alignment: float64;
+      level3_r_brain: float64;
+      level3_world_model_completeness: float64;
+      level4_genome_version: nat;
+      level4_memory_episode_count: nat;
+      level5_loop_coherence: float64;
+      level5_omnis_gate: bool;
+      level5_upgrade_cycles: nat;
+    }) query;
+  getFluxState: () ->
+   (record {
+      calculActivation: float64;
+      calculPrecision: float64;
+      conduitActivation: float64;
+      conduitEfficiency: float64;
+      dynamoActivation: float64;
+      dynamoPower: float64;
+      fluxActivation: float64;
+      fluxSurgeRate: float64;
+      lastBeat: nat;
+    }) query;
+  getForgeLabsState: () -> (vec ForgeLabState);
+  getFrbState: () ->
+   (record {
+      burstStrength: float64;
+      coordinationQuality: float64;
+      encodingIntensity: float64;
+      expressionThreshold: float64;
+      stageIndex: nat;
+      workingMemCap: float64;
+    }) query;
+  getFullOrganismState: () -> (FullOrganismState);
+  getGenesisAnchor: () -> (record {}) query;
+  getGenesisHistory: () -> (vec record {
+                                  nat;
+                                  text;
+                                  text;
+                                  float64;
+                                  int;
+                                });
+  getGeometryState: () ->
+   (record {
+      e8_projection: vec float64;
+      geometric_coupling: float64;
+      golden_angle_count: nat;
+      lattice_resonance: float64;
+      penrose_phase: float64;
+      penrose_tiling_order: float64;
+    }) query;
+  getHebbianState: () ->
+   (record {
+      avgWeight: float64;
+      homeostaticCycle: nat;
+      maxWeight: float64;
+      nodeActivations: vec float64;
+    }) query;
+  getHistory: (limit: nat) -> (vec EntitySnapshot) query;
+  getHzPhaseNodes: () -> (record {}) query;
+  getIdentityState: () ->
+   (record {
+      carryover: float64;
+      coherence: float64;
+      cycleCount: nat;
+    }) query;
+  getInventionEntries: () -> (vec InventionEntry);
+  getJasminesLaw: () -> (record {}) query;
+  getKnowledgeDomainState: () ->
+   (record {
+      domainIndex: nat;
+      excitation: float64;
+    }) query;
+  getLabDoctorLogs: (limit: nat) -> (vec DoctorLogEntry) query;
+  getLabGuardianStatus: () ->
+   (record {
+      bandIndex: nat;
+      coherence: float64;
+      ediScore: float64;
+      energyFloor: float64;
+      energyLevel: float64;
+      guardianActive: bool;
+      homeostaticEnforced: bool;
+    }) query;
+  getLabState: () ->
+   (record {
+      aegis_fix_queue: vec text;
+      beat_count: nat;
+      global_doctrine_drift: float64;
+      last_upgrade_beat: nat;
+      loop_coherence: float64;
+      team_outputs: vec TeamOutput;
+      upgrade_cycles_completed: nat;
+      veritas_scan_due: bool;
+    }) query;
+  getLawGateResults: () -> (opt GateResult) query;
+  getLawRegistry: () -> (vec LawRegistryEntry) query;
+  getLawScores: () -> (record {}) query;
+  /// Unified life state — all key organism physics in one call
+  getLifeState: () ->
+   (record {
+      R_brain: float64;
+      R_heart: float64;
+      activeMemNodes: nat;
+      activePhase: text;
+      activePhaseId: nat;
+      cascadeTier: nat;
+      emergenceState: bool;
+      heartPhase: float64;
+      identityCoherence: float64;
+      phaseField: float64;
+      voiceR: float64;
+    }) query;
+  getLivingArchitectureState: () ->
+   (record {
+      differentiationIndex: float64;
+      dolphinCoordination: float64;
+      formationQuality: float64;
+      generativityScore: float64;
+      intelligenceIndex: float64;
+      persistenceScore: float64;
+      relationalCoupling: float64;
+    });
+  getLlmEndpoint: () -> (text) query;
+  getLumenCouncilState: () -> (vec LumenModelState);
+  getMarketState: () ->
+   (record {
+      attribution: text;
+      btcUsd: float64;
+      ethUsd: float64;
+      feedActive: bool;
+      fetchCount: nat;
+      icpUsd: float64;
+      lastFetchBeat: nat;
+      marketCoherence: float64;
+      marketMomentum: float64;
+      marketVolatility: float64;
+    }) query;
+  getMaturityVector: () ->
+   (record {
+      adaptation: float64;
+      measurability: float64;
+      overall: float64;
+      recurrence: float64;
+      regulation: float64;
+      selectivity: float64;
+      stability: float64;
+    }) query;
+  getMemoryState: () -> (record {});
+  getMeridianState: () ->
+   (record {
+      active: bool;
+      approvedBufCount: nat;
+      beat: nat;
+      coherence: float64;
+      cvt: nat;
+      forma: float64;
+      lastBeat: nat;
+      mrc: nat;
+      sbt: nat;
+    }) query;
+  getModuleLogs: (moduleId: text, limit: nat) -> (vec DoctorLogEntry) query;
+  getModuleStatus: () -> (vec ArchitectModuleStatus);
+  getMrcState: () ->
+   (record {
+      attribution: text;
+      available: nat;
+      byOrganism:
+       record {
+         aurum: nat;
+         cognus: nat;
+         lexis: nat;
+         meridian: nat;
+         nexus: nat;
+         solus: nat;
+         vetus: nat;
+       };
+      grandTotal: nat;
+      lastSyncBeat: nat;
+      withdrawn: nat;
+    });
+  getNOVAState: () ->
+   (record {
+      architectSignalGlobal: float64;
+      artifactCount: nat;
+      dynastyDepth: nat;
+      emailPulseCount: nat;
+      fieldResonance: float64;
+      genesisStateActive: bool;
+      globalFearLevel: float64;
+      lastBeat: nat;
+      rGlobal: float64;
+      royaltyPct: float64;
+      sovereignFreqHz: float64;
+      vigesimalCycle: nat;
+    }) query;
+  getNeurochemState: () ->
+   (record {
+      attribution: text;
+      doctrineCandidateCount: nat;
+      genesisStateActive: bool;
+      genesisStateCount: nat;
+      genesisStateLastCycle: nat;
+      pass11Complete: bool;
+      t0: float64;
+      t1: float64;
+      t2: float64;
+      t3: float64;
+      t4: float64;
+      t5: float64;
+      t6: float64;
+      t7: float64;
+    }) query;
+  getNeuronActivationMap: () -> (record {}) query;
+  getNovaRegistry: () -> (vec OrganismRecord);
+  getNovaRootState: () -> (NovaRootState);
+  getOctoState: () ->
+   (record {
+      armCoherence: float64;
+      camouflage: bool;
+      chromaRate: float64;
+      flexibility: float64;
+      tier: nat;
+    }) query;
+  getPARALLAXState: () ->
+   (record {
+      architectActive: bool;
+      architectMultiplier: float64;
+      corePushCount: nat;
+      cvt: float64;
+      doctrineAlignEMA: float64;
+      forma: float64;
+      knt: float64;
+      lastBeat: nat;
+      mintEventCount: nat;
+      mrc: float64;
+      mth: float64;
+      mthTotalSupply: float64;
+      sbt: float64;
+      totalBurned: float64;
+      totalMinted: float64;
+      vct: float64;
+    }) query;
+  getPILState: () -> (PILResult) query;
+  /// Returns a single paper by its canonical PAPER-* ID, or null.
+  getPaper: (id: text) -> (opt ResearchPaper) query;
+  getPass10State: () -> (record {}) query;
+  getPass14State: () ->
+   (record {
+      attribution: text;
+      corvTier: nat;
+      dolphTier: nat;
+      elphTier: nat;
+      octoTier: nat;
+      p14Active: bool;
+      sharkTier: nat;
+      wolfTier: nat;
+    }) query;
+  getPass8AState: () -> (record {}) query;
+  getPass8CState: () -> (record {}) query;
+  getPass8State: () -> (record {}) query;
+  getPass9State: () -> (record {}) query;
+  getPatentRecords: () -> (vec PatentRecord);
+  getPersonalitySeed: () ->
+   (record {
+      computed: bool;
+      formationTs: int;
+      seed: vec nat32;
+    }) query;
+  /// PHANTOM state — alpha always true while canister is running
+  getPhantomState: () ->
+   (record {
+      alpha: bool;
+      displayAvailable: bool;
+      ghostCount: nat;
+    }) query;
+  /// Phase Plan — all five strategic phases
+  getPhasePlan: () ->
+   (vec
+     record {
+       calendarAnchor: text;
+       description: text;
+       id: nat;
+       name: text;
+       phiWeight: float64;
+       status: text;
+     }) query;
+  /// getPhases — alias for getPhasePlan (exact-name alias required by QA)
+  getPhases: () ->
+   (vec
+     record {
+       calendarAnchor: text;
+       description: text;
+       id: nat;
+       name: text;
+       phiWeight: float64;
+       status: text;
+     }) query;
+  getPulseState: () ->
+   (record {
+      amplitude: float64;
+      coherence: float64;
+      frequency: float64;
+      kfEng: float64;
+      momentum: float64;
+      resonance: float64;
+    }) query;
+  getQmemState: () ->
+   (record {
+      bypassActive: bool;
+      bypassBeats: nat;
+      compressionCount: nat;
+      lastBeat: nat;
+      qmemQps: float64;
+      qmemReserve: float64;
+      veritasScore: float64;
+    }) query;
+  getQuantumParallelStandards: () ->
+   (record {
+      bypass: float64;
+      bypassRecoveryActive: bool;
+      bypassRecoveryBeats: nat;
+      cycleCount: nat;
+      entangla: float64;
+      entanglaActivePairs: nat;
+      parallax: float64;
+      qmem: float64;
+      resonex: float64;
+      resonexCascadeCount: nat;
+      shrimpCavitationArmed: bool;
+      veritas: float64;
+    }) query;
+  getResonexState: () ->
+   (record {
+      cascadeCount: nat;
+      entanglaScore: float64;
+      lastBeat: nat;
+      parallaxScore: float64;
+      resonex: float64;
+      shrimpCavitationArmed: bool;
+    }) query;
+  getRuntimeState: (sessionId: text) ->
+   (record {
+      activeGoals: vec text;
+      activeSurfaces: vec text;
+      attentionTarget: text;
+      continuityMarkers: vec ContinuityMarker;
+      cycleIndex: nat;
+      errorFlags: vec text;
+      lastAction: text;
+      regulatoryState: text;
+      sessionId: text;
+      timestamp: int;
+      workingMemorySnapshot: vec text;
+    });
+  /// Returns all registered federated nodes from the Federation Index.
+  getSDKNodeRegistry: () -> (vec FederatedNode) query;
+  /// Returns all registered federation protocols from the Federation Index.
+  getSDKProtocols: () -> (vec FederationProtocol) query;
+  getSecurityState: () ->
+   (record {
+      aegisMembrane: float64;
+      aegisSuppress: bool;
+      attribution: text;
+      breachCount: nat;
+      collapseFlag: bool;
+      crusaderActions: nat;
+      crusaderBeat: nat;
+      crusaderVector: nat;
+      ecdsaFlag: bool;
+      ecdsaRisk: float64;
+      prophetProject: float64;
+      quantumThreat: float64;
+      sevenSpirits: float64;
+      vetusAlert: bool;
+      vetusThreat: float64;
+    });
+  getSessionMemory: (sessionId: text) ->
+   (record {
+      continuityMarkers: vec ContinuityMarker;
+      interactionCount: nat;
+      persistentItems: vec text;
+      resumeState: text;
+      sessionId: text;
+      shortTermItems: vec text;
+    });
+  getSharkState: () ->
+   (record {
+      apexReached: bool;
+      detected: nat;
+      electroField: float64;
+      lateralPressure: float64;
+      tier: nat;
+    }) query;
+  getShell10State: () ->
+   (record {
+      archive: float64;
+      deep: float64;
+      mirror: float64;
+      seedcorp: float64;
+      still: float64;
+      void: float64;
+    });
+  getShell11State: () ->
+   (record {
+      adelita: float64;
+      hidalgo: float64;
+      independencia: float64;
+      morelos: float64;
+      revolucionario: float64;
+      sovereignty_index: float64;
+      villa: float64;
+      zapata: float64;
+    });
+  getShell3State: () ->
+   (record {
+      actMean: float64;
+      hebbMean: float64;
+      kfEng: float64;
+      phaseMean: float64;
+      top5Acts: vec float64;
+      top5Indices: vec nat;
+    }) query;
+  getShell7State: () ->
+   (record {
+      calcul: float64;
+      conduit: float64;
+      dynamo: float64;
+      flux: float64;
+      genPh0: float64;
+      genPh6: float64;
+      genPh7: float64;
+      genPh8: float64;
+      genesis: float64;
+      matrix: float64;
+    }) query;
+  getShell9State: () -> (record {
+                           beat: nat;
+                           nodes: vec float64;
+                         });
+  getSnapshot: () -> (EntitySnapshot) query;
+  /// Solar Heart state
+  getSolarHeart: () ->
+   (record {
+      R_brain: float64;
+      R_heart: float64;
+      cascadeAmplitude: float64;
+      emerged: bool;
+      phase: float64;
+      tier: nat;
+    }) query;
+  getSoulState: () -> (record {}) query;
+  getSparseGatingState: () -> (record {
+                                 active: bool;
+                                 arousal: float64;
+                               }) query;
+  getSpeciesRegistry: () -> (vec SpeciesEntry);
+  getStdpState: () ->
+   (record {
+      avgWeight: float64;
+      eligibilityTrace: float64;
+      maxWeight: float64;
+    }) query;
+  getSynthesisHistory: (limit: nat) -> (vec SynthesisReport) query;
+  getSynthesisReport: () -> (opt SynthesisReport) query;
+  getTelemetrySnapshot: (sessionId: text) ->
+   (record {
+      activeSurfaces: vec text;
+      burstPhase: text;
+      cycleCount: nat;
+      energy: float64;
+      fatigue: float64;
+      globalUrgency: float64;
+      identityCoherence: float64;
+      overload: float64;
+      regulationDebt: float64;
+      sessionId: text;
+      stability: float64;
+      stress: float64;
+      timestamp: int;
+      unresolvedCount: nat;
+      viabilityScore: float64;
+    });
+  getTensionObjects: () -> (vec record {
+                                  text;
+                                  nat;
+                                  text;
+                                  text;
+                                }) query;
+  getThoughtStream: (limit: nat) -> (vec record {
+                                           nat;
+                                           text;
+                                           float64;
+                                           text;
+                                           int;
+                                         });
+  getTreasuryState: () ->
+   (record {
+      attribution: text;
+      blendedApr: float64;
+      btcAlloc: float64;
+      btcUsd: float64;
+      ecdsaFlag: bool;
+      ecdsaRisk: float64;
+      eigenApr: float64;
+      ethAlloc: float64;
+      ethUsd: float64;
+      ethWallet: text;
+      funded: bool;
+      icpAlloc: float64;
+      icpUsd: float64;
+      lidoApr: float64;
+      marinadeApr: float64;
+      nnsApr: float64;
+      pqcReady: bool;
+      solAlloc: float64;
+      solUsd: float64;
+      totalUsd: float64;
+    });
+  getVaultEntries: () -> (vec record {
+                                nat;
+                                text;
+                                text;
+                                text;
+                                int;
+                              });
+  getVaultEntry: (id: nat) -> (opt record {
+                                     nat;
+                                     text;
+                                     text;
+                                     text;
+                                     int;
+                                   });
+  getVectorConvergenceState: () -> (vec VectorState);
+  getVectorVetoState: () -> (record {}) query;
+  /// Voice Kernel state
+  getVoiceKernelState: () ->
+   (record {
+      authorized: bool;
+      callCount: nat;
+      voiceR: float64;
+    }) query;
+  getWolfState: () ->
+   (record {
+      howlCount: nat;
+      huntActive: bool;
+      huntSuccess: nat;
+      packCoherence: float64;
+      tier: nat;
+    }) query;
+  httpTransform: (input: TransformationInput) -> (TransformationOutput) query;
+  initMedina: () -> (bool);
+  injectHighThreatAgent: () -> ();
+  /// Returns all 6 sovereign research papers in the registry.
+  listPapers: () -> (vec ResearchPaper) query;
+  mintTokens: (amount: float64, alignmentScore: float64) ->
+   (record {
+      alignmentScore: float64;
+      architectActive: bool;
+      burnedAmount: float64;
+      cappedByMTH: bool;
+      mintedAmount: float64;
+      netAmount: float64;
+      tokenType: TokenType;
+    });
+  pauseEntitySession: (sessionId: text) -> (bool);
+  /// Process voice input through the four-agent kernel
+  processVoiceInput: (input: text) ->
+   (record {
+      authorized: bool;
+      context: text;
+      voiceR: float64;
+    });
+  recordLegacyArtifact: (id: text) -> ();
+  resumeEntitySession: (sessionId: text) -> (bool);
+  routeSignalViaEntangla: (signal: float64, sourceNode: nat) ->
+   (record {
+      breathRegister: float64;
+      broadcastAll: bool;
+      deepRegister: float64;
+      mediationCoeff: float64;
+      originalSignal: float64;
+      routed: bool;
+      skyRegister: float64;
+      sourceNode: nat;
+      targetNode: nat;
+    });
+  runProtocol: (protocolId: nat) -> (text);
+  runValidationTest: (testId: text) -> (ValidationResult);
+  /// Full-text search across paper titles, abstracts, and CPL bindings.
+  searchKnowledge: (searchTerm: text) -> (vec SearchResult) query;
+  sendEnvironmentEvent: (sessionId: text, event: text) -> (text);
+  sendSimulationEvent: (sessionId: text, event: text) -> (text);
+  setLlmEndpoint: (url: text) -> ();
+  speakFromField: (userText: text) -> (text);
+  /// speakToField — query voice field output (gate + field context, no HTTP call)
+  speakToField: (input: text) -> (VoiceOutput) query;
+  /// Terminate a running engine instance by its instance ID.
+  terminateEngine: (instanceId: text) -> (record {
+                                            message: text;
+                                            ok: bool;
+                                          });
+  terminateEntitySession: (sessionId: text) -> (bool);
+  translateSandbox: (raw: text, sourceType: text, priority: float64) ->
+   (record {
+      alignmentAlpha1: float64;
+      alignmentAlpha2: float64;
+      alignmentScore: float64;
+      ancientSources: vec text;
+      contradictionNote: text;
+      doctrineFamily: text;
+      entityPairs: vec text;
+      genesisDistance: float64;
+      hasContradiction: bool;
+      lawAttributions: vec text;
+      sourceType: text;
+      structureConfidence: float64;
+      structureType: StructureType;
+      translatedOutput: text;
+    });
+  updateAEGIS: (beat: nat, fearLevel: float64) -> ();
+  updateDoctrineRecord: (id: nat, newTitle: text, newContent: text, newNote:
+   text) -> (opt DoctrineRecord);
+  /// Update health score and cycles consumed for a specific engine instance.
+  updateEngineHealth: (instanceId: text, healthScore: float64,
+   cyclesConsumed: nat) -> (bool);
+  /// Validates a geometric key and returns tier level + unlocked paper IDs.
+  validateKey: (key: text) -> (KeyValidation) query;
+  withdrawMRC: (amount: nat) -> (record {
+                                   remaining: nat;
+                                   success: bool;
+                                 });
+}

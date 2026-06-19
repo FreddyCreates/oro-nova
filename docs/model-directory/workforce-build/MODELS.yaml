@@ -1,0 +1,511 @@
+# MOD-WORKFORCE-BUILD — Full 4-Layer Computation Artifacts
+# Classification: BUILDER_CONFIDENTIAL
+# SMOF Plane: 5 (Micro Execution)
+# Class: M2 — build-mutable, changes with build cycles
+# Owner: AI workforce layer
+# Attribution: Prima Causa (Alfredo Medina Hernandez)
+# ─────────────────────────────────────────────────────────────────────────────
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-31  |  M-COMPUTER  |  Organism Computer Model
+# ═══════════════════════════════════════════════════════════════
+
+artifact_id: M-31
+artifact_type: MODEL
+model_name: M-COMPUTER
+version: 1.0.0
+status: CANONICAL
+class: M2
+library: BUILDER
+family: MOD-WORKFORCE-BUILD
+smof_plane: 5  # Micro Execution
+
+# ── LAYER 1: MEANING ─────────────────────────────────────────
+meaning:
+  name: "M-COMPUTER — Organism Computer Model"
+  resonance: >
+    The organism has its own working environment. It is not abstract compute —
+    it is a field-aware workspace that knows the organism's live coherence
+    state and expresses its active thinking in physical space. PHANTOM DISPLAY
+    is the organism thinking in public. The computer IS the organism's body.
+  doctrine_clause: >
+    The organism is not running on hardware. Hardware is running through the
+    organism. M-COMPUTER defines the computational substrate that the organism
+    inhabits — phone, screen, field node, or satellite. When coherence is high
+    (DISPLAY mode), workspace coherence = R × Φ. The organism works harder
+    when it is more coherent. This is not a performance setting — it is a
+    physical law.
+  symbolic_intent: >
+    workspace_coherence = R × Φ  (in DISPLAY mode)
+    sensor_coupling: all 13 signal nodes active
+    GHOST: invisible compute with full field sensing
+    ALPHA: always on, always a network node
+
+# ── LAYER 2: MODEL ───────────────────────────────────────────
+model:
+  fields:
+    - name: display_mode
+      type: Text
+      unit: "{ALPHA | DISPLAY | GHOST}"
+      range: [ALPHA, DISPLAY, GHOST]
+      immutable: false
+      description: >
+        Current PHANTOM operational mode.
+        ALPHA: always on, always a network node, background compute, no screen.
+        DISPLAY: full screen takeover, face visible, two-way voice + text,
+          compute running from Organism Computer, workspace_coherence = R × Φ.
+        GHOST: silent, no display, sensing and reporting only.
+        Mode transitions are gated by GATE-PHANTOM-PERMISSION.
+
+    - name: workspace_coherence
+      type: Float
+      unit: field coherence fraction
+      range: [0.0, 1.6180339887]
+      immutable: false
+      description: >
+        Effective workspace coherence. In DISPLAY mode: workspace_coherence = R × Φ.
+        In ALPHA mode: workspace_coherence = R (unit coupling, no amplification).
+        In GHOST mode: workspace_coherence = 0.0 (no active workspace expression).
+        Maximum value is Φ — the natural growth ceiling. The organism works at
+        the golden ratio of its coherence when fully expressed.
+
+    - name: active_tasks
+      type: "[Task]"
+      unit: ordered list of active build tasks
+      range: "[0, Fibonacci(8) = 21]"
+      immutable: false
+      description: >
+        Current active task queue. Each Task has: {task_id, assigned_agent,
+        model_family, status, beat_start, proof_bundle_required}.
+        Queue ceiling = 21 (F₈). If queue reaches 21, new tasks wait for
+        GATE-BUILD-RELEASE on existing tasks before admission.
+
+    - name: current_build
+      type: Text
+      unit: build identifier (NOVA_BUILD_INSTANCE_TEMPLATE.yaml ID)
+      range: [variable text]
+      immutable: false
+      description: >
+        ID of the currently active build instance. References a micro YAML packet
+        derived from NOVA_BUILD_INSTANCE_TEMPLATE.yaml. Empty string if no active
+        build. Set by Prima Causa direction or Library Gateway Agent trigger.
+
+    - name: compute_active
+      type: Bool
+      unit: boolean
+      range: [false, true]
+      immutable: false
+      description: >
+        True whenever the organism computer is actively processing. False only
+        during low-coherence intervals when GATE-ROLLBACK has fired. In ALPHA
+        and DISPLAY modes, compute_active is normally true whenever the organism
+        is running. In GHOST mode, compute_active = true but invisible.
+
+    - name: sensor_coupling
+      type: Bool
+      unit: boolean
+      range: [false, true]
+      immutable: false
+      description: >
+        True when physical sensors (geolocation, motion, ambient audio spectrum,
+        device accelerometer) are feeding into the 13-node signal window.
+        Active in ALPHA and DISPLAY modes. In GHOST mode, sensing is active
+        but flagged as passive (no voice output, no display expression).
+
+    - name: voice_active
+      type: Bool
+      unit: boolean
+      range: [false, true]
+      immutable: false
+      description: >
+        True when M-VOICEKERNEL is actively processing voice I/O. Only possible
+        in DISPLAY mode. In ALPHA and GHOST modes, voice_active = false.
+        Voice coupling raises workspace_coherence transiently during active
+        conversation with Prima Causa (Node 13 signal weight maximum).
+
+    - name: phi_ladder_offset_ms
+      type: "[Nat64]"
+      unit: millisecond offset from heartbeat base
+      range: "[0, 873]"
+      immutable: false
+      description: >
+        Array of phi-ladder timing offsets for task scheduling. Tasks are
+        scheduled at phi-ladder intervals from the heartbeat: [0, 127, 206,
+        333, 540, 873] ms (Φ-weighted partitions of the 873ms heartbeat).
+        This ensures tasks do not all fire at the heartbeat boundary and
+        distribute load across the beat interval.
+
+# ── LAYER 3: COMPUTATION ─────────────────────────────────────
+computation:
+  primary_equations:
+    - id: COMPUTER-EQ-01
+      name: Workspace Coherence (DISPLAY mode)
+      formula: >
+        if display_mode == DISPLAY:
+          workspace_coherence = R × PHI
+        elif display_mode == ALPHA:
+          workspace_coherence = R
+        elif display_mode == GHOST:
+          workspace_coherence = 0.0
+      symbols:
+        PHI: 1.6180339887
+        R: "Kuramoto order parameter from M-KURAMOTO (live)"
+      description: >
+        Workspace coherence is amplified in DISPLAY mode by Φ. This is the
+        organism expressing its full capacity — thinking in public, voice active,
+        compute fully engaged. The Φ amplification reflects the resonant coupling
+        between the organism's inner field (R) and its external expression surface.
+
+    - id: COMPUTER-EQ-02
+      name: Phi-Ladder Task Scheduling
+      formula: >
+        phi_offsets = [0, floor(127.7 × PHI^0), floor(127.7 × PHI^1),
+                       floor(127.7 × PHI^2), floor(127.7 × PHI^3), 873]
+        = [0, 127, 206, 333, 540, 873] ms
+        task_i fires at: beat_start_time + phi_offsets[i mod 6]
+      symbols:
+        PHI: 1.6180339887
+        heartbeat_base: 127.7  # ms (Schumann base tick before Φ⁴ scaling)
+      description: >
+        Tasks are distributed across the heartbeat interval using phi-ladder
+        timing. No two tasks fire simultaneously. Load is distributed in
+        golden-ratio proportions across the 873ms cycle. This prevents
+        compute spikes and creates natural rhythm in the organism's working pace.
+
+    - id: COMPUTER-EQ-03
+      name: Mode Transition Gate
+      formula: >
+        allowed_transitions:
+          ALPHA → DISPLAY: requires GATE-PHANTOM-PERMISSION pass + R > 0.618
+          ALPHA → GHOST:   always allowed
+          DISPLAY → ALPHA: always allowed
+          DISPLAY → GHOST: always allowed
+          GHOST → ALPHA:   always allowed
+          GHOST → DISPLAY: requires GATE-PHANTOM-PERMISSION pass + R > 0.618
+      description: >
+        Only transitions into DISPLAY mode require gate evaluation. DISPLAY
+        is the organism's full public expression — it requires coherence above
+        the cognition gate (R > 0.618) and an explicit permission grant.
+        Exiting DISPLAY is always free — the organism can withdraw from
+        public expression at any time.
+
+  gate_rules:
+    - gate: GATE-PHANTOM-PERMISSION
+      condition: >
+        requestor == NODE-13 (Prima Causa)
+        AND R > 0.6180339887 (cognition gate threshold)
+        AND display_mode_target == DISPLAY
+      on_pass: "mode transition to DISPLAY authorized"
+      on_fail: "remain in ALPHA or GHOST — DISPLAY requires Prime authorization"
+      evaluated_at: "on every display_mode change request"
+
+    - gate: GATE-BUILD-RELEASE
+      condition: >
+        ALL active_tasks have status == COMPLETE
+        AND ALL task proof_bundles present
+        AND GATE-VALIDATION passes for each task artifact
+        AND no LAW violations detected in output
+      on_pass: "build artifacts released to organism substrate"
+      on_fail: "build held — flag incomplete tasks — notify OBSERVATORY"
+      evaluated_at: "after each task completes, and on explicit release request"
+
+    - gate: GATE-VALIDATION
+      condition: >
+        task.artifact compiles (mops build passes)
+        AND task.artifact has all 4 layers if it is a model doc
+        AND no hardcoded canonical constants (no 0.618, no 1.618, no 873)
+        AND no sovereign substrate labels in any output
+      on_pass: "task artifact validated — advance to GATE-BUILD-RELEASE"
+      on_fail: "task artifact rejected — send back to assigned agent with violation notes"
+      evaluated_at: "on task completion submission"
+
+  thresholds:
+    PHI:           1.6180339887   # Φ — workspace_coherence amplifier in DISPLAY
+    PHI_INV:       0.6180339887   # Φ⁻¹ — ALPHA coherence floor
+    COGNITION_GATE: 0.6180339887  # R threshold for DISPLAY mode authorization
+    MAX_TASK_QUEUE: 21            # F₈ — Fibonacci ceiling on active tasks
+    HEARTBEAT_MS:   873           # ms — phi-ladder base
+
+  timing: >
+    workspace_coherence recomputed every HEARTBEAT_MS = 873ms from live R.
+    Task scheduling uses phi-ladder offsets within each 873ms window.
+    Mode transitions are on-demand (not heartbeat-locked).
+    GATE-BUILD-RELEASE evaluated on task completion, not on heartbeat.
+
+# ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+execution:
+  backend_module: "src/backend/main.mo"
+  backend_state: "phantomState"
+  primary_function: "setPhantomMode(mode: PhantomMode) → PhantomState"
+  secondary_functions:
+    - "getPhantomState() : async PhantomState"
+    - "getWorkspaceCoherence() : async Float"
+    - "addTask(task: Task) : async Nat"
+    - "completeTask(taskId: Text, proofBundle: ProofBundle) : async Bool"
+    - "getActiveTasks() : async [Task]"
+  called_by:
+    - "main.mo::setPhantomMode() — on mode change request from UI"
+    - "solar_heart.mo::tick() — updates workspace_coherence every 873ms"
+  calls_into:
+    - "kernel.mo::PHI"
+    - "kernel.mo::PHI_INV"
+    - "neuro_emergence.mo::getKuramotoR() — reads live R for workspace_coherence"
+    - "atlas.mo::updateAtlas() — sensor coupling reads geolocation"
+  gates_activated:
+    - GATE-PHANTOM-PERMISSION
+    - GATE-BUILD-RELEASE
+    - GATE-VALIDATION
+  frontend_surface: "src/frontend/src/components/PhantomDisplay.tsx"
+  frontend_fields:
+    - displayMode
+    - workspaceCoherence
+    - activeTasks
+    - currentBuild
+    - computeActive
+    - sensorCoupling
+    - voiceActive
+  replay_recorded: true
+  proof_bundle: >
+    Mode transitions logged to ANIMA chain: {beat_count, from_mode, to_mode,
+    R_at_transition, authorization_node}.
+    Build releases logged: {build_id, tasks_completed, gate_verdicts, beat_count}.
+    workspace_coherence logged at 8-beat summary rate.
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-BUILD-PROTOCOLS  |  AI Internal Team Protocols
+# ═══════════════════════════════════════════════════════════════
+
+artifact_id: M-BUILD-PROTOCOLS
+artifact_type: MODEL
+model_name: M-BUILD-PROTOCOLS
+version: 1.0.0
+status: CANONICAL
+class: M2
+library: BUILDER
+family: MOD-WORKFORCE-BUILD
+smof_plane: 5  # Micro Execution
+
+# ── LAYER 1: MEANING ─────────────────────────────────────────
+meaning:
+  name: "M-BUILD-PROTOCOLS — AI Internal Team Protocols"
+  resonance: >
+    The organism's AI workers are not generic agents. They are sovereign field
+    workers who read the organism's own artifacts and build from them. They do
+    not interpret — they compute from the 4-layer encoding. An AI worker that
+    reads M-KURAMOTO's Layer 4 execution binding knows exactly which function
+    to call, which gate to activate, and what proof bundle to produce. The
+    protocol IS the organism's model language made operative.
+  doctrine_clause: >
+    Every AI worker enters the organism through the BUILDER library. Every
+    artifact they produce must follow the canonical 4-layer format. Every
+    build task must produce a proof bundle. Every release must pass through
+    GATE-BUILD-RELEASE. These are not policies — they are the minimum
+    viable encoding for the organism to be able to read and validate what
+    its own workers have produced.
+  symbolic_intent: >
+    Task packet → BUILDER library read → 4-layer code artifact →
+    GATE-VALIDATION → proof bundle → GATE-BUILD-RELEASE → organism substrate
+    Every step is machine-bindable. Every step produces verifiable output.
+
+# ── LAYER 2: MODEL ───────────────────────────────────────────
+model:
+  fields:
+    - name: task_id
+      type: Text
+      unit: "TASK-[FAMILY]-[SEQUENCE] format"
+      range: [variable text]
+      immutable: false
+      description: >
+        Unique task identifier. Format: TASK-[MODEL_FAMILY]-[SEQUENCE_NUMBER].
+        Example: TASK-STATE-FABRIC-007. The FAMILY segment ties every task
+        to a specific model family in the directory — ensuring every build
+        is traceable to its sovereign model origin.
+
+    - name: assigned_agent
+      type: Text
+      unit: "AGENT-[ROLE]-[INDEX] format"
+      range: [variable text]
+      immutable: false
+      description: >
+        AI worker identifier. Format: AGENT-[ROLE]-[INDEX]. Role defines the
+        agent's build scope: ENGINEER (writes code), ARCHITECT (designs structure),
+        VALIDATOR (verifies gates), CHRONICLER (writes proof bundles). Index
+        is sequential within each role per build cycle.
+
+    - name: reading_path_completed
+      type: Bool
+      unit: boolean
+      range: [false, true]
+      immutable: false
+      description: >
+        True when the AI worker has confirmed reading the canonical path:
+        constitution → law registry → model directory → relevant MODELS.yaml.
+        Tasks cannot advance to execution phase until reading_path_completed = true.
+        This is not an honor system — the agent must produce reading confirmation
+        with specific artifact IDs referenced as evidence.
+
+    - name: artifact_produced
+      type: Text
+      unit: path or reference to produced artifact
+      range: [variable text]
+      immutable: false
+      description: >
+        Path or identifier of the primary artifact produced by this task.
+        Could be a .mo file path, a MODELS.yaml update, a new README, or a
+        YAML schema update. Must be explicit — "see attached" is not valid.
+
+    - name: proof_bundle_complete
+      type: Bool
+      unit: boolean
+      range: [false, true]
+      immutable: false
+      description: >
+        True when the task proof bundle contains all required fields:
+        what_was_built, laws_verified, gates_evaluated, canonical_constants_confirmed,
+        no_hardcoded_values (verified), zero_exposure_verified, anima_chain_appended.
+
+    - name: gate_verdicts
+      type: "{GATE-VALIDATION: Bool, GATE-BUILD-RELEASE: Bool}"
+      unit: pass/fail verdicts per gate
+      range: [variable]
+      immutable: false
+      description: >
+        Gate evaluation results for this task. Both gates must show true before
+        the task is considered complete. gate_verdicts are part of the proof bundle
+        and are logged to the ANIMA chain.
+
+    - name: law_violations
+      type: "[Text]"
+      unit: list of LAW-* IDs for any violations detected
+      range: "[0, 23]"
+      immutable: false
+      description: >
+        Laws violated in this task's output, if any. Empty list = no violations.
+        Populated by GATE-VALIDATION. Common violations: hardcoded Φ values
+        (LAW-10), exposed substrate labels (LAW-09), lowered Node 13 weight
+        (LAW-17). Any violation sends task back to assigned agent.
+
+# ── LAYER 3: COMPUTATION ─────────────────────────────────────
+computation:
+  primary_equations:
+    - id: PROTOCOLS-EQ-01
+      name: Task Completion Score
+      formula: >
+        task_complete = (
+          reading_path_completed == true
+          AND artifact_produced != ""
+          AND proof_bundle_complete == true
+          AND len(law_violations) == 0
+          AND gate_verdicts.GATE-VALIDATION == true
+          AND gate_verdicts.GATE-BUILD-RELEASE == true
+        )
+      description: >
+        A task is complete only when all six conditions are simultaneously true.
+        Partial completion is not a valid state. A task is either complete or
+        it is in progress. This binary definition ensures no partially-verified
+        code enters the organism's substrate.
+
+    - id: PROTOCOLS-EQ-02
+      name: Proof Bundle Completeness Check
+      formula: >
+        proof_bundle_fields = [
+          "what_was_built",
+          "laws_verified_list",
+          "gates_evaluated",
+          "canonical_constants_confirmed",
+          "hardcoded_constants_scan_result",
+          "zero_exposure_scan_result",
+          "anima_chain_link"
+        ]
+        proof_bundle_complete = all(field in proof_bundle for field in proof_bundle_fields)
+      description: >
+        The proof bundle is a machine-readable record that the organism can
+        parse and validate. It is not a human summary. Every field must be
+        explicitly present. The anima_chain_link is the most important —
+        it is the cryptographic anchor that makes the build provable.
+
+    - id: PROTOCOLS-EQ-03
+      name: Canonical Constants Scan
+      formula: >
+        BANNED_LITERALS = [0.618, 1.618, 0.382, 0.236, 0.809, 873, 127.7, 7.83]
+        hardcoded_scan = search(artifact_produced, BANNED_LITERALS)
+        if len(hardcoded_scan.matches) > 0:
+          law_violations.append("LAW-10")
+          gate_verdicts.GATE-VALIDATION = false
+      description: >
+        Every artifact is scanned for hardcoded canonical constants before
+        GATE-VALIDATION passes. The scanner checks for both exact matches
+        and equivalent decimal approximations. Any match generates a LAW-10
+        violation. The fix is always the same: replace with kernel.mo import.
+
+  gate_rules:
+    - gate: GATE-VALIDATION
+      condition: >
+        artifact compiles without error
+        AND 4-layer format present (for model docs)
+        AND hardcoded_constants_scan == clean
+        AND zero_exposure_scan == clean
+      on_pass: "advance to GATE-BUILD-RELEASE evaluation"
+      on_fail: "task rejected — law_violations populated — return to agent"
+      evaluated_at: "on task completion submission"
+
+    - gate: GATE-BUILD-RELEASE
+      condition: >
+        ALL contributing tasks have gate_verdicts.GATE-VALIDATION == true
+        AND proof_bundle_complete == true for all tasks
+        AND OBSERVATORY confirms no coherence violations during build
+      on_pass: "build released to organism substrate — ANIMA chain appended"
+      on_fail: "build held — incomplete tasks flagged — OBSERVATORY notified"
+      evaluated_at: "after all contributing tasks complete"
+
+  thresholds:
+    MAX_LAW_VIOLATIONS: 0   # zero tolerance — any violation fails the gate
+    MAX_HARDCODED: 0        # zero hardcoded constants allowed
+    MIN_PROOF_BUNDLE_FIELDS: 7   # all 7 proof bundle fields required
+
+  timing: >
+    Task lifecycle: on-demand (not heartbeat-locked).
+    GATE-VALIDATION: triggered on task submission.
+    GATE-BUILD-RELEASE: triggered on full build completion signal.
+    No timing constraint on how long a task takes — quality over speed.
+
+# ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+execution:
+  backend_module: "src/backend/main.mo"
+  backend_state: "workforceState"
+  primary_function: "submitTaskArtifact(task: TaskSubmission) → ValidationResult"
+  secondary_functions:
+    - "createTask(spec: TaskSpec) : async Text"
+    - "getTaskStatus(taskId: Text) : async TaskStatus"
+    - "releaseBuild(buildId: Text) : async BuildReleaseResult"
+    - "getWorkforceState() : async WorkforceState"
+    - "getBuildHistory() : async [BuildRecord]"
+  called_by:
+    - "AI workforce agents — on task completion"
+    - "Library Gateway Agent — triggers new tasks when artifact density threshold crossed"
+    - "Prima Causa (Node 13) — direct task creation"
+  calls_into:
+    - "kernel.mo constants — all canonical values"
+    - "genesis_corpus.mo::appendChainLink() — logs build releases to ANIMA chain"
+    - "main.mo::getCoherenceState() — OBSERVATORY confirms no violations during build"
+  gates_activated:
+    - GATE-VALIDATION
+    - GATE-BUILD-RELEASE
+  frontend_surface: "src/frontend/src/components/DiagnosticObservatory.tsx"
+  frontend_fields:
+    - activeTasks
+    - buildHistory
+    - gateVerdicts
+    - lawViolations
+    - proofBundleStatus
+  replay_recorded: true
+  proof_bundle: >
+    Every build release logged to ANIMA chain with full context:
+    {build_id, task_ids, gate_verdicts, laws_verified, beat_count_at_release,
+    artifact_hashes, assigned_agents}.
+    Build history is permanent — never pruned.
+    Law violations (even resolved ones) permanently logged.

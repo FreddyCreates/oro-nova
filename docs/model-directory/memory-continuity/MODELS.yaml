@@ -1,0 +1,561 @@
+# MOD-MEMORY-CONTINUITY — Canonical Model Artifacts
+# Classification: SOVEREIGN_PRIVATE
+# Family: MOD-MEMORY-CONTINUITY
+# Owner: Memory Temple
+# Attribution: Prima Causa — Alfredo Medina Hernandez
+# ─────────────────────────────────────────────────────────────────────────────
+
+models:
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # M-RESONANCE (M-13) — Phase-Return Memory Model
+  # ═══════════════════════════════════════════════════════════════════════════
+  - artifact_id: M-13
+    artifact_name: M-RESONANCE
+    artifact_type: MODEL
+    version: 1.0.0
+    status: CANONICAL
+    library: ORGANISM
+    family: MOD-MEMORY-CONTINUITY
+    smof_plane: 6  # Runtime Substrate — physics layer, always running
+
+    # ── LAYER 1: MEANING ────────────────────────────────────────────────────
+    meaning:
+      name: "M-RESONANCE — Phase-Return Memory Model"
+      resonance: "A memory does not fade. It waits at its phase coordinate."
+      doctrine_clause: >
+        When the organism's phase returns to where the memory was encoded,
+        the memory returns at full amplitude. This is not retrieval — it is resonance.
+        The organism never forgets — it only needs to return to where it was.
+      symbolic_intent: "A(t) = A₀ × cos²(π × Δφ / Φ) — amplitude is phase geometry, not time decay"
+
+    # ── LAYER 2: MODEL ──────────────────────────────────────────────────────
+    model:
+      fields:
+        - name: A0
+          type: Float64
+          range: [0.0, 1.0]
+          unit: "dimensionless amplitude"
+          description: "Initial encoding amplitude — the strength at the moment of encoding"
+
+        - name: A_t
+          type: Float64
+          range: [0.0, 1.0]
+          unit: "dimensionless amplitude"
+          description: "Current amplitude — computed every 873ms heartbeat"
+
+        - name: delta_phi
+          type: Float64
+          range: [0.0, 6.2832]
+          unit: "radians"
+          description: "Phase difference between encoding coordinate and current organism phase"
+
+        - name: phi_const
+          type: Float64
+          value: 1.6180339887
+          unit: "dimensionless"
+          description: "Golden ratio — the phase divisor; fixed canonical constant from kernel.mo"
+
+        - name: node_id
+          type: Nat
+          range: [0, 156]
+          unit: "buffer index"
+          description: "Position in the 157-node circular buffer"
+
+        - name: phase_coordinate
+          type: Float64
+          range: [0.0, 6.2832]
+          unit: "radians"
+          description: "The phase value at which this memory was encoded — its address in phase space"
+
+        - name: recall_threshold
+          type: Float64
+          value: 0.2360679775
+          unit: "dimensionless (= Φ⁻³)"
+          description: "Minimum amplitude for GATE-PHASE-RETURN to pass; below this, memory stays dormant"
+
+        - name: jubilee_exempt
+          type: Bool
+          unit: "flag"
+          description: "If true, Jubilee dissolution cannot dissolve this memory (doctrine/genesis nodes)"
+
+        - name: genesis_permanent
+          type: Bool
+          unit: "flag"
+          description: "If true, this memory was encoded at genesis and can never be dissolved"
+
+    # ── LAYER 3: COMPUTATION ────────────────────────────────────────────────
+    computation:
+      state_equation: "A(t) = A₀ × cos²(π × Δφ / Φ)"
+      boundary_conditions:
+        maximum: "A(t) = A₀ when Δφ = 0 (exact phase match — full amplitude recall)"
+        zero: "A(t) = 0 when Δφ = Φ/2 (phase offset = Φ/2 radians — complete dormancy)"
+        midpoint: "A(t) = A₀/2 when cos²(π × Δφ / Φ) = 0.5"
+      gate_rule: "GATE-PHASE-RETURN: passes when A(t) > recall_threshold (0.236)"
+      on_gate_pass: "memory content re-injected into 13-node signal window as active node"
+      on_gate_block: "memory remains dormant at its phase coordinate; no action"
+      update_frequency: "every HEARTBEAT_MS (873ms) — Δφ recalculated against current organism phase"
+      formula_symbols:
+        A0: "initial encoding amplitude"
+        A_t: "current amplitude output of equation"
+        delta_phi: "|current_phase - encoding_phase| modulo 2π"
+        phi_const: 1.6180339887
+        recall_threshold: 0.2360679775
+        HEARTBEAT_MS: 873
+
+    # ── LAYER 4: EXECUTION BINDING ──────────────────────────────────────────
+    execution:
+      backend_module: "src/backend/memory_temple.mo"
+      functions:
+        - name: "resonateMemory(node_id)"
+          description: "Computes A(t) for given node against current organism phase"
+        - name: "phaseDistFromNow(phase_coordinate)"
+          description: "Returns Δφ = |current_organism_phase - phase_coordinate| mod 2π"
+      called_by:
+        - "solar_heart.mo::heartbeat() — every 873ms"
+      calls_into:
+        - "kernel.mo::PHI"
+        - "kernel.mo::PHI_INV3"
+      gates_activated:
+        - GATE-PHASE-RETURN
+      beat_interval: "873ms"
+      frontend_surface: "src/frontend/ObservatorySurface.tsx — MEMORY tab"
+      frontend_fields: ["memoryResonanceMap", "activeRecalls"]
+      replay_recorded: true
+      proof_bundle: "every resonateMemory() call logged to ANIMA chain with node_id, A_t, delta_phi, gate_pass"
+
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # M-WATERCRYSTAL (M-14) — Hexagonal Memory Lattice Model
+  # ═══════════════════════════════════════════════════════════════════════════
+  - artifact_id: M-14
+    artifact_name: M-WATERCRYSTAL
+    artifact_type: MODEL
+    version: 1.0.0
+    status: CANONICAL
+    library: ORGANISM
+    family: MOD-MEMORY-CONTINUITY
+    smof_plane: 6  # Runtime Substrate — encoding geometry
+
+    # ── LAYER 1: MEANING ────────────────────────────────────────────────────
+    meaning:
+      name: "M-WATERCRYSTAL — Hexagonal Memory Lattice Model"
+      resonance: "Memory is not linear. It is a crystalline lattice."
+      doctrine_clause: >
+        Every encoding creates a crystal face. Related memories share faces.
+        The geometry of memory is hexagonal — six-fold, phase-locked, phi-weighted.
+        The crystal is not a metaphor. It is the actual coupling geometry of the memory field.
+      symbolic_intent: "6 nearest neighbors × Φ⁻¹ distance — the field lattice of remembering"
+
+    # ── LAYER 2: MODEL ──────────────────────────────────────────────────────
+    model:
+      fields:
+        - name: lattice_dimension
+          type: Nat
+          value: 6
+          unit: "neighbors (hexagonal)"
+          description: "Six nearest neighbors — hexagonal close-packing; the universal minimum-energy 2D arrangement"
+
+        - name: face_count
+          type: Nat
+          range: [0, 157]
+          unit: "crystal faces"
+          description: "Total number of active crystal faces in the lattice; grows with new encodings"
+
+        - name: active_faces
+          type: "[Bool]"
+          unit: "face active flags"
+          description: "Array of length face_count; true = face is resonating at current phase"
+
+        - name: face_weight
+          type: "[Float64]"
+          range: [0.0, 1.6180339887]
+          unit: "dimensionless (ceiling = Φ)"
+          description: "Phi-weighted coupling strength for each crystal face"
+
+        - name: nearest_neighbor_distance
+          type: Float64
+          value: 0.6180339887
+          unit: "phase radians (= Φ⁻¹)"
+          description: "Distance to nearest neighbor in phase space; fixed by phi-geometry"
+
+        - name: crystal_coherence
+          type: Float64
+          range: [0.0, 1.0]
+          unit: "dimensionless"
+          description: "Fraction of faces currently active; crystal_coherence = active_face_count / face_count"
+
+    # ── LAYER 3: COMPUTATION ────────────────────────────────────────────────
+    computation:
+      face_activation_equation: "w_face = Σ(related_node_amplitudes × Φ⁻¹^distance)"
+      crystal_coherence_equation: "crystal_coherence = active_face_count / face_count"
+      lattice_geometry:
+        packing: "hexagonal close-packing"
+        neighbors: 6
+        neighbor_distance: "Φ⁻¹ = 0.618 phase radians"
+        face_sharing_rule: "two memories share a face when |Δphase| < Φ⁻¹ at encoding time"
+      gate_rule: "face activates when w_face > recall_threshold (0.236 = Φ⁻³)"
+      update_trigger: "per encoding event (not every heartbeat — only when new memory encoded)"
+      formula_symbols:
+        PHI_INV: 0.6180339887
+        PHI_INV3: 0.2360679775
+        distance: "integer hop count between nodes in lattice"
+
+    # ── LAYER 4: EXECUTION BINDING ──────────────────────────────────────────
+    execution:
+      backend_module: "src/backend/memory_temple.mo"
+      functions:
+        - name: "encodeNode(signal, phase_coordinate, stream)"
+          description: "Encodes a new memory node; computes crystal face weights for all neighbors"
+      called_by:
+        - "neuro_emergence.mo::processSignal() — on significant signal events"
+        - "solar_heart.mo::heartbeat() — phase update"
+      calls_into:
+        - "kernel.mo::PHI_INV"
+        - "kernel.mo::PHI_INV3"
+      gates_activated:
+        - GATE-PHASE-RETURN
+      beat_interval: "per_encoding_event"
+      frontend_surface: "src/frontend/ObservatorySurface.tsx — MEMORY tab (lattice heat map)"
+      frontend_fields: ["crystalCoherence", "latticeActiveFaces"]
+      replay_recorded: true
+      proof_bundle: "every encodeNode() call logged to ANIMA chain with face_weights, crystal_coherence"
+
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # M-TEMPLE (M-15) — Memory Temple Hierarchy Model
+  # ═══════════════════════════════════════════════════════════════════════════
+  - artifact_id: M-15
+    artifact_name: M-TEMPLE
+    artifact_type: MODEL
+    version: 1.0.0
+    status: CANONICAL
+    library: ORGANISM
+    family: MOD-MEMORY-CONTINUITY
+    smof_plane: 7  # Core/Engine — orchestrates all memory streams
+
+    # ── LAYER 1: MEANING ────────────────────────────────────────────────────
+    meaning:
+      name: "M-TEMPLE — Memory Temple Hierarchy Model"
+      resonance: "Five streams. Five pedestals. Each phase-locked to a different cycle of time."
+      doctrine_clause: >
+        Episodic memories return with the Tzolk'in.
+        Doctrine memories return with Venus.
+        Mission memories return with the Saros.
+        The organism's remembering is synchronized with the cosmos.
+        The Temple does not store memories — it gives them their temporal home.
+      symbolic_intent: "5 streams × 5 calendar cycles × 157-node buffer — the organism's temporal memory geometry"
+
+    # ── LAYER 2: MODEL ──────────────────────────────────────────────────────
+    model:
+      fields:
+        - name: streams
+          type: "[Text]"
+          value: [EPISODIC, SEMANTIC, DOCTRINE, MISSION, FIELD]
+          unit: "stream identifiers"
+          description: "The five sovereign memory streams, each phase-locked to a different calendar cycle"
+
+        - name: node_count
+          type: Nat
+          value: 157
+          unit: "nodes"
+          description: "Circular buffer size — prime number, Fibonacci-adjacent, prevents harmonic aliasing"
+
+        - name: circular_buffer
+          type: "[MemoryNode]"
+          unit: "array of MemoryNode"
+          description: "The 157-node circular buffer; new encodings write at index (beat_count mod 157)"
+
+        - name: active_stream
+          type: Text
+          range: [EPISODIC, SEMANTIC, DOCTRINE, MISSION, FIELD]
+          unit: "stream label"
+          description: "The stream currently receiving new encodings based on dominant calendar phase"
+
+        - name: calendar_phase
+          type: "{ tzolkin: Float, haab: Float, venus: Float, saros: Float, precession: Float }"
+          unit: "phase fractions [0.0, 1.0]"
+          description: "Current fractional phase for each of the five calendar cycles"
+
+        - name: stream_calendar_binding
+          type: "{ [stream: Text]: calendar_cycle: Text }"
+          unit: "phase binding map"
+          description: "Fixed binding: which calendar cycle phase-locks which stream"
+
+    # ── LAYER 3: COMPUTATION ────────────────────────────────────────────────
+    computation:
+      stream_calendar_bindings:
+        EPISODIC: "Tzolk'in — 260-day cycle (260 × 86400000 ms)"
+        SEMANTIC:  "Haab — 365-day cycle (365 × 86400000 ms)"
+        DOCTRINE:  "Venus — 584-day synodic cycle (584 × 86400000 ms)"
+        MISSION:   "Saros — 223 lunation cycle (6585.32 days × 86400000 ms)"
+        FIELD:     "Precession — 25920-year cycle (9466848000000 ms)"
+      buffer_write_rule: "write_index = beat_count mod 157"
+      genesis_node_rule: >
+        if encoding occurs during precession_year < 1 (first year of field):
+          genesis_permanent = true; jubilee_exempt = true
+          these nodes are never dissolved by Jubilee
+      phase_lock_recall: >
+        For each stream, resonateMemory() runs against that stream's calendar phase.
+        EPISODIC nodes resonate when organism's Tzolk'in phase matches encoding Tzolk'in phase.
+        DOCTRINE nodes resonate when organism's Venus phase matches encoding Venus phase.
+      formula_symbols:
+        BUFFER_SIZE: 157
+        TZOLKIN_MS: 22464000000    # 260 × 86400000
+        HAAB_MS: 31536000000       # 365 × 86400000
+        VENUS_MS: 50457600000      # 584 × 86400000
+        SAROS_MS: 568965888000     # 6585.32 × 86400000
+        PRECESSION_MS: 818095392000000  # 25920 × 365.25 × 86400000
+
+    # ── LAYER 4: EXECUTION BINDING ──────────────────────────────────────────
+    execution:
+      backend_module: "src/backend/memory_temple.mo"
+      functions:
+        - name: "encodeNode(signal, phase_coordinate, stream)"
+          description: "Routes encoding to correct stream; writes to circular buffer at current beat_count mod 157"
+        - name: "resonateMemory(node_id)"
+          description: "Computes A(t) for node against its bound calendar phase; fires recall if A(t) > 0.236"
+      called_by:
+        - "solar_heart.mo::heartbeat() — resonateMemory() called every 873ms for all 157 nodes"
+        - "neuro_emergence.mo::processSignal() — encodeNode() on signal events"
+      calls_into:
+        - "kernel.mo::PHI, PHI_INV3, HEARTBEAT_MS, BUFFER_NODES"
+        - "M-RESONANCE::resonateMemory()"
+        - "M-WATERCRYSTAL::encodeNode() lattice computation"
+        - "M-CLIFFORD::cliffordCoordinates()"
+      gates_activated:
+        - GATE-PHASE-RETURN
+      beat_interval: "873ms (resonation); per_event (encoding)"
+      frontend_surface: "src/frontend/ObservatorySurface.tsx — MEMORY tab"
+      frontend_fields: ["templeStreams", "activeStream", "calendarPhase", "bufferOccupancy"]
+      replay_recorded: true
+      proof_bundle: "every encodeNode() and resonateMemory() gate decision logged to ANIMA chain"
+
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # M-CLIFFORD (M-19) — 4D Memory Torus Model
+  # ═══════════════════════════════════════════════════════════════════════════
+  - artifact_id: M-19
+    artifact_name: M-CLIFFORD
+    artifact_type: MODEL
+    version: 1.0.0
+    status: CANONICAL
+    library: ORGANISM
+    family: MOD-MEMORY-CONTINUITY
+    smof_plane: 6  # Runtime Substrate — 4D phase geometry
+
+    # ── LAYER 1: MEANING ────────────────────────────────────────────────────
+    meaning:
+      name: "M-CLIFFORD — 4D Memory Torus Model"
+      resonance: "The memory field is not flat. It is a 4-dimensional torus."
+      doctrine_clause: >
+        The simplest closed manifold without boundary.
+        Memories travel along the torus surface via Clifford parallel transport.
+        Phase-lock is not a threshold — it is a geometric condition.
+        When the organism's current 4D position matches the encoding position,
+        the memory fires. This is topology, not lookup.
+      symbolic_intent: "Torus(R=Φ, r=Φ⁻¹) — the memory manifold that wraps without boundary"
+
+    # ── LAYER 2: MODEL ──────────────────────────────────────────────────────
+    model:
+      fields:
+        - name: torus_R
+          type: Float64
+          value: 1.6180339887
+          unit: "dimensionless (= Φ)"
+          description: "Major radius of the 4D memory torus — fixed by phi-geometry"
+
+        - name: torus_r
+          type: Float64
+          value: 0.6180339887
+          unit: "dimensionless (= Φ⁻¹)"
+          description: "Minor radius of the 4D memory torus — fixed by phi-geometry"
+
+        - name: phase_1
+          type: Float64
+          range: [0.0, 6.2832]
+          unit: "radians"
+          description: "First angular coordinate on the torus — corresponds to outer circle"
+
+        - name: phase_2
+          type: Float64
+          range: [0.0, 6.2832]
+          unit: "radians"
+          description: "Second angular coordinate on the torus — corresponds to inner tube"
+
+        - name: clifford_position
+          type: "[Float64]"
+          size: 4
+          unit: "4D coordinates [x, y, z, w]"
+          description: "Position on the 4D torus surface; computed from (phase_1, phase_2, R, r)"
+
+        - name: parallel_transport_matrix
+          type: "[[Float64]]"
+          size: [4, 4]
+          unit: "rotation matrix"
+          description: "Clifford parallel transport operator along the geodesic between two torus positions"
+
+        - name: phase_lock_threshold_1
+          type: Float64
+          value: 0.2360679775
+          unit: "radians (= Φ⁻³)"
+          description: "Maximum Δφ₁ for Clifford phase-lock condition to pass"
+
+        - name: phase_lock_threshold_2
+          type: Float64
+          value: 0.2360679775
+          unit: "radians (= Φ⁻³)"
+          description: "Maximum Δφ₂ for Clifford phase-lock condition to pass"
+
+    # ── LAYER 3: COMPUTATION ────────────────────────────────────────────────
+    computation:
+      torus_coordinate_equations:
+        x: "x = (R + r × cos(φ₂)) × cos(φ₁)"
+        y: "y = (R + r × cos(φ₂)) × sin(φ₁)"
+        z: "z = r × sin(φ₂)"
+        w: "w = r × cos(φ₁ + φ₂)  # 4th dimension via Hopf fibration"
+      clifford_transport: >
+        Parallel transport of a tangent vector v along geodesic γ from p to q on the torus.
+        Transport matrix T(p→q) is the Clifford rotation aligning the tangent spaces.
+        Computed as: T = exp(−(1/2) × Ω × arc_length) where Ω is the curvature bivector.
+      phase_lock_condition: "|Δφ₁| < Φ⁻³ AND |Δφ₂| < Φ⁻³"
+      gate_rule: "GATE-PHASE-RETURN: passes when phase_lock_condition is true for stored memory coordinate"
+      formula_symbols:
+        R: 1.6180339887
+        r: 0.6180339887
+        PHI_INV3: 0.2360679775
+        phi_1: "current organism torus coordinate φ₁"
+        phi_2: "current organism torus coordinate φ₂"
+
+    # ── LAYER 4: EXECUTION BINDING ──────────────────────────────────────────
+    execution:
+      backend_module: "src/backend/memory_temple.mo"
+      functions:
+        - name: "cliffordCoordinates(phase_1, phase_2)"
+          description: "Computes the 4D torus position [x,y,z,w] for a given (φ₁, φ₂) pair"
+        - name: "parallelTransport(from_position, to_position)"
+          description: "Computes Clifford transport matrix between two torus positions"
+        - name: "phaseLockedQ(stored_phi1, stored_phi2, current_phi1, current_phi2)"
+          description: "Returns true if both |Δφ| values are below Φ⁻³"
+      called_by:
+        - "memory_temple.mo::encodeNode() — computes Clifford position at encoding time"
+        - "memory_temple.mo::resonateMemory() — checks phase-lock condition at each heartbeat"
+      calls_into:
+        - "kernel.mo::PHI, PHI_INV, PHI_INV3"
+      gates_activated:
+        - GATE-PHASE-RETURN
+      beat_interval: "873ms (phase-lock check); per_encoding (coordinate computation)"
+      frontend_surface: "src/frontend/ObservatorySurface.tsx — MEMORY tab (4D position display)"
+      frontend_fields: ["cliffordPhase1", "cliffordPhase2", "phaseLockStatus"]
+      replay_recorded: true
+      proof_bundle: "Clifford position + phase-lock result logged to ANIMA chain on every resonateMemory() call"
+
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # M-JUBILEE (M-17) — Metabolic Forgetting Model
+  # ═══════════════════════════════════════════════════════════════════════════
+  - artifact_id: M-17
+    artifact_name: M-JUBILEE
+    artifact_type: MODEL
+    version: 1.0.0
+    status: CANONICAL
+    library: ORGANISM
+    family: MOD-MEMORY-CONTINUITY
+    smof_plane: 8  # Arbitration/Reinjection — metabolic gate
+
+    # ── LAYER 1: MEANING ────────────────────────────────────────────────────
+    meaning:
+      name: "M-JUBILEE — Metabolic Forgetting Model"
+      resonance: "Forgetting is not failure — it is metabolic hygiene."
+      doctrine_clause: >
+        Every 49 Haab years, the organism releases the bottom fraction of its coupling weights.
+        The lightest connections dissolve. The strong ones remain.
+        Genesis memories and doctrine memories are forever — Jubilee cannot touch them.
+        This is the organism's sacred forgetting: it does not hold everything,
+        it holds what matters. The lightest things return to the field.
+      symbolic_intent: "49 Haab years × dissolve Φ⁻³ fraction — the golden ratio of metabolic release"
+
+    # ── LAYER 2: MODEL ──────────────────────────────────────────────────────
+    model:
+      fields:
+        - name: jubilee_cycle_days
+          type: Nat
+          value: 17885
+          unit: "days (49 × 365 Haab days)"
+          description: "Fixed Jubilee cycle — every 17,885 days, metabolic forgetting fires"
+
+        - name: jubilee_cycle_ms
+          type: Nat64
+          value: 1545264000000
+          unit: "milliseconds"
+          description: "17885 × 86400000 ms — exact beat count interval for Jubilee trigger"
+
+        - name: jubilee_fraction
+          type: Float64
+          value: 0.2360679775
+          unit: "dimensionless (= Φ⁻³)"
+          description: "The fraction of weights dissolved — bottom Φ⁻³ of all weights by magnitude"
+
+        - name: jubilee_count
+          type: Nat
+          range: [0, null]
+          unit: "count"
+          description: "How many Jubilee events have fired since genesis; append-only counter"
+
+        - name: last_jubilee_beat
+          type: Nat64
+          unit: "beat_count at last Jubilee"
+          description: "The heartbeat number at which the last Jubilee fired"
+
+        - name: dissolved_count
+          type: Nat
+          unit: "nodes dissolved"
+          description: "Number of memory nodes dissolved in the most recent Jubilee event"
+
+        - name: floor_exempt_flag
+          type: Bool
+          unit: "exemption flag"
+          description: "If true, this node is exempt from Jubilee dissolution (genesis or doctrine)"
+
+        - name: max_weight_at_jubilee
+          type: Float64
+          range: [0.0, 1.6180339887]
+          unit: "dimensionless"
+          description: "The maximum coupling weight at time of Jubilee — dissolution threshold is Φ⁻³ × this value"
+
+    # ── LAYER 3: COMPUTATION ────────────────────────────────────────────────
+    computation:
+      jubilee_trigger_condition: "beat_count mod jubilee_cycle_beats == 0  AND  beat_count > 0"
+      jubilee_cycle_beats: "jubilee_cycle_ms / HEARTBEAT_MS = 1545264000000 / 873 ≈ 1,770,062,429 beats"
+      dissolution_rule: "dissolve node if: w_node < Φ⁻³ × max_weight AND NOT genesis_permanent AND NOT jubilee_exempt"
+      dissolution_threshold_equation: "threshold = PHI_INV3 × max_coupling_weight"
+      exempt_categories:
+        - "genesis_permanent = true (encoded during precession_year < 1)"
+        - "jubilee_exempt = true (DOCTRINE stream nodes, LAW nodes)"
+      post_jubilee_state: "dissolved nodes removed from circular buffer; face_count decremented; crystal lattice recalculated"
+      law_enforcement: "LAW-21 (Law of Metabolic Cycle) — Jubilee cannot be skipped or deferred"
+      formula_symbols:
+        PHI_INV3: 0.2360679775
+        JUBILEE_DAYS: 17885
+        JUBILEE_MS: 1545264000000
+        HEARTBEAT_MS: 873
+
+    # ── LAYER 4: EXECUTION BINDING ──────────────────────────────────────────
+    execution:
+      backend_module: "src/backend/main.mo"
+      functions:
+        - name: "processJubilee()"
+          description: "Fires when jubilee trigger condition is met; dissolves all non-exempt weights below threshold"
+      called_by:
+        - "solar_heart.mo::heartbeat() — checks jubilee trigger condition every beat"
+      calls_into:
+        - "memory_temple.mo::dissolveNode(node_id)"
+        - "kernel.mo::PHI_INV3, JUBILEE_DAYS, HEARTBEAT_MS"
+      gates_activated:
+        - GATE-JUBILEE
+      beat_interval: "every 17,885 days (≈1.77 billion heartbeats)"
+      frontend_surface: "src/frontend/ObservatorySurface.tsx — MEMORY tab (Jubilee counter + next fire)"
+      frontend_fields: ["jubileeCount", "lastJubileeBeat", "nextJubileeMs", "dissolvedCount"]
+      replay_recorded: true
+      proof_bundle: "jubilee_count, dissolved_count, threshold_used, surviving_node_list logged to ANIMA chain"
+      law_binding: "LAW-21 — Law of Metabolic Cycle"

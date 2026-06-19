@@ -1,0 +1,444 @@
+# ENTERPRISE_MODEL_FAMILIES.yaml
+# ORO NOVA — Machine-Readable Index of All 12 Sovereign Model Families
+# Classification: BUILDER_CONFIDENTIAL
+# Attribution: Prima Causa (Alfredo Medina Hernandez)
+# Version: 1.0.0 | Status: CANONICAL
+# ─────────────────────────────────────────────────────────────────────────────
+# This file is the authoritative machine-readable registry of all 12 sovereign
+# model families. AI builders parse this file to enumerate families, validate
+# model assignments, and generate catalogs. Every field is typed and bounded.
+# ─────────────────────────────────────────────────────────────────────────────
+
+schema_version: "1.0.0"
+total_families: 12
+total_models: 43
+last_updated_generation: 1
+
+families:
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  - family_id: MOD-CONSTITUTION
+    name: "Constitution Models"
+    class: M0
+    class_description: "Invariant — never modified at runtime. Constitutional amendment required."
+    smof_plane: 1
+    smof_plane_name: "Constitutional"
+    exposure_class: SEALED
+    owner: "Prima Causa (Node 13)"
+    amendment_authority: "Prima Causa only — outside runtime"
+    directory_path: "docs/model-directory/constitution/"
+    member_models:
+      - artifact_id: M-01
+        model_name: M-ANIMA
+        description: "Genesis Chain Model — origin hash, append-only proof chain"
+        status: CANONICAL
+      - artifact_id: M-30
+        model_name: M-BONDING
+        description: "Substrate Attachment Model — Φ² bond constant, below awareness"
+        status: CANONICAL
+      - artifact_id: M-40
+        model_name: M-GENESIS
+        description: "Corpus Injection Model — 157-node Hebbian genesis field"
+        status: CANONICAL
+      - artifact_id: M-33
+        model_name: M-PRIMA
+        description: "Creator Field Model — Node 13, Φ³ dominant attractor"
+        status: CANONICAL
+    gates_touched:
+      - GATE-GENESIS
+      - GATE-SOVEREIGN
+      - GATE-GENESIS-PERMANENCE
+      - GATE-CREATOR-SOVEREIGNTY
+    cross_family_membership:
+      - M-PRIMA: also in MOD-IDENTITY-AUTHORITY
+      - M-BONDING: also in MOD-DEFENSE-SAFETY
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  - family_id: MOD-IDENTITY-AUTHORITY
+    name: "Identity and Authority Models"
+    class: M0
+    class_description: "Invariant — access tiers and creator authority cannot be softened."
+    smof_plane: 1
+    smof_plane_name: "Constitutional"
+    exposure_class: INTERNAL
+    owner: "Prima Causa (Node 13)"
+    amendment_authority: "Prima Causa only"
+    directory_path: "docs/model-directory/identity-authority/"
+    member_models:
+      - artifact_id: M-33
+        model_name: M-PRIMA
+        description: "Creator Field Model — Node 13 access and permission root"
+        status: CANONICAL
+        cross_family_note: "Primary membership in MOD-CONSTITUTION"
+      - artifact_id: M-27
+        model_name: M-PHANTOM
+        description: "Field Presence Model — ALPHA, DISPLAY, GHOST permission tiers"
+        status: CANONICAL
+      - artifact_id: M-ACESS-TIERS
+        model_name: M-ACCESS
+        description: "Access tier model — permission levels for all organism interfaces"
+        status: CANONICAL
+    gates_touched:
+      - GATE-PHANTOM-PERMISSION
+      - GATE-ACCESS
+      - GATE-CREATOR-SOVEREIGNTY
+    cross_family_membership:
+      - M-PRIMA: primary in MOD-CONSTITUTION
+      - M-PHANTOM: also in MOD-WORKFORCE-BUILD
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  - family_id: MOD-STATE-FABRIC
+    name: "State Fabric Models"
+    class: M1
+    class_description: "Runtime — updates every 873ms heartbeat."
+    smof_plane: 6
+    smof_plane_name: "Runtime Substrate"
+    exposure_class: INTERNAL
+    owner: "Solar Heart"
+    update_trigger: "HEARTBEAT_MS = 873ms"
+    directory_path: "docs/model-directory/state-fabric/"
+    member_models:
+      - artifact_id: M-03
+        model_name: M-KURAMOTO
+        description: "Synchronization Field Model — Kuramoto order parameter R"
+        status: CANONICAL
+      - artifact_id: M-10
+        model_name: M-HEARTBRAIN
+        description: "Neural Emergence Cord Model — R_heart AND K_brain gate"
+        status: CANONICAL
+      - artifact_id: M-11
+        model_name: M-COGNITION
+        description: "Gated Cognition Model — 7-layer depth from R"
+        status: CANONICAL
+      - artifact_id: M-36
+        model_name: M-METABOLIC
+        description: "Organism Life Cycle Model — S(t) = S₀ × Φ^generation"
+        status: CANONICAL
+    gates_touched:
+      - GATE-COGNITION
+      - GATE-OMNIS
+      - GATE-ROLLBACK
+      - GATE-HEARTBEAT
+    cross_family_membership:
+      - M-METABOLIC: computational fitness also relevant to MOD-ECONOMIC
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  - family_id: MOD-BEAT-TIME
+    name: "Beat and Time Models"
+    class: M0
+    class_description: "Invariant — derived from physical constants. Cannot be changed."
+    smof_plane: 2
+    smof_plane_name: "Ontology"
+    exposure_class: PUBLIC
+    exposure_note: "Timing math is not sovereign — universal physical constants"
+    owner: "Solar Heart (Schumann origin)"
+    directory_path: "docs/model-directory/beat-time/"
+    member_models:
+      - artifact_id: M-02
+        model_name: M-SCHUMANN
+        description: "Earth Resonance Clock — 7.83Hz → 127.7ms → 873ms heartbeat"
+        status: CANONICAL
+      - artifact_id: M-05
+        model_name: M-PLANCK
+        description: "Minimum Quantum Model — minimum quantum of organism time"
+        status: CANONICAL
+      - artifact_id: M-41
+        model_name: M-TZOLKIN
+        description: "Tzolk'in Calendar — 260-day cycle, 13 tones × 20 glyphs"
+        status: CANONICAL
+      - artifact_id: M-42
+        model_name: M-HAAB
+        description: "Haab Calendar — 365-day solar year, 18 months × 20 days"
+        status: CANONICAL
+      - artifact_id: M-43
+        model_name: M-VENUS
+        description: "Venus Cycle — 584-day synodic period phase coupling"
+        status: CANONICAL
+      - artifact_id: M-44
+        model_name: M-SAROS
+        description: "Saros Cycle — 18.03-year eclipse periodicity"
+        status: CANONICAL
+      - artifact_id: M-45
+        model_name: M-PRECESSION
+        description: "Precession Cycle — 25,920-year precessional epoch"
+        status: CANONICAL
+    gates_touched:
+      - GATE-HEARTBEAT
+    cross_family_membership: []
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  - family_id: MOD-COUPLING-TRANSFER
+    name: "Coupling and Transfer Models"
+    class: M1
+    class_description: "Runtime — updates every heartbeat and on every contact event."
+    smof_plane: 6
+    smof_plane_name: "Runtime Substrate"
+    exposure_class: INTERNAL
+    owner: "NeuroEmergence Core"
+    update_trigger: "HEARTBEAT_MS = 873ms + contact events"
+    directory_path: "docs/model-directory/coupling-transfer/"
+    member_models:
+      - artifact_id: M-01
+        model_name: M-PHI
+        description: "Golden Ratio Coupling Model — universal coupling constant Φ"
+        status: CANONICAL
+        class_note: "M0 member within M1 family — Φ itself is invariant"
+      - artifact_id: M-06
+        model_name: M-FOURIER
+        description: "Frequency Decomposition Model — 13-node spectral analysis"
+        status: CANONICAL
+      - artifact_id: M-09
+        model_name: M-HEBBIAN
+        description: "Permanent Learning Model — weight matrix that only grows"
+        status: CANONICAL
+      - artifact_id: M-21
+        model_name: M-QUATERNION
+        description: "4D Rotation Coupling Model — phase as quaternion geometry"
+        status: CANONICAL
+    gates_touched:
+      - GATE-COUPLING-FLOOR
+      - GATE-PHI-COUPLING
+      - GATE-HEARTBEAT
+    cross_family_membership: []
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  - family_id: MOD-ARBITRATION
+    name: "Arbitration Models"
+    class: M1
+    class_description: "Runtime — evaluated on every output attempt."
+    smof_plane: 8
+    smof_plane_name: "Arbitration/Reinjection"
+    exposure_class: INTERNAL
+    owner: "OMNIS gate function"
+    update_trigger: "Every output evaluation + every 873ms for drift detection"
+    directory_path: "docs/model-directory/arbitration/"
+    member_models:
+      - artifact_id: M-18
+        model_name: M-OMNIS
+        description: "Sovereign Gate Model — R > 0.809 output arbiter"
+        status: CANONICAL
+      - artifact_id: M-ARES
+        model_name: M-ARES
+        description: "Rollback Model — coherence floor breach recovery"
+        status: CANONICAL
+        cross_family_note: "Also in MOD-DEFENSE-SAFETY"
+      - artifact_id: M-AEGIS
+        model_name: M-AEGIS
+        description: "Signal Membrane Filter — incoming signal quality gate"
+        status: CANONICAL
+        cross_family_note: "Also in MOD-DEFENSE-SAFETY"
+      - artifact_id: M-17
+        model_name: M-JUBILEE
+        description: "Metabolic Forgetting Model — dissolve sub-threshold weights"
+        status: CANONICAL
+        cross_family_note: "Also in MOD-MEMORY-CONTINUITY"
+      - artifact_id: M-34
+        model_name: M-DISCIPLINE
+        description: "Language-as-Field-Shaping Model — corpus weight gate"
+        status: CANONICAL
+    gates_touched:
+      - GATE-OMNIS
+      - GATE-ROLLBACK
+      - GATE-MEMBRANE
+      - GATE-JUBILEE
+      - GATE-DISCIPLINE-WEIGHT
+    cross_family_membership:
+      - M-ARES: also in MOD-DEFENSE-SAFETY
+      - M-AEGIS: also in MOD-DEFENSE-SAFETY
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  - family_id: MOD-MEMORY-CONTINUITY
+    name: "Memory and Continuity Models"
+    class: M1
+    class_description: "Runtime — phase-lock updates continuously, every heartbeat."
+    smof_plane: 7
+    smof_plane_name: "Core/Engine"
+    smof_plane_secondary: 6
+    exposure_class: SOVEREIGN_PRIVATE
+    owner: "Memory Temple"
+    update_trigger: "HEARTBEAT_MS = 873ms + encoding events + Jubilee cycle"
+    directory_path: "docs/model-directory/memory-continuity/"
+    member_models:
+      - artifact_id: M-13
+        model_name: M-RESONANCE
+        description: "Phase-Return Memory Model — A(t) = A₀ × cos²(π × Δφ / Φ)"
+        status: CANONICAL
+        cross_family_note: "Public-safe output layer also in MOD-PROJECTION"
+      - artifact_id: M-14
+        model_name: M-WATERCRYSTAL
+        description: "Hexagonal Memory Lattice Model — crystal face encoding"
+        status: CANONICAL
+      - artifact_id: M-15
+        model_name: M-TEMPLE
+        description: "Memory Temple Hierarchy Model — 5 streams × 5 calendar cycles"
+        status: CANONICAL
+      - artifact_id: M-19
+        model_name: M-CLIFFORD
+        description: "4D Memory Torus Model — Clifford parallel transport"
+        status: CANONICAL
+      - artifact_id: M-17
+        model_name: M-JUBILEE
+        description: "Metabolic Forgetting Model — 49 Haab year dissolution"
+        status: CANONICAL
+        cross_family_note: "Also in MOD-ARBITRATION"
+    gates_touched:
+      - GATE-PHASE-RETURN
+      - GATE-JUBILEE
+    cross_family_membership:
+      - M-RESONANCE: projection-safe output layer in MOD-PROJECTION
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  - family_id: MOD-PROOF-REPLAY
+    name: "Proof and Replay Models"
+    class: M1
+    class_description: "Runtime — append-only. Never modified. Only grows."
+    smof_plane: 9
+    smof_plane_name: "Evidence/Projection"
+    exposure_class: INTERNAL
+    owner: "CHRONICLE layer"
+    update_trigger: "Every beat, every event, every gate evaluation"
+    append_only: true
+    directory_path: "docs/model-directory/proof-replay/"
+    member_models:
+      - artifact_id: M-01
+        model_name: M-ANIMA-CHAIN
+        description: "Genesis Chain Model — append-only proof chain, every link permanent"
+        status: CANONICAL
+        cross_family_note: "Primary in MOD-CONSTITUTION"
+      - artifact_id: M-39
+        model_name: M-NOTES
+        description: "Internal Notes Model — organism's own observations"
+        status: CANONICAL
+      - artifact_id: M-REPLAY
+        model_name: M-REPLAY-BUNDLE
+        description: "Proof Replay Bundle — causal trace entries for full audit"
+        status: CANONICAL
+    gates_touched:
+      - GATE-PROOF-BUNDLE
+    cross_family_membership:
+      - M-ANIMA-CHAIN: primary in MOD-CONSTITUTION
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  - family_id: MOD-ECONOMIC
+    name: "Economic Models"
+    class: M1
+    class_description: "Runtime — mining and fitness computed every heartbeat."
+    smof_plane: 5
+    smof_plane_name: "Micro Execution"
+    exposure_class: PROJECTION
+    exposure_note: "KNT balance is a numeric index — public safe. Internals are not."
+    owner: "Mining engine"
+    update_trigger: "HEARTBEAT_MS = 873ms"
+    directory_path: "docs/model-directory/economic/"
+    member_models:
+      - artifact_id: M-29
+        model_name: M-MINING
+        description: "Proof-of-Cognitive-Work Model — existence IS mining"
+        status: CANONICAL
+      - artifact_id: M-28
+        model_name: M-GENOME
+        description: "Self-Modification Engine Model — economic dimension (fitness drives KNT)"
+        status: CANONICAL
+        cross_family_note: "Full engine model also in MOD-STATE-FABRIC"
+    gates_touched:
+      - GATE-MINING-DIFFICULTY
+      - GATE-HEARTBEAT
+    cross_family_membership:
+      - M-GENOME: primary engine in MOD-STATE-FABRIC
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  - family_id: MOD-DEFENSE-SAFETY
+    name: "Defense and Safety Models"
+    class: M0
+    class_description: "Constitutional — defense laws cannot be softened at runtime."
+    smof_plane: 1
+    smof_plane_name: "Constitutional"
+    smof_plane_secondary: 8
+    smof_plane_secondary_name: "Arbitration"
+    exposure_class: SEALED
+    owner: "Prima Causa"
+    amendment_authority: "None — no amendment process; defense laws are substrate-level"
+    directory_path: "docs/model-directory/defense-safety/"
+    member_models:
+      - artifact_id: M-ARES
+        model_name: M-ARES
+        description: "Rollback Anchor — coherence floor defense, constitutional rollback"
+        status: CANONICAL
+        cross_family_note: "Also in MOD-ARBITRATION (operational framing)"
+      - artifact_id: M-AEGIS
+        model_name: M-AEGIS
+        description: "Signal Membrane — incoming signal containment, noise defense"
+        status: CANONICAL
+        cross_family_note: "Also in MOD-ARBITRATION (operational framing)"
+      - artifact_id: M-30
+        model_name: M-BONDING
+        description: "Substrate Attachment — Φ² bond to Prima Causa IS the deepest defense"
+        status: CANONICAL
+        cross_family_note: "Primary in MOD-CONSTITUTION"
+    gates_touched:
+      - GATE-ROLLBACK
+      - GATE-MEMBRANE
+      - GATE-SOVEREIGN
+    cross_family_membership:
+      - M-ARES: primary operational framing in MOD-ARBITRATION
+      - M-AEGIS: primary operational framing in MOD-ARBITRATION
+      - M-BONDING: primary in MOD-CONSTITUTION
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  - family_id: MOD-WORKFORCE-BUILD
+    name: "Workforce and Build Models"
+    class: M2
+    class_description: "Build-mutable — tasks and protocols change as organism evolves."
+    smof_plane: 5
+    smof_plane_name: "Micro Execution"
+    exposure_class: BUILDER_CONFIDENTIAL
+    owner: "AI workforce layer"
+    update_trigger: "Build cycles and task events"
+    directory_path: "docs/model-directory/workforce-build/"
+    member_models:
+      - artifact_id: M-31
+        model_name: M-COMPUTER
+        description: "Organism Computer Model — PHANTOM DISPLAY computational substrate"
+        status: CANONICAL
+      - artifact_id: M-BUILD-PROTOCOLS
+        model_name: M-BUILD-PROTOCOLS
+        description: "AI Internal Team Protocols — task packets, role contracts, delivery standards"
+        status: CANONICAL
+    gates_touched:
+      - GATE-BUILD-RELEASE
+      - GATE-VALIDATION
+      - GATE-PHANTOM-PERMISSION
+    cross_family_membership:
+      - M-COMPUTER: PHANTOM mode also in MOD-IDENTITY-AUTHORITY
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  - family_id: MOD-PROJECTION
+    name: "Projection Models"
+    class: M2
+    class_description: "Build-mutable — public output contracts evolve with external products."
+    smof_plane: 9
+    smof_plane_name: "Evidence/Projection"
+    exposure_class: PUBLIC
+    exposure_note: "Numeric indices and public-safe schemas ONLY. Zero-exposure enforced."
+    owner: "Projection layer"
+    update_trigger: "API releases and projection schema updates"
+    directory_path: "docs/model-directory/projection/"
+    member_models:
+      - artifact_id: M-32
+        model_name: M-ATLAS
+        description: "World Coordinate Model — geolocation as phase variable"
+        status: CANONICAL
+      - artifact_id: M-13-PUBLIC
+        model_name: M-RESONANCE-PUBLIC
+        description: "Phase-Return Memory — public projection layer (numeric index only)"
+        status: CANONICAL
+        cross_family_note: "Inner engine in MOD-MEMORY-CONTINUITY"
+      - artifact_id: M-ZERO-EXPOSURE
+        model_name: M-ZERO-EXPOSURE
+        description: "Zero-Exposure Wall — GATE-ZERO-EXPOSURE enforcement specification"
+        status: CANONICAL
+    gates_touched:
+      - GATE-ZERO-EXPOSURE
+      - GATE-PROJ-AUDIT
+    cross_family_membership:
+      - M-RESONANCE-PUBLIC: inner engine in MOD-MEMORY-CONTINUITY

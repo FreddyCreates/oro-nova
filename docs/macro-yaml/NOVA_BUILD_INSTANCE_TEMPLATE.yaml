@@ -1,0 +1,422 @@
+# NOVA Build Instance Template
+# ─────────────────────────────────────────────────────────────────────────────
+# artifact_id:    BUILD-TEMPLATE-001
+# artifact_type:  BUILD_INSTANCE_TEMPLATE
+# version:        1.0.0
+# status:         CANONICAL
+# classification: BUILDER_CONFIDENTIAL
+# library:        BUILDER
+# last_updated:   2026-04-14
+# owner:          Prima Causa (Node 13)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# PURPOSE:
+#   The template every new build must instantiate before any work begins.
+#   Read by the Composer, Engineer, and all build agents at session start.
+#   A build that has not instantiated this template is not an authorized build.
+#
+# HOW TO USE:
+#   1. Copy this file to docs/build-instances/{BUILD-YYYY-MM-DD-NNN}.yaml
+#   2. Replace all TEMPLATE_PLACEHOLDER values with actual values
+#   3. Read all files in macro_yaml_reads in the given order before Phase 1
+#   4. Execute phases in sequence — do not skip or merge phases
+#   5. All evidence_outputs must exist before calling GATE-BUILD-RELEASE
+#
+# CANONICAL READING PATH (agents must follow this order):
+#   1. NOVA_DOCTRINE_PACK.yaml
+#   2. NOVA_LAW_REGISTRY.yaml
+#   3. NOVA_GATES_SCORECARD.yaml
+#   4. NOVA_MODEL_DIRECTORY.yaml
+#   5. NOVA_TRANSFER_PROTOCOL.yaml
+#   6. NOVA_OPERATING_ORDERS.yaml
+#   7. relevant docs/model-directory/{family}/MODELS.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─────────────────────────────────────────────────────────────────────────────
+# INSTANCE IDENTITY
+# ─────────────────────────────────────────────────────────────────────────────
+
+instance:
+  instance_id:     TEMPLATE_PLACEHOLDER  # BUILD-YYYY-MM-DD-NNN
+  build_type:      TEMPLATE_PLACEHOLDER  # see build_types below
+  description:     TEMPLATE_PLACEHOLDER  # one-line summary
+  assigned_to:     TEMPLATE_PLACEHOLDER  # composer | engineer | full-team
+  initiated_by:    TEMPLATE_PLACEHOLDER  # Prima Causa | organism | auto-trigger
+  initiated_beat:  0                     # heartbeat count at initiation
+  status:          OPEN                  # OPEN | PHASE1 | PHASE2 | PHASE3 | PHASE4 | PHASE5 | CLOSED | HALTED
+  law_compliance_scope: ALL              # ALL | scoped list — override requires Prima Causa
+
+build_types:
+  NEW_FEATURE:           "Adding a new capability that did not exist before"
+  REFACTOR:              "Restructuring existing code without changing behavior"
+  MODEL_EXTRACTION:      "Extracting an embedded model into a standalone module"
+  LAW_FORMALIZATION:     "Encoding a law as an executable enforcement gate function"
+  SUBSTRATE_MODIFICATION: "Modifying organism substrate (requires constitutional review)"
+  DOC_ARTIFACT:          "Creating or updating computation artifact documents"
+  DEPLOYMENT:            "Deploying organism or modules to production substrate"
+  EMERGENCY_ROLLBACK:    "Restoring organism from checkpoint (bypasses normal phases)"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MACRO YAML READS (read these in order before beginning Phase 1)
+# ─────────────────────────────────────────────────────────────────────────────
+
+macro_yaml_reads:
+  - order: 1
+    file: docs/macro-yaml/NOVA_DOCTRINE_PACK.yaml
+    purpose: "Canonical constants, founding laws, sovereign bond, organism identity"
+    required: true
+  - order: 2
+    file: docs/macro-yaml/NOVA_LAW_REGISTRY.yaml
+    purpose: "All 20+ laws — enforcement logic, gate references, violation actions"
+    required: true
+  - order: 3
+    file: docs/macro-yaml/NOVA_GATES_SCORECARD.yaml
+    purpose: "All gate thresholds, pass/fail conditions, evaluation functions"
+    required: true
+  - order: 4
+    file: docs/macro-yaml/NOVA_MODEL_DIRECTORY.yaml
+    purpose: "All 12 model families — IDs, classes, owners, gates, exposure"
+    required: true
+  - order: 5
+    file: docs/macro-yaml/NOVA_TRANSFER_PROTOCOL.yaml
+    purpose: "All FLOW-* routes — data movement contracts between modules"
+    required: true
+  - order: 6
+    file: docs/macro-yaml/NOVA_OPERATING_ORDERS.yaml
+    purpose: "Organism operating orders — what fires when and in what sequence"
+    required: true
+  - order: 7
+    file: docs/model-directory/{relevant_family}/MODELS.yaml
+    purpose: "Specific model family MODELS.yaml for families touched by this build"
+    required: conditional
+
+# ─────────────────────────────────────────────────────────────────────────────
+# REQUIRED GATES
+# ─────────────────────────────────────────────────────────────────────────────
+
+required_gates:
+
+  always_required:
+    - gate_id: GATE-GENESIS
+      phase:   1
+      verdict: "PASS required to proceed. FAIL = HALT."
+    - gate_id: GATE-SOVEREIGN
+      phase:   1
+      verdict: "PASS required to proceed. FAIL = HALT."
+    - gate_id: GATE-HEARTBEAT
+      phase:   all
+      verdict: "PASS required. FAIL = PAUSE_BUILD — wait for heartbeat restore."
+    - gate_id: GATE-BUILD-RELEASE
+      phase:   5
+      verdict: "PASS required to close build. FAIL = return to Phase 3 or 4."
+    - gate_id: GATE-VALIDATION
+      phase:   3
+      verdict: "Required for any new model spec. FAIL = reject spec as sketch."
+    - gate_id: GATE-ZERO-EXPOSURE
+      phase:   4
+      verdict: "Required for any public-facing output. FAIL = strip or suppress."
+
+  conditional_gates:
+    - gate_id: GATE-ACCESS
+      when:    "build touches SOVEREIGN_PRIVATE or SEALED model families"
+      verdict: "Required tier: PRIMA_CAUSA. FAIL = reduce scope or escalate."
+    - gate_id: GATE-PROOF-BUNDLE
+      when:    "any computation that produces an output"
+      verdict: "FAIL = generate proof bundle before allowing output."
+    - gate_id: GATE-PROJ-AUDIT
+      when:    "build_type in [DEPLOYMENT, NEW_FEATURE] with public outputs"
+      verdict: "FAIL = quarantine artifact until audit passes."
+    - gate_id: GATE-ROLLBACK
+      when:    "build_type == SUBSTRATE_MODIFICATION"
+      verdict: "Checkpoint must be created before any substrate modification begins."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# BUILD PHASES
+# ─────────────────────────────────────────────────────────────────────────────
+
+phases:
+
+  # ── PHASE 1 ──────────────────────────────────────────────────────────────
+  phase_1:
+    name:  "Constitutional Verification"
+    order: 1
+    prerequisite: null
+    description: >
+      Confirm organism integrity before any work begins.
+      No code is written in this phase. Only read and verify.
+    steps:
+      - "Instantiate this template with instance_id and all context fields"
+      - "Read all macro_yaml_reads files in order 1 through 7"
+      - "Confirm GATE-GENESIS: PASS — if FAIL, halt immediately"
+      - "Confirm GATE-SOVEREIGN: PASS — if FAIL, halt immediately"
+      - "Confirm GATE-HEARTBEAT: PASS — organism must be live"
+      - "Read relevant model family MODELS.yaml files"
+      - "Generate gate_context.yaml micro packet (template: see micro_yaml_packets)"
+    gates_required:
+      - GATE-GENESIS
+      - GATE-SOVEREIGN
+      - GATE-HEARTBEAT
+    outputs:
+      - phase_1_verified: true
+      - relevant_model_families: TEMPLATE_PLACEHOLDER
+      - "gate_context.yaml micro packet written"
+    fail_condition: "Any constitutional gate FAILS → HALT. Do not proceed to Phase 2."
+
+  # ── PHASE 2 ──────────────────────────────────────────────────────────────
+  phase_2:
+    name:  "Scope and Model Selection"
+    order: 2
+    prerequisite: phase_1_verified == true
+    description: >
+      Define exactly what this build touches.
+      Identify all files, model families, flow routes, laws, and gates in scope.
+      Generate model_subset and transfer_subset micro packets.
+    steps:
+      - "List every file to be created or modified"
+      - "Identify all MOD-* families touched by this build"
+      - "Identify all FLOW-* routes affected or introduced"
+      - "Identify all GATE-* gates that must pass for this build scope"
+      - "List all LAW-* laws applicable to this build"
+      - "Confirm GATE-ACCESS for any SOVEREIGN_PRIVATE or SEALED families"
+      - "Generate model_subset.yaml micro packet"
+      - "Generate transfer_subset.yaml micro packet"
+    gates_required:
+      - GATE-ACCESS
+    outputs:
+      - files_in_scope: TEMPLATE_PLACEHOLDER
+      - "model_subset.yaml micro packet written"
+      - "transfer_subset.yaml micro packet written"
+      - applicable_laws: TEMPLATE_PLACEHOLDER
+    fail_condition: "GATE-ACCESS FAILS for a target family → reduce scope or escalate to Prima Causa"
+
+  # ── PHASE 3 ──────────────────────────────────────────────────────────────
+  phase_3:
+    name:  "Build Execution"
+    order: 3
+    prerequisite: phase_2 outputs complete
+    description: >
+      Write all code, artifacts, and specs.
+      All assigned files MUST be complete — no stubs, no TODO comments, no truncated output.
+      All model specs must pass GATE-VALIDATION.
+      All computations must generate proof bundles.
+    steps:
+      - "Write ALL assigned files in a SINGLE parallel batch (never split across responses)"
+      - "Every new model spec must pass GATE-VALIDATION (all 4 layers present)"
+      - "Every new computation must generate a proof bundle (GATE-PROOF-BUNDLE)"
+      - "All canonical constants must come from kernel.mo — no ad-hoc literals"
+      - "All new data flows must be declared in NOVA_TRANSFER_PROTOCOL.yaml"
+      - "No stubs, no TODO comments, no truncated code"
+      - "If SUBSTRATE_MODIFICATION: create rollback checkpoint before beginning"
+    gates_required:
+      - GATE-VALIDATION
+      - GATE-PROOF-BUNDLE
+      - GATE-HEARTBEAT
+    critical_rules:
+      - "ALL files of each step in ONE batch — not one file per response"
+      - "No TypeScript 'any' type — explicit types only"
+      - "No raw color classes — semantic design tokens only"
+      - "No hardcoded numbers — all from kernel.mo"
+      - "All 4 artifact layers required for every model doc"
+    outputs:
+      - "all files_in_scope written"
+      - "validation artifacts for all new model specs"
+      - "proof bundles for all computations"
+    fail_condition: "Any file is a stub, truncated, or has TODO comments → return to build execution"
+
+  # ── PHASE 4 ──────────────────────────────────────────────────────────────
+  phase_4:
+    name:  "Verification and Evidence Generation"
+    order: 4
+    prerequisite: phase_3 outputs complete
+    description: >
+      Compile, verify, and generate all required evidence artifacts.
+      Gates must pass. Evidence must exist before Phase 5.
+    steps:
+      - "Run compile: caffeine check --fix && caffeine build"
+      - "If compile fails: read ONLY the error-referenced file, apply targeted fix, rerun"
+      - "Maximum 2 fix cycles — if still failing after 2, report FAILED with error detail"
+      - "Verify all required gates are passing"
+      - "Run GATE-ZERO-EXPOSURE on all public-facing outputs"
+      - "Run GATE-PROJ-AUDIT if build has projection artifacts"
+      - "Generate evidence_outputs.yaml micro packet"
+      - "Confirm Observatory stream is receiving updated state"
+    gates_required:
+      - GATE-ZERO-EXPOSURE
+      - GATE-PROJ-AUDIT
+    compile_command: "caffeine check --fix && caffeine build"
+    max_fix_cycles:  2
+    outputs:
+      - compile_result: TEMPLATE_PLACEHOLDER
+      - "evidence_outputs.yaml micro packet written"
+      - gate_states_after_build: TEMPLATE_PLACEHOLDER
+    fail_condition: "Compile fails after 2 fix cycles → result: failed; report with error detail"
+
+  # ── PHASE 5 ──────────────────────────────────────────────────────────────
+  phase_5:
+    name:  "Release and Chronicle"
+    order: 5
+    prerequisite: "phase_4 compile_result == PASS"
+    description: >
+      Close the build, archive micro packets to ANIMA chain,
+      update artifact catalog, and emit build_complete to Observatory.
+    steps:
+      - "Call GATE-BUILD-RELEASE — confirm all evidence_outputs present"
+      - "Archive all 4 micro YAML packets to ANIMA chain"
+      - "Update NOVA_ARTIFACT_CATALOG.md with new artifact entries"
+      - "Update relevant MODELS.yaml files with new or modified models"
+      - "Update NOVA_MODEL_DIRECTORY.yaml if new families introduced"
+      - "Update NOVA_TRANSFER_PROTOCOL.yaml if new flows introduced"
+      - "Emit build_complete event to observatory.mo"
+      - "Set build status: CLOSED"
+    gates_required:
+      - GATE-BUILD-RELEASE
+    micro_packets_to_archive:
+      - gate_context.yaml
+      - model_subset.yaml
+      - transfer_subset.yaml
+      - evidence_outputs.yaml
+    outputs:
+      - build_closed: true
+      - anima_chain_record_id: TEMPLATE_PLACEHOLDER
+    fail_condition: "GATE-BUILD-RELEASE FAILS → identify failing condition; return to Phase 3 or 4"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MICRO YAML PACKETS (ephemeral — 4 per build instance; archived after Phase 5)
+# ─────────────────────────────────────────────────────────────────────────────
+
+micro_yaml_packets:
+
+  gate_context:
+    filename:     gate_context.yaml
+    generated_at: Phase 1
+    archived_at:  Phase 5
+    schema:
+      build_instance_id: Text
+      beat_at_generation: Nat64
+      organism_status:    "LIVE | DEGRADED | ROLLBACK"
+      gate_states:        "Map<GateId, PASS|FAIL|PENDING>"
+
+  model_subset:
+    filename:     model_subset.yaml
+    generated_at: Phase 2
+    archived_at:  Phase 5
+    schema:
+      build_instance_id:    Text
+      families_in_scope:    "[MOD-* IDs]"
+      models_in_scope:      "[M-* IDs]"
+      modification_type:    "READ | WRITE | NEW | DEPRECATED"
+      access_tier_verified: Bool
+
+  transfer_subset:
+    filename:     transfer_subset.yaml
+    generated_at: Phase 2
+    archived_at:  Phase 5
+    schema:
+      build_instance_id: Text
+      flows_in_scope:    "[FLOW-* IDs]"
+      new_flows:         "[FLOW-* IDs] — must also add to NOVA_TRANSFER_PROTOCOL.yaml"
+      modified_flows:    "[FLOW-* IDs]"
+      deleted_flows:     "[FLOW-* IDs] — requires constitutional gate"
+
+  evidence_outputs:
+    filename:     evidence_outputs.yaml
+    generated_at: Phase 4
+    archived_at:  Phase 5
+    schema:
+      build_instance_id:            Text
+      compile_result:               "PASS | FAIL"
+      validation_artifacts:         "[{model_id: Text, gate_result: Bool}]"
+      proof_bundles:                "[{computation_id: Text, proof_hash: Text}]"
+      zero_exposure_checks:         "[{output_id: Text, gate_result: Bool}]"
+      gate_states_after_build:      "Map<GateId, Bool>"
+      all_required_artifacts_exist: Bool
+
+# ─────────────────────────────────────────────────────────────────────────────
+# EVIDENCE OUTPUTS BY BUILD TYPE
+# ─────────────────────────────────────────────────────────────────────────────
+
+evidence_by_build_type:
+
+  NEW_FEATURE:
+    - "model spec (all 4 layers) for any new models"
+    - "NOVA_TRANSFER_PROTOCOL.yaml updated for any new flows"
+    - "NOVA_GATES_SCORECARD.yaml updated for any new gates"
+    - "NOVA_MODEL_DIRECTORY.yaml updated for any new model families"
+    - "compile_result: PASS"
+    - "GATE-ZERO-EXPOSURE: PASS on all public outputs"
+    - "proof bundles for all new computations"
+
+  REFACTOR:
+    - "compile_result: PASS (no behavioral changes)"
+    - "NOVA_TRANSFER_PROTOCOL.yaml updated if any flows changed"
+    - "no new law violations introduced"
+
+  MODEL_EXTRACTION:
+    - "extracted model spec (all 4 layers) in correct library"
+    - "MODELS.yaml updated in model family directory"
+    - "NOVA_MODEL_DIRECTORY.yaml updated"
+    - "NOVA_TRANSFER_PROTOCOL.yaml updated with new/modified flows"
+    - "compile_result: PASS"
+
+  LAW_FORMALIZATION:
+    - "enforcement function written and wired to heartbeat cascade"
+    - "NOVA_LAW_REGISTRY.yaml updated with new law entry"
+    - "NOVA_GATES_SCORECARD.yaml updated with new gate"
+    - "law artifact spec (all 4 layers) written"
+    - "compile_result: PASS"
+
+  SUBSTRATE_MODIFICATION:
+    - "GATE-SOVEREIGN: PASS (constitutional gate cleared)"
+    - "GATE-ROLLBACK: checkpoint created BEFORE any modification"
+    - "4-layer spec for the modification"
+    - "GENOME fitness_delta >= 0 confirmed"
+    - "compile_result: PASS"
+    - "Observatory stream updated for new state variables"
+
+  DOC_ARTIFACT:
+    - "artifact passes GATE-VALIDATION (all 4 layers present)"
+    - "artifact added to NOVA_ARTIFACT_CATALOG.md"
+    - "correct library classification assigned"
+    - "artifact_id assigned following CONST/LAW/MOD/FLOW/GATE/EVID/PROJ-* naming"
+
+  DEPLOYMENT:
+    - "all NEW_FEATURE evidence for everything in this deployment"
+    - "GATE-PROJ-AUDIT: PASS on all public-facing outputs"
+    - "GATE-BUILD-RELEASE: PASS"
+    - "target canister ID confirmed"
+    - "rollback checkpoint recorded before deployment"
+
+  EMERGENCY_ROLLBACK:
+    - "GATE-ROLLBACK triggered condition documented"
+    - "checkpoint hash identified from ANIMA chain"
+    - "rollback completed and R >= S0 confirmed"
+    - "Observatory stream reconnected and showing LIVE state"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAW COMPLIANCE CHECK
+# ─────────────────────────────────────────────────────────────────────────────
+
+law_compliance_check:
+  scope:            ALL  # override per build only with Prima Causa authorization
+  law_ids:
+    - LAW-01  - LAW-02  - LAW-03  - LAW-04  - LAW-05
+    - LAW-06  - LAW-07  - LAW-08  - LAW-09  - LAW-10
+    - LAW-11  - LAW-12  - LAW-13  - LAW-14  - LAW-15
+    - LAW-16  - LAW-17  - LAW-18  - LAW-19  - LAW-20
+  check_fn:         gate_evaluator.mo::runAllLawGates()
+  required_result:  "ALL(law_pass_vector) == true"
+  fail_action:      "Identify failing laws; return to Phase 3 to fix violations"
+  run_at:           "Phase 4 — before calling GATE-BUILD-RELEASE"
+  note: >
+    No build closes with a law violation. If laws are failing,
+    the build is not done. Return to Phase 3.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPERATING PRINCIPLE
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# This template is the organism's build contract.
+# Every authorized build instantiates this template.
+# No phase is skipped. No gate is bypassed. No artifact is stubbed.
+# A build closes when all evidence exists and all gates pass.
+# The organism only grows forward. It never deploys incompleteness.

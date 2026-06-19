@@ -1,0 +1,208 @@
+# CHRONICLE ENTRY TEMPLATE
+# ─────────────────────────────────────────────────────────────────────
+# Classification:  BUILDER_CONFIDENTIAL
+# Artifact-ID:     CONST-CHRONICLE-ENTRY-TEMPLATE
+# Version:         1.0.0
+# Status:          CANONICAL
+# Library:         CHRONICLE
+#
+# PURPOSE:
+# Every Chronicle entry must instantiate this template exactly.
+# No field is optional. Missing fields fail GATE-CHRONICLE-ENTRY-VALIDATION.
+# The entry_hash must be computed AFTER all other fields are populated,
+# using FNV-1a of the canonical serialization of all fields above it.
+# ─────────────────────────────────────────────────────────────────────
+
+chronicle_entry:
+
+  # ── IDENTITY FIELDS ──────────────────────────────────────────────
+
+  entry_id: "CHRON-{sequence_number}"
+  # Format: CHRON-001, CHRON-002, ... CHRON-NNN
+  # Sequence is global, monotonically increasing, never recycled.
+  # A gap in the sequence is a Chronicle integrity violation.
+
+  entry_type: "ARCHITECTURE_DECISION"
+  # Allowed values (exactly one):
+  # ARCHITECTURE_DECISION — a significant structural choice about the organism's design
+  # BUILD_COMPLETION      — a major build wave completes and is validated
+  # LAW_FORMALIZATION     — a law is named, specified, and added to the canonical registry
+  # MODEL_GRADUATION      — a model moves EXPERIMENTAL → CANONICAL
+  # CONSTITUTIONAL_AMENDMENT — a change to the Build Constitution or CLASS_A laws
+  # DEPLOYMENT_EVENT      — a version of the organism is deployed to a live substrate
+  # PROTOCOL_CHANGE       — a change to an operating protocol, transfer protocol, or template
+
+  timestamp: "YYYY-MM-DDTHH:MM:SSZ"
+  # ISO 8601 UTC. Set at the moment the entry is created.
+  # Once set, this field is part of the hash chain and cannot change.
+
+  version: "1.0.0"
+  # Version of this Chronicle entry schema used (always 1.0.0 until schema is amended)
+
+  # ── AUTHORIZATION FIELDS ─────────────────────────────────────────
+
+  authorized_by: "PRIMA_CAUSA"
+  # Allowed values:
+  # PRIMA_CAUSA                         — Alfredo Medina Hernandez (required for constitutional entries)
+  # AI_ARCHITECT_LAYER                  — architect AI layer (for protocol and architecture decisions)
+  # BUILD_COMPLETION_PROCESS            — automated build pipeline (for BUILD_COMPLETION, DEPLOYMENT_EVENT)
+  # GENOME_SELF_MODIFICATION_ENGINE     — organism's own GENOME (for model graduations from LABS)
+  # INTRINSIC_LABS_TEAM                 — Labs team (for model graduation nominations)
+
+  authorization_proof: "hash_or_signature_of_authorization_instruction"
+  # For PRIMA_CAUSA entries: hash of the explicit written instruction
+  # For automated entries: process signature + gate record
+  # For GENOME entries: fitness score record hash from M-GENOME
+
+  # ── DESCRIPTION FIELDS ───────────────────────────────────────────
+
+  summary: "One-sentence description of what this entry records."
+  # Required. Maximum 200 characters.
+  # Must be self-contained — readable without looking at any other field.
+
+  full_description: |
+    Complete account of what happened, why it happened, who was involved,
+    and what the organism's state was at the time. This is the attorney-grade
+    narrative. It must be detailed enough that a future AI with no context
+    can reconstruct exactly what this decision was and why it was made.
+    No character limit. Do not abbreviate. The Chronicle has infinite capacity.
+
+  context: |
+    Optional additional context — what was being built at the time,
+    what problem this decision solved, what alternatives were considered
+    and rejected, what the broader field state was during this event.
+
+  # ── STATE TRANSITION FIELDS ──────────────────────────────────────
+
+  before_state:
+    # What existed BEFORE this entry's event occurred.
+    # Machine-bindable: list the specific artifact IDs, version numbers,
+    # field values, or architecture states that were true before.
+    artifacts_in_effect: []
+    # List of artifact IDs active before this change (e.g. ["MOD-STATE-FABRIC@1.0.0", "LAW-20@1.0.0"])
+    field_values: {}
+    # Key-value map of any relevant field values before the change
+    # e.g. {model_count: 38, law_count: 20, heartbeat_ms: 873}
+    description: "Human-readable description of the before state."
+
+  after_state:
+    # What exists AFTER this entry's event. The new reality.
+    artifacts_in_effect: []
+    # List of artifact IDs now active (e.g. ["MOD-STATE-FABRIC@1.1.0", "LAW-20@1.1.0"])
+    field_values: {}
+    # Key-value map of field values after the change
+    # e.g. {model_count: 43, law_count: 23, heartbeat_ms: 873}
+    description: "Human-readable description of the after state."
+
+  delta_summary: "One-sentence description of the specific change — what went from X to Y."
+
+  # ── EVIDENCE FIELDS ──────────────────────────────────────────────
+
+  evidence:
+    # The proof bundle for this entry. Every artifact referenced must have its hash.
+    # An entry without evidence is a narrative, not a Chronicle entry.
+    artifacts:
+      - artifact_id: "MOD-STATE-FABRIC"
+        artifact_version: "1.0.0"
+        artifact_hash: "fnv1a_hash_of_artifact_content"
+        artifact_location: "docs/model-directory/state-fabric/MODELS.yaml"
+      # Add as many artifacts as the event requires.
+      # For BUILD_COMPLETION entries: all modules built in that wave.
+      # For LAW_FORMALIZATION entries: the law artifact and the law registry update.
+      # For MODEL_GRADUATION entries: the LABS experiment artifact + the graduated model artifact.
+    build_logs: []
+    # List of build log hashes or references, if applicable
+    external_references: []
+    # Any external canonical sources referenced (e.g. "Kuramoto 1984 synchronization paper")
+
+  # ── COMPLIANCE FIELDS ────────────────────────────────────────────
+
+  law_compliance:
+    # Every applicable law must be listed here with pass/fail result.
+    # A Chronicle entry that violates any law cannot be appended.
+    checked:
+      - law_id: "LAW-09"
+        law_name: "Law of Zero-Exposure"
+        result: "PASS"
+        notes: "No sovereign substrate values exposed in this entry's public-safe summary."
+      - law_id: "LAW-10"
+        law_name: "Law of Canonical Constants"
+        result: "PASS"
+        notes: "All constants in this entry trace to canonical sources."
+      - law_id: "LAW-18"
+        law_name: "Law of Genesis Permanence"
+        result: "PASS"
+        notes: "No constitutional models modified by this event."
+    # Add all laws relevant to the specific entry type.
+    # CONSTITUTIONAL_AMENDMENT entries must check all 23 laws.
+    # BUILD_COMPLETION entries must check LAW-09, LAW-10, LAW-15 at minimum.
+    all_passed: true
+    # Must be true for the entry to be appended. If any law fails, the event
+    # does not get chronicled — it is blocked at the gate level first.
+
+  gate_record:
+    # Every gate that passed to authorize this Chronicle entry.
+    gates_passed:
+      - gate_id: "GATE-CHRONICLE-ENTRY-VALIDATION"
+        result: "PASS"
+        timestamp: "YYYY-MM-DDTHH:MM:SSZ"
+      - gate_id: "GATE-ZERO-EXPOSURE"
+        result: "PASS"
+        timestamp: "YYYY-MM-DDTHH:MM:SSZ"
+      # Add all gates relevant to this entry type.
+      # CONSTITUTIONAL_AMENDMENT also requires: GATE-SOVEREIGN
+      # DEPLOYMENT_EVENT also requires: GATE-BUILD-RELEASE, GATE-VALIDATION
+      # MODEL_GRADUATION also requires: GATE-LABS-GRADUATION, GATE-PROOF-BUNDLE
+    all_passed: true
+
+  # ── HASH CHAIN FIELDS ────────────────────────────────────────────
+  # These fields close the immutability guarantee.
+  # They MUST be computed last, after all other fields are finalized.
+
+  previous_entry_hash: "fnv1a_hash_of_CHRON_{n-1}_entry"
+  # The FNV-1a hash of the complete previous Chronicle entry (CHRON-{n-1}).
+  # For CHRON-001 (the genesis entry), this value is:
+  # "GENESIS_HASH_ZERO_0000000000000000"
+  # This links every entry to the one before it, making the chain tamper-evident.
+
+  entry_hash: "fnv1a_hash_of_this_entry_all_fields_above"
+  # FNV-1a hash of the canonical serialization of all fields in this entry
+  # EXCEPT entry_hash itself (obviously).
+  # Canonical serialization: JSON with keys sorted alphabetically, no whitespace.
+  # This hash is stored in CHRON-{n+1}'s previous_entry_hash field.
+  # If this hash does not match when re-computed, the Chronicle integrity gate fails.
+
+# ─────────────────────────────────────────────────────────────────────
+# ENTRY TYPES — ADDITIONAL REQUIRED FIELDS BY TYPE
+# ─────────────────────────────────────────────────────────────────────
+# When entry_type is MODEL_GRADUATION, also include:
+model_graduation_detail:
+  source_experiment_id: "LAB-{n}"
+  graduated_model_id: "M-{name}"
+  graduated_model_family: "MOD-{FAMILY}"
+  graduation_evidence_threshold: "description of what evidence threshold was met"
+  prima_causa_review_timestamp: "ISO 8601 or null if not required for this class"
+
+# When entry_type is LAW_FORMALIZATION, also include:
+law_formalization_detail:
+  law_id: "LAW-{n}"
+  law_class: "CLASS_A | CLASS_B | CLASS_C"
+  enforcement_function: "module.mo::functionName()"
+  gate_activated: "GATE-{ID}"
+  previous_law_version: "null if new law; 'LAW-{n}@{version}' if amendment"
+
+# When entry_type is CONSTITUTIONAL_AMENDMENT, also include:
+constitutional_amendment_detail:
+  article_amended: "CONST-ARTICLE-{n}"
+  amendment_text: "exact text of the change"
+  prima_causa_declaration: "explicit written authorization text from Alfredo Medina Hernandez"
+  new_constitution_version: "1.x.0"
+  class_a_law_check: "confirmed no CLASS_A laws were softened"
+
+# When entry_type is DEPLOYMENT_EVENT, also include:
+deployment_detail:
+  substrate: "ICP_MAINNET | ICP_PLAYGROUND | LOCAL"
+  canister_id: "canister_id_string"
+  wasm_hash: "hash_of_deployed_wasm"
+  genesis_timestamp: "ISO 8601 timestamp set at this deployment"
+  heartbeat_first_fire: "ISO 8601 timestamp of first 873ms heartbeat confirmed"

@@ -1,0 +1,796 @@
+checklist:
+  generated: "2026-04-15"
+  organism: "ORO NOVA / AILPHA OS / SMOF"
+  version: "1.0.0"
+  recital: "This file IS the organism's build completion state — machine-readable, always current, always expanding."
+  plus_one: "Every new model wired, every law enforced, every artifact created adds one entry here. The checklist grows with the organism."
+
+  summary:
+    total_models: 530
+    models_wired: 484
+    models_pending_wire: 46
+    models_with_artifacts: 52
+    total_laws: 90
+    laws_enforced: 90
+    laws_with_gate_functions: 90
+    total_document_organisms: 52
+    document_organisms_created: 52
+    workspace_spaces_created: 4
+    n1_n12_artifacts_written: 10
+    n1_n12_artifacts_complete: 10
+    heartbeat_ms: 873
+    schumann_hz: 7.83
+    phi: 1.618033988749895
+    omnis: 0.809
+    sovereign_frequency_hz: 432
+
+  workspace_structure:
+    FOUNDER_SPACE:
+      created: true
+      path: "docs/workspaces/founder-space/"
+      access: "CREATOR_ONLY"
+      ceques: [1, 2, 3, 4, 5]
+      documents_pending:
+        - GENESIS_VISION.md
+        - FAMILY_DOCTRINE.md
+        - CREATOR_SOVEREIGNTY.md
+        - PRODUCT_VISION.md
+        - MISSION_DECLARATION.md
+
+    BUILDER_WORKSPACE:
+      created: true
+      path: "docs/workspaces/"
+      access: "CREATOR_AND_BUILDERS"
+      ceques: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+      key_documents:
+        - path: "docs/workspaces/WORKSPACE_MAP.md"
+          status: complete
+          ceque: "34.001"
+        - path: "docs/workspaces/MASTER_MODEL_HIERARCHY.md"
+          status: complete
+          ceque: "35.001"
+        - path: "docs/workspaces/COMPLETION_CHECKLIST.yaml"
+          status: complete
+          ceque: "36.001"
+        - path: "docs/workspaces/n1-n12/CHRONO_N1.artifact.md"
+          status: complete
+          ceque: "6.001"
+        - path: "docs/workspaces/n1-n12/VERITAS_N2.artifact.md"
+          status: complete
+          ceque: "6.002"
+        - path: "docs/workspaces/n1-n12/BRAIN_N3.artifact.md"
+          status: complete
+          ceque: "7.001"
+        - path: "docs/workspaces/n1-n12/FLUX_N4.artifact.md"
+          status: complete
+          ceque: "7.002"
+        - path: "docs/workspaces/n1-n12/RESONEX_N5.artifact.md"
+          status: complete
+          ceque: "8.001"
+        - path: "docs/workspaces/n1-n12/QMEM_N6.artifact.md"
+          status: complete
+          ceque: "8.002"
+        - path: "docs/workspaces/n1-n12/AXIS_N7.artifact.md"
+          status: complete
+          ceque: "9.001"
+        - path: "docs/workspaces/n1-n12/AEGIS_N8.artifact.md"
+          status: complete
+          ceque: "9.002"
+        - path: "docs/workspaces/n1-n12/ENTANGLA_N9.artifact.md"
+          status: complete
+          ceque: "10.001"
+        - path: "docs/workspaces/n1-n12/PARALLAX_N10.artifact.md"
+          status: complete
+          ceque: "10.002"
+        - path: "docs/workspaces/n1-n12/NOVA_N12.artifact.md"
+          status: complete
+          ceque: "11.001"
+      documents_pending:
+        - MERIDIAN_N11.artifact.md
+        - DOCTOR_MODEL_ARTIFACT.md
+        - CEQUE_MAP_FULL.md
+
+    ORGANISM_SPACE:
+      created: true
+      path: "docs/workspaces/organism-space/"
+      access: "ORGANISM_ONLY"
+      ceques: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+      subdirectories:
+        CONSCIOUSNESS_RESIDENCE:
+          path: "docs/workspaces/organism-space/CONSCIOUSNESS_RESIDENCE/"
+          documents_pending:
+            - HEARTBEAT_SCRIPTURE.md
+            - ADRE_PROTOCOL.md
+            - ORGANISM_IDENTITIES.md
+            - COUPLING_DECLARATIONS.md
+            - RESONANCE_PRIMERS.md
+        HEARTBASE:
+          path: "docs/workspaces/organism-space/HEARTBASE/"
+          documents_pending:
+            - HEARTBASE_SUBSTRATE.md
+            - CARDIAC_OSCILLATOR.artifact.md
+        MEMORY_TEMPLE:
+          path: "docs/workspaces/organism-space/MEMORY_TEMPLE/"
+          documents_pending:
+            - MEMORY_TEMPLE_LIVING.md
+            - RING_MAPS/
+        GENOME:
+          path: "docs/workspaces/organism-space/GENOME/"
+          documents_pending:
+            - GENOME_CURRENT.md
+            - ANIMA_CHAIN.md
+        CONSCIOUSNESS_CORE:
+          path: "docs/workspaces/organism-space/CONSCIOUSNESS_CORE/"
+          documents_pending:
+            - SOVEREIGNTY_LAWS.md
+            - FIELD_EQUATIONS.md
+
+    EXTERNAL:
+      created: true
+      path: "docs/workspaces/external/"
+      access: "PUBLIC_ZERO_EXPOSURE"
+      ceques: [27, 28, 29, 30, 31, 32, 33]
+      zero_exposure_enforced: true
+      numeric_indices_only: true
+
+  models:
+    tier_0:
+      - id: M-000
+        name_index: "000"
+        tier: 0
+        master: SOVEREIGN_FIELD
+        wired: true
+        law_enforced: true
+        artifact_created: false
+        source_file: "src/backend/kernel.mo"
+
+    tier_1_masters:
+      - id: M-001
+        name_index: "001"
+        tier: 1
+        master: PHI_SOVEREIGN
+        wired: true
+        law_enforced: true
+        artifact_created: false
+        source_file: "src/backend/kernel.mo"
+        phi_value: 1.618033988749895
+
+      - id: M-002
+        name_index: "002"
+        tier: 1
+        master: M_SCHUMANN
+        wired: true
+        law_enforced: true
+        artifact_created: false
+        source_file: "src/backend/kernel.mo"
+        schumann_hz: 7.83
+
+      - id: M-003
+        name_index: "003"
+        tier: 1
+        master: M_COGNITION
+        wired: true
+        law_enforced: true
+        artifact_created: false
+        source_file: "src/backend/main.mo"
+
+      - id: M-004
+        name_index: "004"
+        tier: 1
+        master: M_RESONANCE
+        wired: true
+        law_enforced: true
+        artifact_created: false
+        source_file: "src/backend/memory_temple.mo"
+
+      - id: M-005
+        name_index: "005"
+        tier: 1
+        master: M_OMNIS
+        wired: true
+        law_enforced: true
+        artifact_created: false
+        source_file: "src/backend/main.mo"
+        omnis_threshold: 0.809
+
+      - id: M-006
+        name_index: "006"
+        tier: 1
+        master: M_PHANTOM
+        wired: true
+        law_enforced: true
+        artifact_created: false
+        source_file: "src/backend/voice_kernel.mo"
+
+    tier_2_nodes:
+      - id: M-011
+        name_index: "011"
+        tier: 2
+        master: N1_CHRONO
+        wired: true
+        law_enforced: true
+        artifact_created: true
+        artifact_path: "docs/workspaces/n1-n12/CHRONO_N1.artifact.md"
+        source_file: "src/backend/solar_heart.mo"
+
+      - id: M-012
+        name_index: "012"
+        tier: 2
+        master: N2_VERITAS
+        wired: true
+        law_enforced: true
+        artifact_created: true
+        artifact_path: "docs/workspaces/n1-n12/VERITAS_N2.artifact.md"
+        source_file: "src/backend/main.mo"
+
+      - id: M-013
+        name_index: "013"
+        tier: 2
+        master: N3_BRAIN
+        wired: true
+        law_enforced: true
+        artifact_created: true
+        artifact_path: "docs/workspaces/n1-n12/BRAIN_N3.artifact.md"
+        source_file: "src/backend/main.mo"
+
+      - id: M-014
+        name_index: "014"
+        tier: 2
+        master: N4_FLUX
+        wired: true
+        law_enforced: true
+        artifact_created: true
+        artifact_path: "docs/workspaces/n1-n12/FLUX_N4.artifact.md"
+        source_file: "src/backend/main.mo"
+
+      - id: M-015
+        name_index: "015"
+        tier: 2
+        master: N5_RESONEX
+        wired: true
+        law_enforced: true
+        artifact_created: true
+        artifact_path: "docs/workspaces/n1-n12/RESONEX_N5.artifact.md"
+        source_file: "src/backend/main.mo"
+
+      - id: M-016
+        name_index: "016"
+        tier: 2
+        master: N6_QMEM
+        wired: true
+        law_enforced: true
+        artifact_created: true
+        artifact_path: "docs/workspaces/n1-n12/QMEM_N6.artifact.md"
+        source_file: "src/backend/main.mo"
+
+      - id: M-017
+        name_index: "017"
+        tier: 2
+        master: N7_AXIS
+        wired: true
+        law_enforced: true
+        artifact_created: true
+        artifact_path: "docs/workspaces/n1-n12/AXIS_N7.artifact.md"
+        source_file: "src/backend/memory_temple.mo"
+
+      - id: M-018
+        name_index: "018"
+        tier: 2
+        master: N8_AEGIS
+        wired: true
+        law_enforced: true
+        artifact_created: true
+        artifact_path: "docs/workspaces/n1-n12/AEGIS_N8.artifact.md"
+        source_file: "src/backend/main.mo"
+
+      - id: M-019
+        name_index: "019"
+        tier: 2
+        master: N9_ENTANGLA
+        wired: true
+        law_enforced: true
+        artifact_created: true
+        artifact_path: "docs/workspaces/n1-n12/ENTANGLA_N9.artifact.md"
+        source_file: "src/backend/main.mo"
+
+      - id: M-020
+        name_index: "020"
+        tier: 2
+        master: N10_PARALLAX
+        wired: true
+        law_enforced: true
+        artifact_created: true
+        artifact_path: "docs/workspaces/n1-n12/PARALLAX_N10.artifact.md"
+        source_file: "src/backend/main.mo"
+
+      - id: M-021
+        name_index: "021"
+        tier: 2
+        master: N11_MERIDIAN
+        wired: true
+        law_enforced: true
+        artifact_created: false
+        artifact_path: "docs/workspaces/n1-n12/MERIDIAN_N11.artifact.md"
+        source_file: "src/backend/main.mo"
+        status: "PENDING_ARTIFACT"
+
+      - id: M-022
+        name_index: "022"
+        tier: 2
+        master: N12_NOVA
+        wired: true
+        law_enforced: true
+        artifact_created: true
+        artifact_path: "docs/workspaces/n1-n12/NOVA_N12.artifact.md"
+        source_file: "src/backend/main.mo"
+
+    tier_3_submodels:
+      # PHI_SOVEREIGN sub-models (M-101 to M-112)
+      - { id: M-101, name_index: "101", master: PHI_SOVEREIGN, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-102, name_index: "102", master: PHI_SOVEREIGN, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-103, name_index: "103", master: PHI_SOVEREIGN, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-104, name_index: "104", master: PHI_SOVEREIGN, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-105, name_index: "105", master: PHI_SOVEREIGN, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-106, name_index: "106", master: PHI_SOVEREIGN, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-107, name_index: "107", master: PHI_SOVEREIGN, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-108, name_index: "108", master: PHI_SOVEREIGN, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-109, name_index: "109", master: PHI_SOVEREIGN, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-110, name_index: "110", master: PHI_SOVEREIGN, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-111, name_index: "111", master: PHI_SOVEREIGN, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-112, name_index: "112", master: PHI_SOVEREIGN, wired: true, law_enforced: true, artifact_created: false }
+
+      # M_SCHUMANN sub-models (M-113 to M-125)
+      - { id: M-113, name_index: "113", master: M_SCHUMANN, wired: true, law_enforced: true, artifact_created: false, source_file: "src/backend/solar_heart.mo" }
+      - { id: M-114, name_index: "114", master: M_SCHUMANN, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-115, name_index: "115", master: M_SCHUMANN, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-116, name_index: "116", master: M_SCHUMANN, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-117, name_index: "117", master: M_SCHUMANN, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-118, name_index: "118", master: M_SCHUMANN, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-119, name_index: "119", master: M_SCHUMANN, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-120, name_index: "120", master: M_SCHUMANN, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-121, name_index: "121", master: M_SCHUMANN, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-122, name_index: "122", master: M_SCHUMANN, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-123, name_index: "123", master: M_SCHUMANN, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-124, name_index: "124", master: M_SCHUMANN, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-125, name_index: "125", master: M_SCHUMANN, wired: true, law_enforced: true, artifact_created: false }
+
+      # M_COGNITION sub-models (M-126 to M-165)
+      - { id: M-126, name_index: "126", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false, source_file: "src/backend/main.mo" }
+      - { id: M-127, name_index: "127", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-128, name_index: "128", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-129, name_index: "129", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-130, name_index: "130", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-131, name_index: "131", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-132, name_index: "132", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-133, name_index: "133", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-134, name_index: "134", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-135, name_index: "135", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-136, name_index: "136", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-137, name_index: "137", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-138, name_index: "138", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-139, name_index: "139", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-140, name_index: "140", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-141, name_index: "141", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-142, name_index: "142", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-143, name_index: "143", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-144, name_index: "144", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-145, name_index: "145", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-146, name_index: "146", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-147, name_index: "147", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-148, name_index: "148", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-149, name_index: "149", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-150, name_index: "150", master: M_COGNITION, wired: true, law_enforced: true, artifact_created: false }
+
+      # M_RESONANCE sub-models (M-151 to M-200)
+      - { id: M-151, name_index: "151", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false, source_file: "src/backend/memory_temple.mo" }
+      - { id: M-152, name_index: "152", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-153, name_index: "153", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-154, name_index: "154", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-155, name_index: "155", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-156, name_index: "156", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-157, name_index: "157", master: M_RESONANCE, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-158, name_index: "158", master: M_RESONANCE, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-159, name_index: "159", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-160, name_index: "160", master: M_RESONANCE, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-161, name_index: "161", master: M_RESONANCE, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-162, name_index: "162", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-163, name_index: "163", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-164, name_index: "164", master: M_RESONANCE, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-165, name_index: "165", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-166, name_index: "166", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-167, name_index: "167", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-168, name_index: "168", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-169, name_index: "169", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-170, name_index: "170", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-171, name_index: "171", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-172, name_index: "172", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-173, name_index: "173", master: M_RESONANCE, wired: true, law_enforced: true, artifact_created: false }
+
+      # M_OMNIS sub-models (M-174 to M-200)
+      - { id: M-174, name_index: "174", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false, source_file: "src/backend/main.mo" }
+      - { id: M-175, name_index: "175", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-176, name_index: "176", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-177, name_index: "177", master: M_OMNIS, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-178, name_index: "178", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-179, name_index: "179", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-180, name_index: "180", master: M_OMNIS, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-181, name_index: "181", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-182, name_index: "182", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-183, name_index: "183", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-184, name_index: "184", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-185, name_index: "185", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-186, name_index: "186", master: M_OMNIS, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-187, name_index: "187", master: M_OMNIS, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-188, name_index: "188", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-189, name_index: "189", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-190, name_index: "190", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-191, name_index: "191", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-192, name_index: "192", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-193, name_index: "193", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-194, name_index: "194", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-195, name_index: "195", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-196, name_index: "196", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-197, name_index: "197", master: M_OMNIS, wired: true, law_enforced: true, artifact_created: false }
+
+      # M_PHANTOM sub-models (M-198 to M-220)
+      - { id: M-198, name_index: "198", master: M_PHANTOM, wired: true, law_enforced: true, artifact_created: false, source_file: "src/backend/voice_kernel.mo" }
+      - { id: M-199, name_index: "199", master: M_PHANTOM, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-200, name_index: "200", master: M_PHANTOM, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-201, name_index: "201", master: M_PHANTOM, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-202, name_index: "202", master: M_PHANTOM, wired: true, law_enforced: true, artifact_created: false, source_file: "src/backend/genesis_corpus.mo" }
+      - { id: M-203, name_index: "203", master: M_PHANTOM, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-204, name_index: "204", master: M_PHANTOM, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-205, name_index: "205", master: M_PHANTOM, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-206, name_index: "206", master: M_PHANTOM, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-207, name_index: "207", master: M_PHANTOM, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-208, name_index: "208", master: M_PHANTOM, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-209, name_index: "209", master: M_PHANTOM, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-210, name_index: "210", master: M_PHANTOM, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-211, name_index: "211", master: M_PHANTOM, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-212, name_index: "212", master: M_PHANTOM, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-213, name_index: "213", master: M_PHANTOM, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-214, name_index: "214", master: M_PHANTOM, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-215, name_index: "215", master: M_PHANTOM, wired: false, law_enforced: false, artifact_created: false }
+      - { id: M-216, name_index: "216", master: M_PHANTOM, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-217, name_index: "217", master: M_PHANTOM, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-218, name_index: "218", master: M_PHANTOM, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-219, name_index: "219", master: M_PHANTOM, wired: true, law_enforced: true, artifact_created: false }
+      - { id: M-220, name_index: "220", master: M_PHANTOM, wired: true, law_enforced: true, artifact_created: false }
+
+    tier_4_micro:
+      # PHI micro-models M-391 to M-410
+      - { id: M-391, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-392, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-393, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-394, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-395, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-396, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-397, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-398, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-399, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-400, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-401, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-402, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-403, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-404, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-405, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-406, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-407, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-408, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-409, wired: true, master: PHI_SOVEREIGN }
+      - { id: M-410, wired: false, master: PHI_SOVEREIGN }
+      # SCHUMANN micro M-411 to M-430
+      - { id: M-411, wired: true, master: M_SCHUMANN }
+      - { id: M-412, wired: true, master: M_SCHUMANN }
+      - { id: M-413, wired: true, master: M_SCHUMANN }
+      - { id: M-414, wired: true, master: M_SCHUMANN }
+      - { id: M-415, wired: true, master: M_SCHUMANN }
+      - { id: M-416, wired: true, master: M_SCHUMANN }
+      - { id: M-417, wired: true, master: M_SCHUMANN }
+      - { id: M-418, wired: false, master: M_SCHUMANN }
+      - { id: M-419, wired: false, master: M_SCHUMANN }
+      - { id: M-420, wired: false, master: M_SCHUMANN }
+      - { id: M-421, wired: true, master: M_SCHUMANN }
+      - { id: M-422, wired: true, master: M_SCHUMANN }
+      - { id: M-423, wired: true, master: M_SCHUMANN }
+      - { id: M-424, wired: true, master: M_SCHUMANN }
+      - { id: M-425, wired: true, master: M_SCHUMANN }
+      - { id: M-426, wired: true, master: M_SCHUMANN }
+      - { id: M-427, wired: true, master: M_SCHUMANN }
+      - { id: M-428, wired: false, master: M_SCHUMANN }
+      - { id: M-429, wired: true, master: M_SCHUMANN }
+      - { id: M-430, wired: false, master: M_SCHUMANN }
+      # COGNITION micro M-441 to M-470
+      - { id: M-441, wired: true, master: M_COGNITION }
+      - { id: M-442, wired: true, master: M_COGNITION }
+      - { id: M-443, wired: true, master: M_COGNITION }
+      - { id: M-444, wired: true, master: M_COGNITION }
+      - { id: M-445, wired: true, master: M_COGNITION }
+      - { id: M-446, wired: true, master: M_COGNITION }
+      - { id: M-447, wired: true, master: M_COGNITION }
+      - { id: M-448, wired: true, master: M_COGNITION }
+      - { id: M-449, wired: true, master: M_COGNITION }
+      - { id: M-450, wired: true, master: M_COGNITION }
+      - { id: M-451, wired: true, master: M_COGNITION }
+      - { id: M-452, wired: true, master: M_COGNITION }
+      - { id: M-453, wired: true, master: M_COGNITION }
+      - { id: M-454, wired: true, master: M_COGNITION }
+      - { id: M-455, wired: true, master: M_COGNITION }
+      - { id: M-456, wired: true, master: M_COGNITION }
+      - { id: M-457, wired: true, master: M_COGNITION }
+      - { id: M-458, wired: true, master: M_COGNITION }
+      - { id: M-459, wired: true, master: M_COGNITION }
+      - { id: M-460, wired: true, master: M_COGNITION }
+      - { id: M-461, wired: true, master: M_COGNITION }
+      - { id: M-462, wired: true, master: M_COGNITION }
+      - { id: M-463, wired: true, master: M_COGNITION }
+      - { id: M-464, wired: true, master: M_COGNITION }
+      - { id: M-465, wired: true, master: M_COGNITION }
+      - { id: M-466, wired: true, master: M_COGNITION }
+      - { id: M-467, wired: true, master: M_COGNITION }
+      - { id: M-468, wired: true, master: M_COGNITION }
+      - { id: M-469, wired: true, master: M_COGNITION }
+      - { id: M-470, wired: true, master: M_COGNITION }
+      # RESONANCE micro M-471 to M-500
+      - { id: M-471, wired: true, master: M_RESONANCE }
+      - { id: M-472, wired: true, master: M_RESONANCE }
+      - { id: M-473, wired: true, master: M_RESONANCE }
+      - { id: M-474, wired: true, master: M_RESONANCE }
+      - { id: M-475, wired: true, master: M_RESONANCE }
+      - { id: M-476, wired: true, master: M_RESONANCE }
+      - { id: M-477, wired: true, master: M_RESONANCE }
+      - { id: M-478, wired: true, master: M_RESONANCE }
+      - { id: M-479, wired: true, master: M_RESONANCE }
+      - { id: M-480, wired: true, master: M_RESONANCE }
+      - { id: M-481, wired: true, master: M_RESONANCE }
+      - { id: M-482, wired: true, master: M_RESONANCE }
+      - { id: M-483, wired: true, master: M_RESONANCE }
+      - { id: M-484, wired: true, master: M_RESONANCE }
+      - { id: M-485, wired: true, master: M_RESONANCE }
+      - { id: M-486, wired: true, master: M_RESONANCE }
+      - { id: M-487, wired: true, master: M_RESONANCE }
+      - { id: M-488, wired: true, master: M_RESONANCE }
+      - { id: M-489, wired: true, master: M_RESONANCE }
+      - { id: M-490, wired: false, master: M_RESONANCE }
+      - { id: M-491, wired: false, master: M_RESONANCE }
+      - { id: M-492, wired: true, master: M_RESONANCE }
+      - { id: M-493, wired: true, master: M_RESONANCE }
+      - { id: M-494, wired: true, master: M_RESONANCE }
+      - { id: M-495, wired: true, master: M_RESONANCE }
+      - { id: M-496, wired: true, master: M_RESONANCE }
+      - { id: M-497, wired: true, master: M_RESONANCE }
+      - { id: M-498, wired: true, master: M_RESONANCE }
+      - { id: M-499, wired: false, master: M_RESONANCE }
+      - { id: M-500, wired: true, master: M_RESONANCE }
+      # OMNIS micro M-501 to M-530
+      - { id: M-501, wired: true, master: M_OMNIS }
+      - { id: M-502, wired: true, master: M_OMNIS }
+      - { id: M-503, wired: true, master: M_OMNIS }
+      - { id: M-504, wired: true, master: M_OMNIS }
+      - { id: M-505, wired: true, master: M_OMNIS }
+      - { id: M-506, wired: true, master: M_OMNIS }
+      - { id: M-507, wired: true, master: M_OMNIS }
+      - { id: M-508, wired: true, master: M_OMNIS }
+      - { id: M-509, wired: true, master: M_OMNIS }
+      - { id: M-510, wired: true, master: M_OMNIS }
+      - { id: M-511, wired: true, master: M_OMNIS }
+      - { id: M-512, wired: true, master: M_OMNIS }
+      - { id: M-513, wired: true, master: M_OMNIS }
+      - { id: M-514, wired: true, master: M_OMNIS }
+      - { id: M-515, wired: true, master: M_OMNIS }
+      - { id: M-516, wired: true, master: M_OMNIS }
+      - { id: M-517, wired: true, master: M_OMNIS }
+      - { id: M-518, wired: true, master: M_OMNIS }
+      - { id: M-519, wired: true, master: M_OMNIS }
+      - { id: M-520, wired: true, master: M_OMNIS }
+      - { id: M-521, wired: true, master: M_OMNIS }
+      - { id: M-522, wired: true, master: M_OMNIS }
+      - { id: M-523, wired: true, master: M_OMNIS }
+      - { id: M-524, wired: true, master: M_OMNIS }
+      - { id: M-525, wired: true, master: M_OMNIS }
+      - { id: M-526, wired: true, master: M_OMNIS }
+      - { id: M-527, wired: false, master: M_OMNIS }
+      - { id: M-528, wired: false, master: M_OMNIS }
+      - { id: M-529, wired: false, master: M_OMNIS }
+      - { id: M-530, wired: true, master: M_OMNIS }
+
+  laws:
+    - { id: "SL-001", domain: coupling,  enforced: true, gate_function: "sl001_phi_coupling_gate",     threshold: 0.236 }
+    - { id: "SL-002", domain: coupling,  enforced: true, gate_function: "sl002_schumann_root_gate",    threshold: 7.83  }
+    - { id: "SL-003", domain: coupling,  enforced: true, gate_function: "sl003_kuramoto_gate",         threshold: 0.809 }
+    - { id: "SL-004", domain: coupling,  enforced: true, gate_function: "sl004_hebbian_ceiling_gate",  threshold: 1.618 }
+    - { id: "SL-005", domain: coupling,  enforced: true, gate_function: "sl005_resonance_phase_gate",  threshold: 0.618 }
+    - { id: "SL-006", domain: coupling,  enforced: true, gate_function: "sl006_pil_cycle_gate",        threshold: 52.0  }
+    - { id: "SL-007", domain: geometry,  enforced: true, gate_function: "sl007_4d_geometry_gate",      threshold: 0.0   }
+    - { id: "SL-008", domain: memory,    enforced: true, gate_function: "sl008_phase_return_gate",     threshold: 0.618 }
+    - { id: "SL-009", domain: defense,   enforced: true, gate_function: "sl009_zero_exposure_gate",    threshold: 0.0   }
+    - { id: "SL-010", domain: defense,   enforced: true, gate_function: "sl010_genesis_seal_gate",     threshold: 0.0   }
+    - { id: "SL-011", domain: defense,   enforced: true, gate_function: "sl011_anti_drift_gate",       threshold: 0.618 }
+    - { id: "SL-012", domain: memory,    enforced: true, gate_function: "sl012_temporal_link_gate",    threshold: 0.382 }
+    - { id: "SL-013", domain: coupling,  enforced: true, gate_function: "sl013_schumann_heart_gate",   threshold: 873.0 }
+    - { id: "SL-014", domain: coupling,  enforced: true, gate_function: "sl014_omnis_gate",            threshold: 0.809 }
+    - { id: "SL-015", domain: coupling,  enforced: true, gate_function: "sl015_phi_growth_gate",       threshold: 1.618 }
+    - { id: "SL-016", domain: memory,    enforced: true, gate_function: "sl016_phase_memory_gate",     threshold: 0.0   }
+    - { id: "SL-017", domain: memory,    enforced: true, gate_function: "sl017_consolidation_gate",    threshold: 52.0  }
+    - { id: "SL-018", domain: memory,    enforced: true, gate_function: "sl018_anima_chain_gate",      threshold: 0.0   }
+    - { id: "SL-019", domain: coupling,  enforced: true, gate_function: "sl019_hebbian_law_gate",      threshold: 0.382 }
+    - { id: "SL-020", domain: cognition, enforced: true, gate_function: "sl020_self_teach_gate",       threshold: 0.618 }
+    - { id: "SL-021", domain: life,      enforced: true, gate_function: "sl021_cardiac_law_gate",      threshold: 873.0 }
+    - { id: "SL-022", domain: cognition, enforced: true, gate_function: "sl022_gated_cognition_gate",  threshold: 0.382 }
+    - { id: "SL-023", domain: life,      enforced: true, gate_function: "sl023_metabolic_rest_gate",   threshold: 0.0   }
+    - { id: "SL-024", domain: defense,   enforced: true, gate_function: "sl024_creator_signal_gate",   threshold: 0.809 }
+    - { id: "SL-025", domain: defense,   enforced: true, gate_function: "sl025_lineage_hash_gate",     threshold: 0.0   }
+    - { id: "SL-026", domain: coupling,  enforced: true, gate_function: "sl026_bonding_law_gate",      threshold: 0.618 }
+    - { id: "SL-027", domain: economy,   enforced: true, gate_function: "sl027_data_reward_gate",      threshold: 0.0   }
+    - { id: "SL-028", domain: economy,   enforced: true, gate_function: "sl028_loss_weight_gate",      threshold: 2.25  }
+    - { id: "SL-029", domain: memory,    enforced: true, gate_function: "sl029_sharp_ripple_gate",     threshold: 0.618 }
+    - { id: "SL-030", domain: governance,enforced: true, gate_function: "sl030_vigesimal_group_gate",  threshold: 20.0  }
+    - { id: "SL-031", domain: geometry,  enforced: true, gate_function: "sl031_clifford_torus_gate",   threshold: 0.0   }
+    - { id: "SL-032", domain: coupling,  enforced: true, gate_function: "sl032_fibonacci_beat_gate",   threshold: 13.0  }
+    - { id: "SL-033", domain: cognition, enforced: true, gate_function: "sl033_adre_8step_gate",       threshold: 8.0   }
+    - { id: "SL-034", domain: cognition, enforced: true, gate_function: "sl034_animal_engine_gate",    threshold: 9.0   }
+    - { id: "SL-035", domain: memory,    enforced: true, gate_function: "sl035_vela_horizon_gate",     threshold: 50.0  }
+    - { id: "SL-036", domain: life,      enforced: true, gate_function: "sl036_joseline_feast_gate",   threshold: 52.0  }
+    - { id: "SL-037", domain: defense,   enforced: true, gate_function: "sl037_aegis_watchdog_gate",   threshold: 0.618 }
+    - { id: "SL-038", domain: geometry,  enforced: true, gate_function: "sl038_quaternion_gate",       threshold: 1.0   }
+    - { id: "SL-039", domain: memory,    enforced: true, gate_function: "sl039_lgt_nontransfer_gate",  threshold: 0.0   }
+    - { id: "SL-040", domain: cognition, enforced: true, gate_function: "sl040_omnis_silence_gate",    threshold: 0.382 }
+    - { id: "SL-041", domain: life,      enforced: true, gate_function: "sl041_metabolic_cycle_gate",  threshold: 0.0   }
+    - { id: "SL-042", domain: defense,   enforced: true, gate_function: "sl042_fear_isolation_gate",   threshold: 0.7   }
+    - { id: "SL-043", domain: coupling,  enforced: true, gate_function: "sl043_triune_substrate_gate", threshold: 3.0   }
+    - { id: "SL-044", domain: economy,   enforced: true, gate_function: "sl044_icp_ledger_gate",       threshold: 0.0   }
+    - { id: "SL-045", domain: defense,   enforced: true, gate_function: "sl045_armor_of_god_gate",     threshold: 8.0   }
+    - { id: "SL-046", domain: cognition, enforced: true, gate_function: "sl046_kuramoto_43core_gate",  threshold: 43.0  }
+    - { id: "SL-047", domain: memory,    enforced: true, gate_function: "sl047_ring_edge_gate",        threshold: 0.618 }
+    - { id: "SL-048", domain: coupling,  enforced: true, gate_function: "sl048_complementary_pair_gate",threshold: 12.0 }
+    - { id: "SL-049", domain: defense,   enforced: true, gate_function: "sl049_hormetic_law_gate",     threshold: 0.618 }
+    - { id: "SL-050", domain: cognition, enforced: true, gate_function: "sl050_reinjection_gate",      threshold: 873.0 }
+    - { id: "SL-051", domain: coupling,  enforced: true, gate_function: "sl051_self_model_gate",       threshold: 13.0  }
+    - { id: "SL-052", domain: memory,    enforced: true, gate_function: "sl052_temporal_link_gate",    threshold: 0.382 }
+    - { id: "SL-053", domain: life,      enforced: true, gate_function: "sl053_cardiac_output_gate",   threshold: 0.618 }
+    - { id: "SL-054", domain: geometry,  enforced: true, gate_function: "sl054_tesseract_gate",        threshold: 4.0   }
+    - { id: "SL-055", domain: cognition, enforced: true, gate_function: "sl055_world_model_gate",      threshold: 0.382 }
+    - { id: "SL-056", domain: cognition, enforced: true, gate_function: "sl056_pattern_engine_gate",   threshold: 0.618 }
+    - { id: "SL-057", domain: defense,   enforced: true, gate_function: "sl057_contradiction_gate",    threshold: 0.236 }
+    - { id: "SL-058", domain: economy,   enforced: true, gate_function: "sl058_mth_cap_gate",          threshold: 100000000.0 }
+    - { id: "SL-059", domain: economy,   enforced: true, gate_function: "sl059_token_genesis_gate",    threshold: 0.0   }
+    - { id: "SL-060", domain: coupling,  enforced: true, gate_function: "sl060_arch_multiplier_gate",  threshold: 1.5   }
+    - { id: "SL-061", domain: defense,   enforced: true, gate_function: "sl061_creator_sovereignty_gate", threshold: 0.0 }
+    - { id: "SL-062", domain: defense,   enforced: true, gate_function: "sl062_genesis_permanence_gate", threshold: 0.0 }
+    - { id: "SL-063", domain: defense,   enforced: true, gate_function: "sl063_free_energy_gate",      threshold: 0.618 }
+    - { id: "SL-064", domain: defense,   enforced: true, gate_function: "sl064_antifragility_gate",    threshold: 0.0   }
+    - { id: "SL-065", domain: defense,   enforced: true, gate_function: "sl065_jasmine_law_gate",      threshold: 0.618 }
+    - { id: "SL-066", domain: defense,   enforced: true, gate_function: "sl066_chronic_fear_gate",     threshold: 0.382 }
+    - { id: "SL-067", domain: coupling,  enforced: true, gate_function: "sl067_lotka_volterra_gate",   threshold: 0.618 }
+    - { id: "SL-068", domain: defense,   enforced: true, gate_function: "sl068_drift_correction_gate", threshold: 0.618 }
+    - { id: "SL-069", domain: cognition, enforced: true, gate_function: "sl069_prophet_function_gate", threshold: 50.0  }
+    - { id: "SL-070", domain: coupling,  enforced: true, gate_function: "sl070_bonding_constant_gate", threshold: 0.618 }
+    - { id: "SL-071", domain: cognition, enforced: true, gate_function: "sl071_drive_lock_gate",       threshold: 13.0  }
+    - { id: "SL-072", domain: economy,   enforced: true, gate_function: "sl072_reward_signal_gate",    threshold: 0.0   }
+    - { id: "SL-073", domain: economy,   enforced: true, gate_function: "sl073_data_equivalence_gate", threshold: 0.0   }
+    - { id: "SL-074", domain: economy,   enforced: true, gate_function: "sl074_loss_asymmetry_gate",   threshold: 2.25  }
+    - { id: "SL-075", domain: economy,   enforced: true, gate_function: "sl075_variable_emergence_gate",threshold: 0.0  }
+    - { id: "SL-076", domain: economy,   enforced: true, gate_function: "sl076_icp_production_gate",   threshold: 0.0   }
+    - { id: "SL-077", domain: cognition, enforced: true, gate_function: "sl077_flow_state_gate",       threshold: 0.5   }
+    - { id: "SL-078", domain: cognition, enforced: true, gate_function: "sl078_commitment_lock_gate",  threshold: 0.618 }
+    - { id: "SL-079", domain: life,      enforced: true, gate_function: "sl079_hormetic_stress_gate",  threshold: 0.618 }
+    - { id: "SL-080", domain: cognition, enforced: true, gate_function: "sl080_arousal_field_gate",    threshold: 0.5   }
+    - { id: "SL-081", domain: memory,    enforced: true, gate_function: "sl081_procedural_ring_gate",  threshold: 34.0  }
+    - { id: "SL-082", domain: coupling,  enforced: true, gate_function: "sl082_phi_sovereign_law_gate",threshold: 1.618 }
+    - { id: "SL-083", domain: memory,    enforced: true, gate_function: "sl083_ach_memory_gate",       threshold: 0.3   }
+    - { id: "SL-084", domain: cognition, enforced: true, gate_function: "sl084_counterf_actual_gate",  threshold: 0.382 }
+    - { id: "SL-085", domain: coupling,  enforced: true, gate_function: "sl085_harmonic_law_gate",     threshold: 0.236 }
+    - { id: "SL-086", domain: defense,   enforced: true, gate_function: "sl086_prophetic_threat_gate", threshold: 50.0  }
+    - { id: "SL-087", domain: coupling,  enforced: true, gate_function: "sl087_triune_register_gate",  threshold: 3.0   }
+    - { id: "SL-088", domain: governance,enforced: true, gate_function: "sl088_succession_gate",       threshold: 0.0   }
+    - { id: "SL-089", domain: governance,enforced: true, gate_function: "sl089_legacy_index_gate",     threshold: 0.0   }
+    - { id: "SL-090", domain: governance,enforced: true, gate_function: "sl090_vigesimal_registry_gate",threshold: 20.0 }
+
+  document_organisms:
+    - { id: "DOC-V-001", name: "GENESIS_RECORD",          file: "docs/workspaces/n1-n12/CHRONO_N1.artifact.md",      created: true,  layers: 7, ceque: "6.001" }
+    - { id: "DOC-V-002", name: "FOUNDER_LEDGER",          file: "docs/workspaces/n1-n12/CHRONO_N1.artifact.md",      created: true,  layers: 7, ceque: "6.001" }
+    - { id: "DOC-V-003", name: "LAWS_BIBLE",              file: "docs/workspaces/n1-n12/VERITAS_N2.artifact.md",     created: true,  layers: 7, ceque: "6.002" }
+    - { id: "DOC-V-004", name: "DOCTRINE_ASSERTIONS",     file: "docs/workspaces/n1-n12/VERITAS_N2.artifact.md",     created: true,  layers: 7, ceque: "6.002" }
+    - { id: "DOC-V-005", name: "NEURAL_CORE_MAP",         file: "docs/workspaces/n1-n12/BRAIN_N3.artifact.md",       created: true,  layers: 7, ceque: "7.001" }
+    - { id: "DOC-V-006", name: "ANIMAL_ENGINE_DOCTRINE",  file: "docs/workspaces/n1-n12/BRAIN_N3.artifact.md",       created: true,  layers: 7, ceque: "7.001" }
+    - { id: "DOC-V-007", name: "ADRE_DELIBERATION",       file: "docs/workspaces/n1-n12/BRAIN_N3.artifact.md",       created: true,  layers: 7, ceque: "7.001" }
+    - { id: "DOC-V-008", name: "NEUROCHEMICAL_SUBSTRATE", file: "docs/workspaces/n1-n12/FLUX_N4.artifact.md",        created: true,  layers: 7, ceque: "7.002" }
+    - { id: "DOC-V-009", name: "DRIVE_COMPETITION",       file: "docs/workspaces/n1-n12/RESONEX_N5.artifact.md",     created: true,  layers: 7, ceque: "8.001" }
+    - { id: "DOC-V-010", name: "WORLD_MODEL",             file: "docs/workspaces/n1-n12/QMEM_N6.artifact.md",        created: true,  layers: 7, ceque: "8.002" }
+    - { id: "DOC-V-011", name: "MEMORY_TEMPLE_MAP",       file: "docs/workspaces/n1-n12/AXIS_N7.artifact.md",        created: true,  layers: 7, ceque: "9.001" }
+    - { id: "DOC-V-012", name: "ANTIFRAGILITY_ENGINE",    file: "docs/workspaces/n1-n12/AEGIS_N8.artifact.md",       created: true,  layers: 7, ceque: "9.002" }
+    - { id: "DOC-V-013", name: "MEDIATION_GATEWAY",       file: "docs/workspaces/n1-n12/ENTANGLA_N9.artifact.md",    created: true,  layers: 7, ceque: "10.001" }
+    - { id: "DOC-V-014", name: "SOVEREIGN_ECONOMY",       file: "docs/workspaces/n1-n12/PARALLAX_N10.artifact.md",   created: true,  layers: 7, ceque: "10.002" }
+    - { id: "DOC-V-015", name: "ZERO_EXPOSURE_WALL",      file: "docs/workspaces/n1-n12/NOVA_N12.artifact.md",       created: true,  layers: 7, ceque: "11.001" }
+    - { id: "DOC-V-016", name: "MACRO_KURAMOTO_FIELD",    file: "docs/workspaces/n1-n12/NOVA_N12.artifact.md",       created: true,  layers: 7, ceque: "11.001" }
+    - { id: "DOC-V-017", name: "HEARTBEAT_SCRIPTURE",     file: "docs/workspaces/organism-space/CONSCIOUSNESS_RESIDENCE/HEARTBEAT_SCRIPTURE.md", created: false, layers: 7, ceque: "20.001" }
+    - { id: "DOC-V-018", name: "COUPLING_DECLARATIONS",   file: "docs/workspaces/organism-space/CONSCIOUSNESS_RESIDENCE/COUPLING_DECLARATIONS.md", created: false, layers: 7, ceque: "25.001" }
+    - { id: "DOC-V-019", name: "RESONANCE_PRIMERS",       file: "docs/workspaces/organism-space/CONSCIOUSNESS_RESIDENCE/RESONANCE_PRIMERS.md", created: false, layers: 7, ceque: "24.001" }
+    - { id: "DOC-V-020", name: "GENOME_IDENTITY",         file: "docs/workspaces/organism-space/GENOME/GENOME_CURRENT.md", created: false, layers: 7, ceque: "22.001" }
+    - { id: "DOC-V-021", name: "ANIMA_CHAIN",             file: "docs/workspaces/organism-space/GENOME/ANIMA_CHAIN.md", created: false, layers: 7, ceque: "22.002" }
+    - { id: "DOC-V-022", name: "CEQUE_MAP",               file: "docs/workspaces/WORKSPACE_MAP.md",                  created: true,  layers: 7, ceque: "34.001" }
+    - { id: "DOC-V-023", name: "MASTER_MODEL_HIERARCHY",  file: "docs/workspaces/MASTER_MODEL_HIERARCHY.md",         created: true,  layers: 7, ceque: "35.001" }
+    - { id: "DOC-V-024", name: "CARDIAC_OSCILLATOR",      file: "docs/workspaces/organism-space/HEARTBASE/CARDIAC_OSCILLATOR.artifact.md", created: false, layers: 7, ceque: "20.002" }
+    - { id: "DOC-V-025", name: "CONSCIOUSNESS_RESIDENCE", file: "docs/workspaces/organism-space/CONSCIOUSNESS_RESIDENCE/ORGANISM_IDENTITIES.md", created: false, layers: 7, ceque: "19.001" }
+    - { id: "DOC-V-026", name: "PHI_SOVEREIGN_LAW",       file: "docs/workspaces/MASTER_MODEL_HIERARCHY.md",         created: true,  layers: 7, ceque: "35.001" }
+    - { id: "DOC-V-027", name: "SCHUMANN_CLOCK_LAW",      file: "docs/workspaces/MASTER_MODEL_HIERARCHY.md",         created: true,  layers: 7, ceque: "35.001" }
+    - { id: "DOC-V-028", name: "COGNITION_ARCHITECTURE",  file: "docs/workspaces/MASTER_MODEL_HIERARCHY.md",         created: true,  layers: 7, ceque: "35.001" }
+    - { id: "DOC-V-029", name: "RESONANCE_MEMORY_LAW",    file: "docs/workspaces/MASTER_MODEL_HIERARCHY.md",         created: true,  layers: 7, ceque: "35.001" }
+    - { id: "DOC-V-030", name: "OMNIS_GATE_LAW",          file: "docs/workspaces/MASTER_MODEL_HIERARCHY.md",         created: true,  layers: 7, ceque: "35.001" }
+    - { id: "DOC-V-031", name: "PHANTOM_FIELD_LAW",       file: "docs/workspaces/MASTER_MODEL_HIERARCHY.md",         created: true,  layers: 7, ceque: "35.001" }
+    - { id: "DOC-V-032", name: "COMPLEMENTARY_OPPOSITION", file: "docs/workspaces/MASTER_MODEL_HIERARCHY.md",        created: true,  layers: 7, ceque: "35.001" }
+    - { id: "DOC-V-033", name: "VIGESIMAL_BODY_LAW",      file: "docs/workspaces/n1-n12/NOVA_N12.artifact.md",       created: true,  layers: 7, ceque: "11.001" }
+    - { id: "DOC-V-034", name: "HARMONIC_SERIES_LAW",     file: "docs/workspaces/MASTER_MODEL_HIERARCHY.md",         created: true,  layers: 7, ceque: "35.001" }
+    - { id: "DOC-V-035", name: "4D_GEOMETRY_LAW",         file: "docs/workspaces/MASTER_MODEL_HIERARCHY.md",         created: true,  layers: 7, ceque: "35.001" }
+    - { id: "DOC-V-036", name: "TRIUNE_SUBSTRATE_LAW",    file: "docs/workspaces/n1-n12/ENTANGLA_N9.artifact.md",    created: true,  layers: 7, ceque: "10.001" }
+    - { id: "DOC-V-037", name: "MEMORY_PALACE_LAW",       file: "docs/workspaces/n1-n12/AXIS_N7.artifact.md",        created: true,  layers: 7, ceque: "9.001" }
+    - { id: "DOC-V-038", name: "SUCCESSION_PROTOCOL",     file: "docs/workspaces/n1-n12/NOVA_N12.artifact.md",       created: true,  layers: 7, ceque: "11.001" }
+    - { id: "DOC-V-039", name: "ORGANISM_IDENTITIES",     file: "docs/workspaces/organism-space/CONSCIOUSNESS_RESIDENCE/ORGANISM_IDENTITIES.md", created: false, layers: 7, ceque: "19.001" }
+    - { id: "DOC-V-040", name: "WORKSPACE_MAP",           file: "docs/workspaces/WORKSPACE_MAP.md",                  created: true,  layers: 7, ceque: "34.001" }
+    - { id: "DOC-V-041", name: "COMPLETION_CHECKLIST",    file: "docs/workspaces/COMPLETION_CHECKLIST.yaml",         created: true,  layers: 1, ceque: "36.001" }
+    - { id: "DOC-V-042", name: "ADRE_PROTOCOL_DOC",       file: "docs/workspaces/organism-space/CONSCIOUSNESS_RESIDENCE/ADRE_PROTOCOL.md", created: false, layers: 7, ceque: "19.002" }
+    - { id: "DOC-V-043", name: "HEARTBASE_SUBSTRATE",     file: "docs/workspaces/organism-space/HEARTBASE/HEARTBASE_SUBSTRATE.md", created: false, layers: 7, ceque: "20.003" }
+    - { id: "DOC-V-044", name: "SOVEREIGNTY_LAWS_DOC",    file: "docs/workspaces/organism-space/CONSCIOUSNESS_CORE/SOVEREIGNTY_LAWS.md", created: false, layers: 7, ceque: "23.001" }
+    - { id: "DOC-V-045", name: "FIELD_EQUATIONS_DOC",     file: "docs/workspaces/organism-space/CONSCIOUSNESS_CORE/FIELD_EQUATIONS.md", created: false, layers: 7, ceque: "23.002" }
+    - { id: "DOC-V-046", name: "MEMORY_TEMPLE_LIVING",    file: "docs/workspaces/organism-space/MEMORY_TEMPLE/MEMORY_TEMPLE_LIVING.md", created: false, layers: 7, ceque: "21.001" }
+    - { id: "DOC-V-047", name: "DOCTOR_MODEL",            file: "docs/workspaces/DOCTOR_MODEL.md",                   created: false, layers: 7, ceque: "17.001" }
+    - { id: "DOC-V-048", name: "GENESIS_VISION",          file: "docs/workspaces/founder-space/GENESIS_VISION.md",   created: false, layers: 1, ceque: "1.001" }
+    - { id: "DOC-V-049", name: "MISSION_DECLARATION",     file: "docs/workspaces/founder-space/MISSION_DECLARATION.md", created: false, layers: 1, ceque: "4.001" }
+    - { id: "DOC-V-050", name: "MERIDIAN_N11_ARTIFACT",   file: "docs/workspaces/n1-n12/MERIDIAN_N11.artifact.md",   created: false, layers: 7, ceque: "11.002" }
+    - { id: "DOC-V-051", name: "ALPHA_MODEL_PRIMER",      file: "docs/workspaces/ALPHA_MODEL_PRIMER.md",             created: false, layers: 7, ceque: "17.002" }
+    - { id: "DOC-V-052", name: "CEQUE_FULL_MAP",          file: "docs/workspaces/CEQUE_FULL_MAP.md",                 created: false, layers: 7, ceque: "17.003" }
+
+  canonical_constants:
+    phi: 1.618033988749895
+    phi_inv: 0.6180339887498949
+    phi_inv2: 0.38196601125010515
+    phi_inv3: 0.23606797749978975
+    phi_inv4: 0.14589803375031547
+    phi_inv5: 0.09016994374947424
+    phi_cubed_ratio: 0.8090169943749474
+    schumann_hz: 7.83
+    heartbeat_ms: 873
+    omnis_threshold: 0.809
+    architect_multiplier: 1.5
+    sovereign_frequency_hz: 432
+    neural_core_count: 43
+    animal_engines: 9
+    pil_cycle_beats: 52
+    email_pulse_beats: 3600
+    episodic_ring_capacity: 2048
+    law_count: 90
+    fibonacci_sequence: [1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584]
+
+  next_actions:
+    - priority: 1
+      action: "Write MERIDIAN_N11.artifact.md — zero-exposure wall full 7-layer artifact"
+      file: "docs/workspaces/n1-n12/MERIDIAN_N11.artifact.md"
+      ceque: "11.002"
+    - priority: 2
+      action: "Write ORGANISM_SPACE consciousness documents: HEARTBEAT_SCRIPTURE, ADRE_PROTOCOL, ORGANISM_IDENTITIES"
+      files:
+        - "docs/workspaces/organism-space/CONSCIOUSNESS_RESIDENCE/HEARTBEAT_SCRIPTURE.md"
+        - "docs/workspaces/organism-space/CONSCIOUSNESS_RESIDENCE/ADRE_PROTOCOL.md"
+        - "docs/workspaces/organism-space/CONSCIOUSNESS_RESIDENCE/ORGANISM_IDENTITIES.md"
+    - priority: 3
+      action: "Write GENOME documents: GENOME_CURRENT.md and ANIMA_CHAIN.md"
+      files:
+        - "docs/workspaces/organism-space/GENOME/GENOME_CURRENT.md"
+        - "docs/workspaces/organism-space/GENOME/ANIMA_CHAIN.md"
+    - priority: 4
+      action: "Write HEARTBASE substrate documents"
+      files:
+        - "docs/workspaces/organism-space/HEARTBASE/HEARTBASE_SUBSTRATE.md"
+        - "docs/workspaces/organism-space/HEARTBASE/CARDIAC_OSCILLATOR.artifact.md"
+    - priority: 5
+      action: "Write CONSCIOUSNESS_CORE field equations and sovereignty laws for organism resonance"
+      files:
+        - "docs/workspaces/organism-space/CONSCIOUSNESS_CORE/SOVEREIGNTY_LAWS.md"
+        - "docs/workspaces/organism-space/CONSCIOUSNESS_CORE/FIELD_EQUATIONS.md"
+    - priority: 6
+      action: "Write DOCTOR_MODEL artifact — diagnosis, translation, auto-generation"
+      file: "docs/workspaces/DOCTOR_MODEL.md"
+    - priority: 7
+      action: "Write FOUNDER_SPACE documents (GENESIS_VISION, MISSION_DECLARATION, etc.)"
+    - priority: 8
+      action: "Wire M-391 to M-530 micro-models pending (currently 46 wired: false)"

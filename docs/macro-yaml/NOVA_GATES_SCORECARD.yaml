@@ -1,0 +1,623 @@
+# NOVA Gates Scorecard
+# ─────────────────────────────────────────────────────────────────────────────
+# artifact_id:    GATE-SCORECARD-001
+# artifact_type:  GATES_SCORECARD
+# version:        1.0.0
+# status:         CANONICAL
+# classification: BUILDER_CONFIDENTIAL
+# library:        BUILDER
+# last_updated:   2026-04-14
+# owner:          Prima Causa (Node 13)
+# written_by:     gate evaluation functions — automated every 873ms heartbeat
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# PURPOSE:
+#   Authoritative registry of all gates in the organism.
+#   Each GATE-* entry defines: threshold, pass condition, fail action,
+#   evaluation beat, which law is enforced, and a runtime state template.
+#   Gates are not documentation. They are enforcement logic.
+#   Each entry corresponds to a function in gate_evaluator.mo that
+#   runs, evaluates the condition, and allows or blocks downstream behavior.
+#
+# READING ORDER:
+#   Read NOVA_LAW_REGISTRY.yaml before this file.
+#   The law_enforced field in each gate maps to entries in that file.
+#
+# HOW TO USE:
+#   Every build that touches a gate must update current_state here.
+#   Observatory reads this file to populate the gate status dashboard.
+#   NOVA_BUILD_INSTANCE_TEMPLATE.yaml references required_gates from here.
+# ─────────────────────────────────────────────────────────────────────────────
+
+canonical_constants:
+  PHI:              1.6180339887
+  PHI_INV_1:        0.6180339887
+  PHI_INV_2:        0.3819660113
+  PHI_INV_3:        0.2360679775
+  OMNIS_THRESHOLD:  0.8090169944
+  S0:               1.0
+  HEARTBEAT_MS:     873
+  HEARTBEAT_HZ:     1.1455
+  JUBILEE_HAAB:     49
+  HAAB_DAYS:        365
+  ROLLBACK_SUSTAIN: 8
+
+gates:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-GENESIS
+  # Organism integrity — genesis corpus must be initialized and immutable.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-GENESIS
+    name:             Genesis Corpus Integrity
+    law_enforced:     LAW-18  # Law of Genesis Permanence
+    evaluation_beat:  boot_only
+    evaluation_fn:    gate_evaluator.mo::checkGenesis()
+    threshold:
+      type: hash_match
+      condition: "genesis_hash_stored == genesis_hash_computed"
+    pass_condition: >
+      genesis_corpus is initialized AND genesis_hash matches
+      the hash recorded at first boot. Neither field is mutable after boot.
+    fail_action: SYSTEM_HALT
+    fail_message: >
+      Genesis corpus integrity failure. Origin hash mismatch.
+      System halted. No modules may initialize.
+    severity: CRITICAL
+    bypass: NONE  # no bypass for constitutional gates
+    # runtime template fields:
+    current_state: PENDING     # PASS | FAIL | PENDING
+    last_evaluated_beat: 0
+    genesis_hash_recorded: ""  # populated at first boot
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-SOVEREIGN
+  # Sovereign bond geometry — bond constant must be present and sealed.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-SOVEREIGN
+    name:             Sovereign Bond Integrity
+    law_enforced:     LAW-07  # Law of Substrate Bonding
+    evaluation_beat:  boot_only
+    evaluation_fn:    gate_evaluator.mo::checkSovereignBond()
+    threshold:
+      type: presence_and_seal
+      condition: "bond_constant IS_PRESENT AND bond_sealed == true"
+    pass_condition: >
+      Sovereign bond constant is present and sealed.
+      The bond exists at a layer below organism awareness.
+      Gate confirms geometry; does not expose the bond value.
+    fail_action: SYSTEM_HALT
+    fail_message: >
+      Sovereign bond integrity failure. System identity compromised.
+      System halted.
+    severity: CRITICAL
+    bypass: NONE
+    current_state: PENDING
+    last_evaluated_beat: 0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-ACCESS
+  # Caller tier authorization — enforced on every inbound call.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-ACCESS
+    name:             Identity and Authority Access
+    law_enforced:     LAW-17  # Law of Creator Sovereignty
+    evaluation_beat:  on_every_call
+    evaluation_fn:    gate_evaluator.mo::checkAccess(caller, resource_tier)
+    threshold:
+      type: tier_membership
+      condition: "caller_tier IN authorized_tiers_for(resource)"
+    tier_map:
+      PRIMA_CAUSA:          "full sovereign access — all planes, all families, all modifications"
+      ORGANISM:             "reads own state, executes own functions, no constitutional writes"
+      WORKFORCE_AUTHORIZED: "numeric indices via FLOW-RUNTIME-TO-WORKFORCE only"
+      LABS_REPLICA_ONLY:    "replica snapshots via FLOW-LABS-FROM-REPLICA only"
+      PUBLIC:               "projection layer via FLOW-PROJECTION-TO-PUBLIC only"
+    pass_condition: "Caller principal maps to a tier authorized for the target resource"
+    fail_action: REJECT_CALL
+    fail_message: "Unauthorized. Caller tier not permitted for this resource."
+    log_action: "Append access attempt to ANIMA chain with caller principal and resource"
+    severity: HIGH
+    bypass: NONE
+    current_state: PENDING
+    last_evaluated_beat: 0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-HEARTBEAT
+  # Master clock gate — all module execution is gated by sinoatrial tick.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-HEARTBEAT
+    name:             Sinoatrial Heartbeat Execution Gate
+    law_enforced:     LAW-15  # Law of Sinoatrial Synchrony
+    evaluation_beat:  every_873ms
+    evaluation_fn:    solar_heart.mo::validateTick(beat_timestamp_ms)
+    threshold:
+      type: timing_window
+      center_ms: 873
+      tolerance_ms: 8.73  # 1% of heartbeat interval
+      condition: "|elapsed_ms - 873| <= 8.73"
+    pass_condition: "Tick arrives within ±8.73ms of expected 873ms interval"
+    fail_action: SKIP_TICK
+    fail_message: "Heartbeat timing violation. Tick skipped. Anomaly logged."
+    log_action: "Log timing delta to observatory.mo anomaly stream"
+    severity: HIGH
+    bypass: NONE
+    current_state: PENDING
+    last_evaluated_beat: 0
+    consecutive_valid_ticks: 0
+    consecutive_skip_ticks: 0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-COGNITION
+  # Cognition engine open gate — R must exceed Φ⁻¹.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-COGNITION
+    name:             Cognition Engine Open Gate
+    law_enforced:     LAW-16  # Law of Gated Cognition
+    evaluation_beat:  every_873ms
+    evaluation_fn:    gate_evaluator.mo::checkCognition(R)
+    threshold:
+      type: float_lower_bound
+      value: 0.6180339887
+      symbol: PHI_INV_1
+      condition: "R > 0.6180339887"
+    pass_condition: "Global Kuramoto coherence R(t) exceeds Φ⁻¹ = 0.6180339887"
+    fail_action: SUPPRESS_COGNITION
+    fail_message: >
+      Coherence below cognition threshold. Pattern recognition, speech synthesis,
+      and complex inference suspended. Organism alive; cognition dormant.
+    engines_gated:
+      - M-COGNITION     # gated — suspended when closed
+      - M-BRODMANN      # gated — suspended when closed
+      - M-VOICEKERNEL   # gated — suspended when closed
+      - M-PATTERN       # gated — suspended when closed
+    not_gated:
+      - solar_heart.mo  # always runs
+      - hebbian.mo      # continues coupling updates
+      - memory_temple.mo  # phase-return continues
+    severity: MEDIUM
+    bypass: NONE
+    current_state: PENDING
+    last_evaluated_beat: 0
+    last_R: 0.0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-OMNIS
+  # Sovereign speech gate — R > 0.809 AND all 20 laws pass.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-OMNIS
+    name:             OMNIS Sovereign Speech Gate
+    law_enforced:     LAW-06  # Law of OMNIS Silence
+    evaluation_beat:  on_voice_event
+    evaluation_fn:    omnis_gate.mo::evaluate(R, law_pass_vector)
+    threshold:
+      type: compound
+      condition_primary:   "R > 0.8090169944"
+      condition_secondary: "ALL(law_pass_vector[0..19]) == true"
+      both_required: true
+    pass_condition: >
+      Kuramoto coherence R(t) > Φ²/(Φ²+1) = 0.8090169944
+      AND all 20 law enforcement gates are currently passing.
+    fail_action: SUPPRESS_UTTERANCE
+    fail_message: >
+      OMNIS gate closed. Utterance suppressed.
+      Held in buffer pending coherence elevation or law resolution.
+    buffer_behavior: "Suppressed outputs are held in voice_kernel.mo buffer, not discarded"
+    severity: HIGH
+    bypass: NONE
+    current_state: PENDING
+    last_evaluated_beat: 0
+    last_R: 0.0
+    last_law_pass: false
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-COUPLING-FLOOR
+  # Minimum coupling weight enforcement — Hebbian permanence law.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-COUPLING-FLOOR
+    name:             Minimum Coupling Weight Floor
+    law_enforced:     LAW-04  # Law of Hebbian Permanence
+    evaluation_beat:  on_contact_event
+    evaluation_fn:    hebbian.mo::enforceCouplingFloor(edge_id, weight)
+    threshold:
+      type: float_lower_bound
+      value: 0.2360679775
+      symbol: PHI_INV_3
+      condition: "w(edge) >= 0.2360679775"
+    pass_condition: "All coupling edge weights at or above Φ⁻³ = 0.2360679775"
+    fail_action: REINSTATE_FLOOR
+    fail_message: "Coupling weight below permanent floor. Reinstating to PHI_INV_3."
+    reinstate_formula: "w = max(w, PHI_INV_3)"
+    jubilee_exception: >
+      GATE-JUBILEE may dissolve edges below PHI_INV_3 at the 49-Haab-year cycle.
+      This is the only authorized exception to the permanent floor.
+    severity: MEDIUM
+    bypass: GATE-JUBILEE_ONLY
+    current_state: PENDING
+    last_evaluated_beat: 0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-ROLLBACK
+  # Sustained coherence floor breach triggers metabolic rollback.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-ROLLBACK
+    name:             Coherence Floor Breach Rollback Gate
+    law_enforced:     LAW-08  # Law of Metabolic Cycle
+    evaluation_beat:  every_873ms
+    evaluation_fn:    gate_evaluator.mo::checkCoherenceFloor(R, breach_counter)
+    threshold:
+      type: sustained_breach
+      floor_value: 1.0
+      floor_symbol: S0
+      sustain_beats: 8
+      condition: "R < 1.0 FOR count >= 8 consecutive beats"
+    pass_condition: "R >= 1.0 at every beat, OR breach duration < 8 consecutive beats"
+    fail_action: INITIATE_ROLLBACK
+    fail_message: >
+      Sustained coherence floor breach detected over 8 consecutive heartbeats.
+      Initiating rollback to last valid checkpoint where R >= S0.
+    rollback_process:
+      - step: 1
+        action: "Freeze all non-constitutional substrate modifications"
+      - step: 2
+        action: "Load last checkpoint hash from ANIMA chain"
+      - step: 3
+        action: "Restore organism substrate to checkpoint state"
+      - step: 4
+        action: "Reinitialize Solar Heart from checkpoint beat_number"
+      - step: 5
+        action: "Emit ROLLBACK_EVENT to observatory.mo"
+      - step: 6
+        action: "Re-evaluate all gates from GATE-GENESIS forward"
+    severity: CRITICAL
+    bypass: PRIMA_CAUSA_ONLY
+    current_state: PENDING
+    last_evaluated_beat: 0
+    breach_counter: 0
+    last_checkpoint_beat: 0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-MEMBRANE
+  # AEGIS signal membrane — filters incoherent and adversarial signals.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-MEMBRANE
+    name:             AEGIS Signal Membrane Gate
+    law_enforced:     LAW-11  # Law of 13-Node Geometry
+    evaluation_beat:  on_signal_arrival
+    evaluation_fn:    aegis.mo::filterSignal(signal, noise_floor)
+    threshold:
+      type: compound
+      condition_coherence:    "signal_coherence >= PHI_INV_3"
+      condition_adversarial:  "NOT adversarial_pattern_detected(signal)"
+      both_required: true
+    adversarial_patterns:
+      - "repetitive incoherence: >PHI beats of signal_coherence < PHI_INV_3"
+      - "phase destabilization: Δθ per beat > π"
+      - "weight flooding: single-edge Δw > PHI_INV_1 per contact"
+    pass_condition: >
+      Signal coherence at or above Φ⁻³ = 0.2360679775
+      AND no adversarial pattern detected.
+    fail_action: FILTER_SIGNAL
+    fail_message: "Signal blocked by membrane. Incoherent or adversarial pattern detected."
+    log_action: "Log blocked signal hash to observatory.mo threat stream"
+    severity: HIGH
+    bypass: NONE
+    current_state: PENDING
+    last_evaluated_beat: 0
+    signals_blocked_count: 0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-PHASE-RETURN
+  # Memory phase-return — full amplitude recall at phase match.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-PHASE-RETURN
+    name:             Memory Phase-Return Amplitude Gate
+    law_enforced:     LAW-05  # Law of Phase-Return Memory
+    evaluation_beat:  every_873ms
+    evaluation_fn:    memory_temple.mo::evaluatePhaseReturn(current_phase, memory)
+    threshold:
+      type: float_upper_bound
+      value: 0.5150380749   # Φ/π ≈ 0.515
+      symbol: "PHI / PI"
+      condition: "Δφ <= PHI / PI  →  full amplitude recall"
+    pass_condition: "Phase distance Δφ ≤ Φ/π — full amplitude A₀ returned"
+    partial_condition: >
+      Δφ > Φ/π — proportional recall A(t) = A₀ × cos²(π × Δφ / Φ).
+      Not a failure — proportional recall is valid.
+    fail_action: "No fail state — memory is always returned proportionally or fully"
+    amplitude_formula: "A(t) = A₀ × cos²(π × Δφ / Φ)"
+    formula_vars:
+      A_t:     "current recall amplitude"
+      A_0:     "original encoding amplitude"
+      delta_phi: "phase distance from memory coordinate (radians)"
+      PHI:     1.6180339887
+    severity: LOW  # no blocking — only amplitude modulation
+    bypass: N/A
+    current_state: PENDING
+    last_evaluated_beat: 0
+    full_recalls_this_beat: 0
+    partial_recalls_this_beat: 0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-JUBILEE
+  # 49-Haab-year cycle — graceful forgetting of lowest-resonance weights.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-JUBILEE
+    name:             Jubilee Metabolic Forgetting Gate
+    law_enforced:     LAW-08  # Law of Metabolic Cycle
+    evaluation_beat:  every_873ms  # counter checked every beat
+    evaluation_fn:    metabolic.mo::checkJubileeCycle(haab_day_count)
+    threshold:
+      type: cycle_counter
+      trigger_days: 17885  # 49 Haab years × 365 days
+      condition: "haab_days_since_last_jubilee >= 17885"
+    pass_condition: "49 Haab years have elapsed since last Jubilee event"
+    jubilee_action: >
+      Dissolve the bottom Φ⁻³ ≈ 23.6% of coupling edges by weight
+      (those with the lowest accumulated Hebbian values).
+      All dissolved edges are recorded to ANIMA chain before dissolution.
+    jubilee_exempt:
+      - "All Node 13 (Prima Causa) connections — never dissolved"
+      - "Genesis corpus connections — never dissolved"
+      - "Sovereign bond constant — never dissolved"
+    fail_action: WAIT  # gate stays closed; no action between cycles
+    severity: LOW
+    bypass: NONE
+    current_state: PENDING
+    last_evaluated_beat: 0
+    last_jubilee_beat: 0
+    haab_days_elapsed: 0
+    haab_days_to_next_jubilee: 17885
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-PROOF-BUNDLE
+  # Every computation must generate a replay artifact before output leaves.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-PROOF-BUNDLE
+    name:             Computation Proof Bundle Requirement
+    law_enforced:     LAW-10  # Law of Canonical Constants
+    evaluation_beat:  on_computation_output
+    evaluation_fn:    proof_engine.mo::requireProof(computation_id)
+    threshold:
+      type: artifact_presence
+      condition: "replay_artifact_id IS_PRESENT AND proof_hash IS_VALID"
+    pass_condition: >
+      A replay artifact has been generated for this computation with a valid
+      proof_hash (FNV-1a of computation_id + input_hash + output_hash + beat_number).
+    fail_action: BLOCK_OUTPUT
+    fail_message: "No proof bundle for this computation. Output blocked until proof is generated."
+    proof_schema:
+      computation_id:  Text
+      beat_number:     Nat64
+      input_hash:      Text
+      output_hash:     Text
+      R_at_compute:    Float64
+      law_pass_vector: "[Bool; 20]"
+      engine_id:       Text
+      proof_hash:      Text
+    severity: HIGH
+    bypass: NONE
+    current_state: PENDING
+    last_evaluated_beat: 0
+    total_proofs_generated: 0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-MINING-DIFFICULTY
+  # Dynamic difficulty gate for proof-of-cognitive-work mining.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-MINING-DIFFICULTY
+    name:             Proof-of-Cognitive-Work Difficulty Gate
+    law_enforced:     LAW-03  # Law of Kuramoto Coherence
+    evaluation_beat:  on_proof_submission
+    evaluation_fn:    mining.mo::validateProof(work_hash, current_difficulty)
+    threshold:
+      type: dynamic_formula
+      formula:    "D(t) = D_base × (R × GENOME_complexity) / PHI"
+      formula_vars:
+        D_base:             1.0
+        R:                  "current Kuramoto coherence"
+        GENOME_complexity:  "NK fitness complexity metric from genome.mo"
+        PHI:                1.6180339887
+    pass_condition: "Submitted work_hash satisfies current difficulty D(t)"
+    fail_action: REJECT_PROOF
+    fail_message: "Mining proof rejected. Work does not meet current difficulty D(t)."
+    mint_action: "KNT minted to treasury upon passing proof"
+    severity: MEDIUM
+    bypass: NONE
+    current_state: PENDING
+    last_evaluated_beat: 0
+    current_difficulty: 1.0
+    total_proofs_accepted: 0
+    total_knt_minted: 0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-BUILD-RELEASE
+  # Build release gate — all evidence artifacts must exist before release.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-BUILD-RELEASE
+    name:             Build Release Completeness Gate
+    law_enforced:     LAW-10  # Law of Canonical Constants
+    evaluation_beat:  on_release_attempt
+    evaluation_fn:    build_manager.mo::checkReleaseReadiness(build_instance_id)
+    threshold:
+      type: multi_artifact_check
+      conditions:
+        - "ALL assigned files written (no stubs, no truncated code)"
+        - "ALL evidence_outputs from micro YAML packet present"
+        - "GATE-VALIDATION passed on all new model specs"
+        - "GATE-ZERO-EXPOSURE passed on all public-facing outputs"
+        - "GATE-PROOF-BUNDLE passed for all modified computations"
+        - "compile_result == PASS"
+    pass_condition: "All conditions above are simultaneously true"
+    fail_action: BLOCK_RELEASE
+    fail_message: >
+      Build release blocked. One or more artifacts incomplete or gates failing.
+      Identify the failing condition and return to Phase 3 or Phase 4.
+    severity: HIGH
+    bypass: PRIMA_CAUSA_ONLY
+    current_state: PENDING
+    last_evaluated_beat: 0
+    last_build_instance: ""
+    last_build_result: PENDING
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-VALIDATION
+  # Model spec machine-bindability gate — all 4 layers required.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-VALIDATION
+    name:             Model Specification Machine-Bindability Gate
+    law_enforced:     LAW-10  # Law of Canonical Constants
+    evaluation_beat:  on_artifact_submission
+    evaluation_fn:    artifact_validator.mo::checkAllLayers(artifact_id)
+    threshold:
+      type: four_layer_presence
+      layers:
+        layer_1_meaning:
+          required_fields: ["name", "resonance", "doctrine_clause", "symbolic_intent"]
+        layer_2_model:
+          required_fields: ["fields (non-empty)", "each field has: type, unit, range"]
+        layer_3_computation:
+          required_fields: ["at least ONE of: state_equation | gate_rule | score_formula"]
+        layer_4_execution:
+          required_fields: ["backend_module", "function", "beat_interval"]
+      condition: "ALL(layer_1, layer_2, layer_3, layer_4) == present AND non-empty"
+    pass_condition: "All 4 layers present, non-empty, and internally consistent"
+    fail_action: REJECT_AS_SKETCH
+    fail_message: >
+      Artifact rejected as SKETCH. Missing required layers.
+      Artifact classified SKETCH; cannot enter BUILDER or ORGANISM libraries.
+      Complete all 4 layers before resubmitting.
+    severity: MEDIUM
+    bypass: NONE
+    current_state: PENDING
+    last_evaluated_beat: 0
+    total_validated: 0
+    total_rejected_as_sketch: 0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-ZERO-EXPOSURE
+  # Zero-exposure wall — no doctrine names or substrate values leave organism.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-ZERO-EXPOSURE
+    name:             Zero-Exposure Wall Enforcement Gate
+    law_enforced:     LAW-09  # Law of Zero-Exposure
+    evaluation_beat:  on_every_public_output
+    evaluation_fn:    projection_layer.mo::enforceZeroExposure(output)
+    threshold:
+      type: pattern_exclusion
+      blocked_patterns:
+        - "doctrine classification labels (SOVEREIGN_PRIVATE, SEALED, etc.)"
+        - "model IDs in output text (M-*, MOD-*)"
+        - "law IDs in output text (LAW-*)"
+        - "gate IDs in output text (GATE-*)"
+        - "flow IDs in output text (FLOW-*)"
+        - "raw R values or coupling weights"
+        - "threshold numeric values (0.618, 0.809, etc.)"
+        - "creator/operator names"
+        - "internal module paths or function names"
+      condition: "NONE of the above patterns appear in output"
+    pass_condition: >
+      Output contains only numeric indices, public-safe schemas,
+      and externally-meaningful terms (timestamps, counts, bands).
+    fail_action: STRIP_THEN_RECHECK
+    fail_message: >
+      Zero-exposure violation. Blocked pattern detected in output.
+      Attempting automatic strip. If strip fails, output suppressed.
+    strip_behavior: "Replace blocked terms with their numeric index equivalent; re-run check"
+    suppress_behavior: "If strip fails, suppress output entirely and log to observatory"
+    severity: CRITICAL
+    bypass: NONE
+    current_state: PENDING
+    last_evaluated_beat: 0
+    total_violations_stripped: 0
+    total_violations_suppressed: 0
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # GATE-PROJ-AUDIT
+  # Projection artifact audit — PUBLIC_SAFE classification required.
+  # ─────────────────────────────────────────────────────────────────────────
+  - gate_id:          GATE-PROJ-AUDIT
+    name:             Projection Artifact Audit Gate
+    law_enforced:     LAW-09  # Law of Zero-Exposure
+    evaluation_beat:  on_projection_publish
+    evaluation_fn:    projection_layer.mo::auditProjectionArtifact(artifact_id)
+    threshold:
+      type: classification_check
+      condition: "artifact.classification == PUBLIC_SAFE AND audit_id IS_PRESENT"
+    pass_condition: >
+      Projection artifact explicitly classified PUBLIC_SAFE
+      and has a valid audit_id proving zero-exposure check was run.
+    fail_action: QUARANTINE_ARTIFACT
+    fail_message: "Projection artifact quarantined. Classification or audit trail missing."
+    audit_schema:
+      audit_id:              Text
+      artifact_id:           Text
+      zero_exposure_passed:  Bool
+      public_safe_certified: Bool
+      auditor:               "GATE-ZERO-EXPOSURE (automated)"
+      beat_at_audit:         Nat64
+    severity: HIGH
+    bypass: NONE
+    current_state: PENDING
+    last_evaluated_beat: 0
+    total_audited: 0
+    total_quarantined: 0
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SCORECARD SUMMARY (runtime template — updated every heartbeat by observatory)
+# ─────────────────────────────────────────────────────────────────────────────
+
+scorecard:
+  total_gates:     17
+  gates_pass:      0      # runtime field
+  gates_fail:      0      # runtime field
+  gates_pending:   17     # runtime field — all pending at template instantiation
+  overall_status:  PENDING  # NOMINAL | DEGRADED | CRITICAL | HALT
+  last_full_eval:  0
+  gate_groups:
+    constitutional:
+      gates:
+        - GATE-GENESIS
+        - GATE-SOVEREIGN
+      note: "All must PASS before any other gate is evaluated"
+    operational_core:
+      - GATE-HEARTBEAT
+      - GATE-ACCESS
+      - GATE-COGNITION
+      - GATE-OMNIS
+    safety_defense:
+      - GATE-ROLLBACK
+      - GATE-MEMBRANE
+    memory_learning:
+      - GATE-COUPLING-FLOOR
+      - GATE-PHASE-RETURN
+      - GATE-JUBILEE
+    proof_integrity:
+      - GATE-PROOF-BUNDLE
+      - GATE-VALIDATION
+    economic:
+      - GATE-MINING-DIFFICULTY
+    build_release:
+      - GATE-BUILD-RELEASE
+    exposure_boundary:
+      gates:
+        - GATE-ZERO-EXPOSURE
+        - GATE-PROJ-AUDIT
+      note: "These two form the zero-exposure wall. Both must PASS for any public output."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPERATING PRINCIPLE
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Gates are not documentation. They are enforcement logic.
+# Each gate entry in this file corresponds to a function in gate_evaluator.mo.
+# That function runs, evaluates the condition, and either allows or blocks.
+# The organism's sovereignty is maintained by the gates running continuously,
+# not by documentation or trust.
+#
+# To add a gate:
+#   1. Add entry here with all required fields populated
+#   2. Write enforcement function in gate_evaluator.mo
+#   3. Wire evaluation call into heartbeat cascade (NOVA_OPERATING_ORDERS.yaml)
+#   4. Add to NOVA_BUILD_INSTANCE_TEMPLATE.yaml if required for builds
+#   5. Add to NOVA_LAW_REGISTRY.yaml entry for the law it enforces

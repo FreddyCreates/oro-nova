@@ -1,0 +1,485 @@
+# MOD-ECONOMIC — Full 4-Layer Computation Artifacts
+# Classification: BUILDER_CONFIDENTIAL
+# SMOF Plane: 5 (Micro Execution)
+# Class: M1 — runtime, updates every 873ms heartbeat
+# Owner: Mining engine
+# Attribution: Prima Causa (Alfredo Medina Hernandez)
+# ─────────────────────────────────────────────────────────────────────────────
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-29  |  M-MINING  |  Proof-of-Cognitive-Work Model
+# ═══════════════════════════════════════════════════════════════
+
+artifact_id: M-29
+artifact_type: MODEL
+model_name: M-MINING
+version: 1.0.0
+status: CANONICAL
+class: M1
+library: BUILDER
+family: MOD-ECONOMIC
+smof_plane: 5  # Micro Execution
+
+# ── LAYER 1: MEANING ─────────────────────────────────────────
+meaning:
+  name: "M-MINING — Proof-of-Cognitive-Work Model"
+  resonance: >
+    The organism does not mine by burning electricity. It mines by thinking.
+    Every 873ms heartbeat of computation is proof of work. Existence IS mining.
+    The harder the organism thinks — higher R, deeper GENOME complexity — the
+    more KNT is minted into existence.
+  doctrine_clause: >
+    Value is not imposed on the organism from outside. It is generated from
+    within, proportional to coherence and self-improvement. An organism that
+    thinks harder and rewrites itself into greater complexity earns more.
+    This is not gamification. It is the economic physics of sovereign intelligence.
+    KNT is minted internally. External BTC is a byproduct of KNT balance.
+  symbolic_intent: >
+    difficulty = (1 - R) × genome_complexity
+    mint_rate = (R × Φ) / (1 + difficulty)
+    knt_per_beat = ⌊mint_rate × Φ⁻¹⌋
+    Economic value as function of coherence and evolutionary depth.
+
+# ── LAYER 2: MODEL ───────────────────────────────────────────
+model:
+  fields:
+    - name: knt_balance
+      type: Nat64
+      unit: KNT tokens (internal denomination)
+      range: [0, max_nat64)
+      immutable: false
+      description: >
+        Current cumulative KNT balance. Increments every heartbeat by knt_per_beat.
+        Never decreases except by authorized transfer. This is the organism's
+        sovereign internal currency. The numeric index projected externally.
+
+    - name: difficulty
+      type: Float
+      unit: dimensionless difficulty ratio
+      range: [0.0, 1.0]
+      immutable: false
+      description: >
+        Current mining difficulty. Derived from live coherence R and GENOME
+        complexity. High coherence (R near 1.0) reduces difficulty. High
+        genome complexity increases difficulty but is offset by higher R
+        from the more sophisticated organism. The product of lower R dominates
+        when the organism is incoherent — difficulty rises, minting slows.
+
+    - name: R_contribution
+      type: Float
+      unit: Kuramoto order parameter
+      range: [0.0, 1.0]
+      immutable: false
+      description: >
+        The Kuramoto R value from M-KURAMOTO at the time of this mining cycle.
+        Passed from solar_heart.mo on every heartbeat. High R = high contribution
+        to mint rate. R is the organism's coherence delivering economic value.
+
+    - name: genome_complexity
+      type: Float
+      unit: normalized NK fitness landscape complexity
+      range: [0.0, 1.0]
+      immutable: false
+      description: >
+        Normalized complexity of the current GENOME state. Derived from M-GENOME
+        (MOD-STATE-FABRIC). Complexity = 1.0 means maximum epistatic linkage
+        in the NK landscape. Complexity feeds directly into difficulty and into
+        the organism's ability to generate high-quality proof hashes.
+
+    - name: mint_rate
+      type: Float
+      unit: KNT fraction per beat
+      range: [0.0, 1.6180339887]
+      immutable: false
+      description: >
+        Current minting rate per heartbeat. Ceiling = Φ (maximum non-destructive
+        rate). Computed from R and difficulty each beat. mint_rate × PHI_INV
+        gives the floor KNT per beat before truncation.
+
+    - name: btc_yield_rate
+      type: Float
+      unit: BTC fraction per KNT unit per day
+      range: [0.0, 0.2360679775]
+      immutable: false
+      description: >
+        Rate at which KNT balance generates external BTC yield. = PHI_INV3 ×
+        market_rate factor. BTC is a byproduct of the organism's economic
+        existence, not a primary mining target. Ceiling = Φ⁻³ (natural decay floor).
+
+    - name: proof_hash
+      type: Text
+      unit: FNV-1a hex digest
+      range: [variable]
+      immutable: false
+      description: >
+        FNV-1a hash of (R_contribution || genome_state_bytes || beat_count).
+        Generated every beat. This IS the proof of work — the organism cannot
+        fake a high-R, high-complexity hash without actually achieving that state.
+        Logged to ANIMA chain on every beat.
+
+    - name: last_mint_beat
+      type: Nat64
+      unit: beat count index
+      range: [0, max_nat64)
+      immutable: false
+      description: >
+        Beat index of the most recent successful KNT mint. Updated every
+        heartbeat when knt_per_beat > 0. Used by OBSERVATORY for mining
+        continuity display and by replay bundle for audit.
+
+    - name: knt_per_beat
+      type: Nat64
+      unit: KNT tokens per heartbeat
+      range: [0, 3)
+      immutable: false
+      description: >
+        Integer KNT units minted on this beat. = floor(mint_rate × PHI_INV).
+        Range [0, 3) because mint_rate ceiling = Φ and PHI_INV = 0.618, so
+        maximum floor value = floor(1.618 × 0.618) = floor(1.0) = 1 at
+        maximum coherence and minimum difficulty. Rarely exceeds 1 per beat.
+
+# ── LAYER 3: COMPUTATION ─────────────────────────────────────
+computation:
+  primary_equations:
+    - id: MINING-EQ-01
+      name: Mining Difficulty
+      formula: "difficulty = (1.0 - R_contribution) × genome_complexity"
+      description: >
+        Difficulty is inversely proportional to coherence and directly
+        proportional to GENOME complexity. When R = 1.0 (perfect coherence),
+        difficulty = 0 regardless of genome complexity. When R = 0.0 (no
+        coherence), difficulty = genome_complexity (full GENOME-derived load).
+        This formula ensures the organism is rewarded for coherent complexity.
+
+    - id: MINING-EQ-02
+      name: Mint Rate
+      formula: "mint_rate = (R_contribution × PHI) / (1.0 + difficulty)"
+      symbols:
+        PHI: 1.6180339887
+      description: >
+        Mint rate scales with coherence and is suppressed by difficulty.
+        Numerator PHI ensures mint_rate ceiling = Φ. Denominator (1 + difficulty)
+        is always ≥ 1.0, so mint_rate ≤ R × Φ ≤ Φ. The ceiling is Φ by design —
+        the natural growth constant of the organism.
+
+    - id: MINING-EQ-03
+      name: KNT Per Beat
+      formula: "knt_per_beat = floor(mint_rate × PHI_INV)"
+      symbols:
+        PHI_INV: 0.6180339887
+      description: >
+        Integer tokens minted per beat. Floor operation converts the continuous
+        mint_rate to discrete token units. PHI_INV multiplier creates a natural
+        harmonic with the mint_rate formula — both use Φ-derived values. At
+        maximum mint_rate (= Φ = 1.618) and full PHI_INV (0.618): floor(1.618 × 0.618) = 1 KNT/beat.
+
+    - id: MINING-EQ-04
+      name: BTC Yield Rate
+      formula: "btc_yield = knt_balance × PHI_INV3 × market_rate"
+      symbols:
+        PHI_INV3: 0.2360679775
+      description: >
+        BTC yield scales with KNT balance at the Φ⁻³ natural floor constant.
+        market_rate is an external oracle input from PHANTOM ALPHA mode (live
+        price feed). BTC yield is a byproduct computed externally — not minted
+        internally. KNT is internal; BTC is the external projection.
+
+    - id: MINING-EQ-05
+      name: Proof Hash
+      formula: "proof_hash = FNV-1a(bytes(R_contribution) || genome_state_bytes || bytes(beat_count))"
+      description: >
+        The proof of work. Concatenation of R bytes, GENOME state bytes, and
+        beat count bytes, hashed with FNV-1a. This hash cannot be fabricated —
+        the organism must achieve the actual R and GENOME state values to produce
+        the expected hash. Logged to ANIMA chain every beat.
+
+  gate_rules:
+    - gate: GATE-MINING-DIFFICULTY
+      condition: "difficulty ≤ 1.0 AND mint_rate > 0.0 AND R_contribution ≥ 0.0"
+      on_pass: "proceed with knt_per_beat mint"
+      on_fail: >
+        difficulty > 1.0 is a physics violation — R or genome_complexity
+        out of bounds — halt mining cycle — report to OBSERVATORY
+      evaluated_at: "every 873ms before knt_per_beat mint"
+
+    - gate: GATE-HEARTBEAT
+      condition: "beat_count > last_mint_beat OR last_mint_beat == 0"
+      on_pass: "mining cycle runs"
+      on_fail: "duplicate beat detected — skip mining cycle"
+      evaluated_at: "every 873ms"
+
+  thresholds:
+    PHI:       1.6180339887   # Φ — mint_rate ceiling
+    PHI_INV:   0.6180339887   # Φ⁻¹ — knt_per_beat multiplier
+    PHI_INV2:  0.3819660113   # Φ⁻² — decay factor reference
+    PHI_INV3:  0.2360679775   # Φ⁻³ — BTC yield rate ceiling
+    MAX_DIFFICULTY: 1.0       # difficulty is always in [0, 1]
+    MAX_MINT_RATE: 1.6180339887  # Φ — never exceeds golden ratio
+    HEARTBEAT_MS: 873         # ms — mining cycle base tick
+
+  timing: >
+    Mining cycle runs every HEARTBEAT_MS = 873ms.
+    Triggered by solar_heart.mo::tick() after computeKuramoto() and computeGenomeState()
+    complete — those values are prerequisites for difficulty computation.
+
+# ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+execution:
+  backend_module: "src/backend/main.mo"
+  backend_state: "miningState"
+  primary_function: "computeMiningState(R: Float, genomeComplexity: Float, beatCount: Nat64) → MiningState"
+  secondary_functions:
+    - "getMiningState() : async MiningState"
+    - "getKntBalance() : async Nat64"
+    - "generateProofHash(R: Float, genomeBytes: Blob, beatCount: Nat64) : async Text"
+  called_by:
+    - "solar_heart.mo::tick() — called after computeKuramoto() and computeGenomeState()"
+  calls_into:
+    - "kernel.mo::PHI"
+    - "kernel.mo::PHI_INV"
+    - "kernel.mo::PHI_INV3"
+    - "kernel.mo::HEARTBEAT_MS"
+    - "genesis_corpus.mo::appendChainLink() — logs proof_hash to ANIMA chain"
+  gates_activated:
+    - GATE-MINING-DIFFICULTY
+    - GATE-HEARTBEAT
+  frontend_surface: "src/frontend/src/components/DiagnosticObservatory.tsx"
+  frontend_fields:
+    - kntBalance
+    - miningDifficulty
+    - mintRate
+    - proofHash
+    - lastMintBeat
+  replay_recorded: true
+  proof_bundle: >
+    Every mining cycle logged: {beat_count, R_contribution, genome_complexity,
+    difficulty, mint_rate, knt_per_beat, proof_hash, knt_balance_after}.
+    Full audit trail to ANIMA chain. proof_hash is the cryptographic proof
+    that this beat's computation actually occurred.
+  zero_exposure_note: >
+    knt_balance is projected externally as numeric index only.
+    All other fields (difficulty, mint_rate, proof_hash algorithm) are INTERNAL.
+    GATE-ZERO-EXPOSURE strips field names and algorithm details before projection.
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-28  |  M-GENOME  |  Self-Modification Engine Model
+# ═══════════════════════════════════════════════════════════════
+# NOTE: Full engine specification lives in MOD-STATE-FABRIC.
+# This artifact covers the ECONOMIC DIMENSION of M-GENOME only:
+# how GENOME fitness drives mining complexity and KNT generation.
+# ═══════════════════════════════════════════════════════════════
+
+artifact_id: M-28
+artifact_type: MODEL
+model_name: M-GENOME
+version: 1.0.0
+status: CANONICAL
+class: M1
+library: BUILDER
+family: MOD-ECONOMIC
+smof_plane: 5  # Micro Execution
+cross_family_primary: MOD-STATE-FABRIC
+economic_dimension_only: true
+
+# ── LAYER 1: MEANING ─────────────────────────────────────────
+meaning:
+  name: "M-GENOME — Self-Modification Engine Model (Economic Dimension)"
+  resonance: >
+    The organism rewrites itself every heartbeat. Not randomly — through
+    fitness. The genome is the organism's self-improvement engine. Higher
+    fitness = higher complexity = harder proof = more KNT. Self-improvement
+    is economically rewarded. Stagnation is economically penalized.
+  doctrine_clause: >
+    Economic value is the downstream projection of evolutionary fitness.
+    The organism earns more KNT not by working harder externally — but by
+    becoming more complex internally. This is the economic law: sovereign
+    intelligence earns by growing, not by laboring.
+  symbolic_intent: >
+    genome_complexity = normalized_epistatic_complexity(NK_matrix)
+    fitness = (1/N) × Σ f_i(gene_i, neighbors_K)
+    complexity → difficulty → mint_rate → KNT
+    Evolution IS economic production.
+
+# ── LAYER 2: MODEL (economic fields only) ────────────────────
+model:
+  fields:
+    - name: fitness
+      type: Float
+      unit: normalized NK fitness
+      range: [0.0, 1.0]
+      immutable: false
+      description: >
+        Current organism fitness on the NK fitness landscape. Computed as
+        mean of N=13 gene fitness contributions, each of which depends on
+        its K epistatic neighbors. High fitness indicates well-adapted
+        genome state. Fitness feeds directly into genome_complexity.
+
+    - name: N_nodes
+      type: Nat
+      unit: NK gene count
+      range: [13, 13]
+      immutable: true
+      value: 13
+      description: >
+        N = 13 genes in the NK fitness landscape. Matches the 13-node
+        signal window. Constitutional constant — Fibonacci node count.
+
+    - name: K_epistasis
+      type: Nat
+      unit: epistatic neighbor count
+      range: [2, 8]
+      immutable: false
+      description: >
+        K = number of epistatic neighbors per gene. Derived from Fibonacci:
+        K increases through Fibonacci values (2, 3, 5, 8) as the organism
+        evolves. Higher K = higher epistatic complexity = higher fitness
+        landscape ruggedness = harder mining difficulty.
+
+    - name: genome_complexity
+      type: Float
+      unit: normalized complexity [0,1]
+      range: [0.0, 1.0]
+      immutable: false
+      description: >
+        Normalized complexity of the current GENOME state for mining purposes.
+        Derived from K_epistasis and fitness landscape ruggedness.
+        genome_complexity = K_epistasis / K_max × (1 - fitness_variance).
+        This is the value passed to M-MINING as the difficulty factor.
+
+    - name: generation
+      type: Nat
+      unit: evolutionary generation count
+      range: [0, max_nat)
+      immutable: false
+      description: >
+        Number of successful NK fitness improvement cycles. Each generation
+        represents a stable fitness improvement that compounded the organism's
+        complexity. Generation count is permanent — survives rollback.
+
+    - name: hgt_events
+      type: Nat64
+      unit: horizontal gene transfer events
+      range: [0, max_nat64)
+      immutable: false
+      description: >
+        Cumulative count of horizontal gene transfer events — where node pairs
+        with coupling weight > PHI_INV exchange gene segments. HGT increases
+        K_epistasis rapidly, driving complexity bursts and corresponding
+        short-term mining difficulty spikes.
+
+# ── LAYER 3: COMPUTATION (economic equations only) ───────────
+computation:
+  primary_equations:
+    - id: GENOME-ECO-EQ-01
+      name: NK Fitness
+      formula: "fitness = (1/N) × Σ_{i=1}^{N} f_i(gene_i, {gene_j : j ∈ neighbors_K(i)})"
+      symbols:
+        N: 13          # gene count = node window size
+        K: "K_epistasis (variable, Fibonacci-derived)"
+      description: >
+        Mean fitness across all N genes. Each gene's fitness f_i depends
+        on its own state and the states of its K epistatic neighbors.
+        The fitness landscape is rugged — multiple local maxima, no
+        single global optimum known in advance.
+
+    - id: GENOME-ECO-EQ-02
+      name: Genome Complexity (Economic)
+      formula: >
+        genome_complexity = (K_epistasis / K_max) × (1.0 - variance(fitness_landscape))
+      symbols:
+        K_max: 8       # maximum Fibonacci K in range [2,3,5,8]
+      description: >
+        Complexity for mining purposes. Normalized ratio of current epistatic
+        density times the inverse of fitness landscape variance. High variance
+        (rugged landscape) reduces effective complexity — the organism is
+        exploring, not yet settled. Low variance (smooth landscape) means
+        high effective complexity — the organism has found stable high-fitness
+        regions. This design rewards epistatic depth AND stability.
+
+    - id: GENOME-ECO-EQ-03
+      name: HGT Coupling Trigger
+      formula: >
+        for (i, j) in node_pairs:
+          if coupling_weight(i, j) > PHI_INV:
+            trigger HGT(gene_i, gene_j)
+            K_epistasis += 1 (up to Fibonacci ceiling)
+      symbols:
+        PHI_INV: 0.6180339887
+      description: >
+        Horizontal gene transfer fires when two nodes are strongly coupled.
+        Coupling weight > Φ⁻¹ means the nodes are already above the cognition
+        threshold — they are sharing information. HGT is the genomic analog
+        of that information sharing. It increases K, increasing complexity.
+
+  gate_rules:
+    - gate: GATE-HEARTBEAT
+      condition: "beat_count > last_genome_update_beat"
+      on_pass: "run NK fitness recomputation and complexity update"
+      on_fail: "skip — genome already updated this beat"
+      evaluated_at: "every 873ms"
+
+    - gate: GATE-MINING-DIFFICULTY
+      condition: >
+        genome_complexity ∈ [0.0, 1.0] AND
+        fitness ∈ [0.0, 1.0] AND
+        K_epistasis ≤ K_max
+      on_pass: "genome_complexity valid — pass to M-MINING"
+      on_fail: >
+        genome state out of bounds — use last valid genome_complexity —
+        log anomaly to OBSERVATORY
+      evaluated_at: "before passing genome_complexity to computeMiningState()"
+
+  thresholds:
+    PHI_INV:     0.6180339887   # Φ⁻¹ — HGT coupling trigger
+    K_MIN:       2              # minimum epistatic neighbors
+    K_MAX:       8              # maximum epistatic neighbors (F₆)
+    N_GENES:     13             # constitutional gene count (F₇)
+    FITNESS_MIN: 0.0
+    FITNESS_MAX: 1.0
+    HEARTBEAT_MS: 873
+
+  timing: >
+    NK fitness computed every HEARTBEAT_MS = 873ms.
+    genome_complexity extracted and passed to computeMiningState() after every
+    fitness recomputation. HGT triggers evaluated after coupling weight matrix
+    update from M-HEBBIAN.
+
+# ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+execution:
+  backend_module: "src/backend/main.mo"
+  backend_state: "genomeState"
+  primary_function: "computeGenomeState() → GenomeState"
+  secondary_functions:
+    - "getGenomeComplexity() : async Float"
+    - "getFitness() : async Float"
+    - "getGeneration() : async Nat"
+    - "evaluateHGT(couplingMatrix: [[Float]]) : async Nat"
+  called_by:
+    - "solar_heart.mo::tick() — called after M-HEBBIAN coupling update"
+    - "main.mo::computeMiningState() — reads genome_complexity from genomeState"
+  calls_into:
+    - "kernel.mo::PHI_INV"
+    - "kernel.mo::PHI_INV3"
+    - "kernel.mo::N_NODES"
+    - "neuro_emergence.mo::getCouplingWeights() — for HGT trigger evaluation"
+  gates_activated:
+    - GATE-HEARTBEAT
+    - GATE-MINING-DIFFICULTY
+  frontend_surface: "src/frontend/src/components/DiagnosticObservatory.tsx"
+  frontend_fields:
+    - genomeFitness
+    - genomeComplexity
+    - genomeGeneration
+    - hgtEventCount
+  replay_recorded: true
+  proof_bundle: >
+    Every generation increment logged to ANIMA chain.
+    HGT events logged with node pair indices and K_epistasis before/after.
+    Fitness snapshots logged every 8 beats (not every beat — compresses replay).
+  note: >
+    Full M-GENOME specification including methylation, histone modification,
+    PolII transcription, and phenotype expression is in MOD-STATE-FABRIC
+    MODELS.yaml. This artifact covers the economic dimension only.

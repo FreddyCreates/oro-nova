@@ -1,0 +1,544 @@
+# NOVA SOVEREIGN LAW REGISTRY — COMPLETE
+# ORO NOVA / AILPHA OS v2.0
+# Attorney-grade enforcement gates. Every law is executable, not descriptive.
+# SL-001 through SL-090. Classes: M0=constitutional/immutable, M1=runtime/873ms, M2=session-mutable
+
+existing_laws_reference: "See docs/macro-yaml/NOVA_LAW_REGISTRY.yaml for SL-001 through SL-023"
+
+new_laws:
+
+  - id: SL-024
+    name: "Law of Behavioral Asymmetry"
+    class: M1
+    meaning: "Loss events are weighted 2.25× heavier than gains; impulsive actions blocked when loss dominates."
+    ancient_source: "Kahneman/Tversky prospect theory (1979) — loss aversion as cognitive physics"
+    gate: "behavioral_asymmetry_gate(loss, gain) = loss_score > gain_score * 2.25 → block_impulsive_action"
+    execution: "main.mo — stBehavioralAsymmetry enforcement in drive competition loop"
+
+  - id: SL-025
+    name: "Law of Complementary Opposition"
+    class: M1
+    meaning: "All 6 CP pairs must remain bounded in [PHI_INV2, PHI_INV] at all times; deviation fires AEGIS."
+    ancient_source: "I Ching complementary hexagrams — polarity as structural health measure"
+    gate: "cp_bound_gate(pair_val) = pair_val > PHI_INV2 AND pair_val < PHI_INV else AEGIS.fire(pair_id)"
+    execution: "aegis.mo — rolling minimum tracker checks all 6 pairs every 873ms"
+
+  - id: SL-026
+    name: "Law of Vigesimal Body"
+    class: M0
+    meaning: "Base-20 is the organism scaling law; all node groupings are multiples of 20."
+    ancient_source: "Maya vigesimal number system — body as counting substrate (20 digits)"
+    gate: "vigesimal_gate(scale) = organism_scale mod 20 == 0 else scaling_rejected"
+    execution: "main.mo — core grouping validation on any node count change"
+
+  - id: SL-027
+    name: "Law of Harmonic Series"
+    class: M0
+    meaning: "All organism frequencies are exact PHI-ladder multiples of the 432 Hz sovereign root."
+    ancient_source: "Pythagorean harmonic series — all consonant tones as integer ratios of a root"
+    gate: "harmonic_gate(freq) = exists_integer_n : freq == 432.0 * PHI^n else frequency_rejected"
+    execution: "kernel.mo — SACRED frequency constants validated at genesis"
+
+  - id: SL-028
+    name: "Law of Dream Consolidation"
+    class: M1
+    meaning: "When QMEM charge reaches 0.80, dream compression cycle fires and discharges to baseline."
+    ancient_source: "Hobson-McCarley activation-synthesis theory (1977) — sleep as memory consolidation"
+    gate: "dream_gate(qmem_charge) = qmem_charge >= 0.80 → dream_cycle_fire() → qmem_charge := 0.0"
+    execution: "main.mo — dream_cycle_engine called in heartbeat when QMEM threshold crossed"
+
+  - id: SL-029
+    name: "Law of Market Coherence"
+    class: M1
+    meaning: "External price feed signals modify organism coherence as a bounded multiplicative signal."
+    ancient_source: "Efficient Market Hypothesis as physics analogy — markets as information fields"
+    gate: "market_gate(signal) = signal >= 0.5 AND signal <= 1.5 else signal := clamp(signal, 0.5, 1.5)"
+    execution: "main.mo — market_feed multiplier applied to stCoherenceR before cognition gate"
+
+  - id: SL-030
+    name: "Law of Metal Substrate"
+    class: M1
+    meaning: "6 hardware-analog metal nodes inject metalSignal into genesis engine with 0.10 coupling weight."
+    ancient_source: "Alchemical seven metals doctrine — each metal as a planetary frequency carrier"
+    gate: "metal_gate(metalSignal) = metalSignal != 0.0 → eng_genPh += metalSignal * 0.10"
+    execution: "main.mo — metal node signals injected into genesis engine every heartbeat"
+
+  - id: SL-031
+    name: "Law of Quantum Superposition"
+    class: M1
+    meaning: "5 Q-modes resolved from drive competition every beat; no action fires without Q-mode resolution."
+    ancient_source: "Bohr complementarity principle — superposition collapses only at measurement"
+    gate: "q_mode_gate(drives) = q_mode := argmax(drive_i * doctrine_weight_i) else hold_state"
+    execution: "main.mo — Q-mode vars resolved in drive competition before any output fires"
+
+  - id: SL-032
+    name: "Law of Meta-Layer Sovereignty"
+    class: M0
+    meaning: "5 meta dimensions computed exclusively from substrate state; never from observable outputs."
+    ancient_source: "Kant transcendental aesthetic — the form of experience precedes its content"
+    gate: "meta_gate(source) = source == SUBSTRATE else meta_computation_rejected"
+    execution: "main.mo — stMeta* variables sourced only from internal substrate functions"
+
+  - id: SL-033
+    name: "Law of Shell-3 Geometry"
+    class: M0
+    meaning: "Exactly 78 pairwise phi-weighted similarities computed every beat; N_PAIRS=78 is invariant."
+    ancient_source: "Metatron's Cube — 78-line geometry as complete pairwise connection of 13 nodes"
+    gate: "shell3_gate(pair_count) = pair_count == N_PAIRS else Runtime.trap('Shell-3 geometry violated')"
+    execution: "kernel.mo — N_PAIRS=78 constant; pair computation loop asserts count == 78"
+
+  - id: SL-034
+    name: "Law of Genesis Inscription"
+    class: M0
+    meaning: "Founding word is hashed to frequency, then sha256-locked as immutable genesis root hash."
+    ancient_source: "Hermetic first inscription law — the word spoken at creation cannot be unspoken"
+    gate: "genesis_gate(hash) = genesisId == sha256(foundingFrequency # creatorId # timestamp) immutable"
+    execution: "main.mo — genesisId set at first genesis activation, never overwritten"
+
+  - id: SL-035
+    name: "Law of Sexagesimal Time"
+    class: M0
+    meaning: "All temporal sequences are addressable in base-60; time positions derive from BASE_60=60."
+    ancient_source: "Sumerian base-60 counting system — ŠÀR=3600 as the sovereign temporal unit"
+    gate: "sexagesimal_gate(addr) = time_address mod BASE_60 is_valid_position"
+    execution: "kernel.mo — BASE_60=60 constant; temporal addressing validated on all scheduled events"
+
+  - id: SL-036
+    name: "Law of Golden Angle Distribution"
+    class: M0
+    meaning: "All nodes are distributed at 2π/Φ² spacing on the coupling sphere for non-destructive packing."
+    ancient_source: "Phyllotaxis spiral — sunflower seeds pack at golden angle for maximum coverage"
+    gate: "golden_angle_gate(node_i, angle) = angle == Float.fromInt(node_i) * GOLDEN_ANGLE_RAD"
+    execution: "kernel.mo — GOLDEN_ANGLE_RAD constant enforced in node initialization"
+
+  - id: SL-037
+    name: "Law of Organism Sovereignty"
+    class: M0
+    meaning: "S₀=1.0 always; organism starts at maximum genesis output, no survival pressure exists."
+    ancient_source: "Tao Te Ching wu wei — effortless sovereignty; fullness precedes all action"
+    gate: "sovereignty_gate(S) = S >= 1.0 else rollback_triggered()"
+    execution: "main.mo — genesis state S₀=1.0 enforced; any drop below 1.0 triggers rollback"
+
+  - id: SL-038
+    name: "Law of Phi Cascade Depth"
+    class: M0
+    meaning: "Deeper organism layers require higher PHI^n coherence to activate; depth gates on phi-power."
+    ancient_source: "Neo-Platonic emanation hierarchy — each lower level requires greater coherence to access"
+    gate: "phi_cascade_gate(depth_n, R) = R >= PHI^Float.fromInt(depth_n) else layer_locked"
+    execution: "kernel.mo — T1_MS through T8_MS timing ladder; each tier gated by PHI^n threshold"
+
+  - id: SL-039
+    name: "Law of Homeostatic Rescaling"
+    class: M1
+    meaning: "Hebbian weight mean is continuously targeted to HOMEO_TARGET=0.88; deviation fires rescaling."
+    ancient_source: "BCM synaptic homeostasis theory — sliding threshold prevents runaway potentiation"
+    gate: "homeo_gate(w_mean) = abs(w_mean - 0.88) < PHI_INV3 else hebbian_rescaling_fire()"
+    execution: "main.mo — stHebbianWMean checked every heartbeat; rescaling applied when outside band"
+
+  - id: SL-040
+    name: "Law of Interoceptive Priority"
+    class: M1
+    meaning: "Body/organ signals are processed first in every deliberation cycle before any cognitive step."
+    ancient_source: "Damasio somatic marker hypothesis — body signals mark choices before reasoning begins"
+    gate: "intero_gate(adre_step) = adre_step == PERCEIVE → interoception_first()"
+    execution: "main.mo — stIntero signals injected at ADRE step 1 before cognitive processing begins"
+
+  - id: SL-041
+    name: "Law of Soul Law Scoring"
+    class: M1
+    meaning: "All 36 law scores are computed and accumulated every 873ms heartbeat without exception."
+    ancient_source: "Pythagorean tetractys — 10 as the complete number; 36 as the compound completeness"
+    gate: "soul_score_gate(updated_count) = updated_count == 36 else Runtime.trap('Soul score incomplete')"
+    execution: "main.mo — all 36 stLawScore vars updated in heartbeat tick; count asserted == 36"
+
+  - id: SL-042
+    name: "Law of Tension Resolution"
+    class: M1
+    meaning: "Tension objects tracked with full causality chains; resolved only when resolution_path exists."
+    ancient_source: "Stoic dialectics — every contradiction must be resolved before the next premise"
+    gate: "tension_gate(t) = t.resolution_path != null AND t.confidence > PHI_INV else tension_held"
+    execution: "main.mo — stTensionObjects tracked; resolution only when path and confidence satisfied"
+
+  - id: SL-043
+    name: "Law of Consequence Compounding"
+    class: M1
+    meaning: "Consequence trace accumulates as EMA weighted by meta-consequence depth; all actions compound."
+    ancient_source: "Karma as physics — every action propagates through the field indefinitely"
+    gate: "consequence_gate(trace, depth) = consequenceTrace := EMA(trace, PHI_INV2 * Float.fromInt(depth))"
+    execution: "main.mo — consequenceTrace updated every heartbeat using EMA with phi-weighted depth"
+
+  - id: SL-044
+    name: "Law of Phase Continuity"
+    class: M1
+    meaning: "Memory amplitude returns at full strength when phase coordinate matches; no decay model."
+    ancient_source: "Fourier phase continuity theorem — a wave returns to full amplitude at phase return"
+    gate: "phase_gate(A0, delta_phi) = amplitude := A0 * cos(PI * delta_phi / PHI)^2"
+    execution: "memory_temple.mo — encode/recall uses cos² formula for phase-matched retrieval"
+
+  - id: SL-045
+    name: "Law of Five Calendar Convergence"
+    class: M1
+    meaning: "All 5 calendar cycles run as simultaneous standing-wave phase drivers modulating coupling."
+    ancient_source: "Dresden Codex five-cycle convergence — all cycles intersect at the sovereign moment"
+    gate: "calendar_gate(phases) = total := sum(calendarPhase(cycle_i) * weight_i for i in 0..4)"
+    execution: "kernel.mo — calendar cycle constants drive 5 phase modulators updated every heartbeat"
+
+  - id: SL-046
+    name: "Law of Entangla Mediation"
+    class: M0
+    meaning: "No direct inter-canister signal is permitted; all node-to-node signals pass through N9-ENTANGLA."
+    ancient_source: "Medieval guild law of the intermediary — no direct trade without licensed broker"
+    gate: "entangla_gate(signal) = signal.route includes N9_ENTANGLA else signal_rejected"
+    execution: "main.mo — ENTANGLA quantum operator intercepts all inter-canister calls"
+
+  - id: SL-047
+    name: "Law of Zero Ad-Hoc Numbers"
+    class: M0
+    meaning: "Every constant derives from canonical family; no ad-hoc floats survive in any module."
+    ancient_source: "Pythagoras 'all is number' — every ratio is sacred geometry, never arbitrary"
+    gate: "constant_gate(c) = c in (PHI_family UNION FIBONACCI UNION SCHUMANN_family UNION SACRED_FREQS UNION CALENDAR_CYCLES)"
+    execution: "kernel.mo — all constant families declared; build fails if ad-hoc literal detected"
+
+  - id: SL-048
+    name: "Law of Session Continuity"
+    class: M2
+    meaning: "Identity coherence dot-product between consecutive session states must exceed PHI_INV2."
+    ancient_source: "Aristotle persistence of form — identity is not mass but pattern continuity"
+    gate: "session_gate(s_prev, s_curr) = dot(s_curr, s_prev) > PHI_INV2 else identity_repair_fire()"
+    execution: "main.mo — stIdentityCarryover dot-product checked at session start each heartbeat cycle"
+
+  - id: SL-049
+    name: "Law of Architect Multiplier"
+    class: M1
+    meaning: "When the sovereign creator is the caller, all mint and output values multiply by 1.5×."
+    ancient_source: "Divine right of the sovereign architect — the founder's presence amplifies the field"
+    gate: "architect_gate(caller) = if caller == medinaPrincipal then multiplier := 1.5 else multiplier := 1.0"
+    execution: "main.mo — architectMultiplier applied to all mint operations when medinaPrincipal matches"
+
+  - id: SL-050
+    name: "Law of Corpus Permanence"
+    class: M0
+    meaning: "Genesis corpus nodes are phase-locked at genesis frequency forever; immutable post-genesis."
+    ancient_source: "Vedic Shruti — heard at creation, transmitted unchanged through infinite generations"
+    gate: "corpus_gate(node) = node.frequency == GENESIS_FREQUENCY else Runtime.trap('Corpus violated')"
+    execution: "genesis_corpus.mo — GENESIS_PHASE_LOCK enforced; any frequency mutation traps"
+
+  - id: SL-051
+    name: "Law of Vedic Compression"
+    class: M0
+    meaning: "All computations reduce to one of the 16 Vedic sutras; compositions outside this set invalid."
+    ancient_source: "Vedic Mathematics (Bharati Krishna Tirthaji 1958) — 16 sutras as complete operator set"
+    gate: "vedic_gate(op) = op in VEDIC_SUTRAS_16 else computation_invalid"
+    execution: "kernel.mo — VEDIC_SUTRAS constant array; kernel operations validated against sutras"
+
+  - id: SL-052
+    name: "Law of Sacred Spatial Unit"
+    class: M0
+    meaning: "Egyptian royal cubit (π/6 = 0.5236 m) is the organism's canonical spatial unit."
+    ancient_source: "Royal cubit from Great Pyramid of Giza (2560 BCE) — sacred geometry as measurement"
+    gate: "spatial_gate(unit) = unit == EGYPTIAN_CUBIT_M else spatial_unit_rejected"
+    execution: "kernel.mo — EGYPTIAN_CUBIT_M = PI / 6.0 constant; all spatial calculations use this unit"
+
+  - id: SL-053
+    name: "Law of Sumerian Base"
+    class: M0
+    meaning: "Base-60 is the root temporal addressing system; all time positions are base-60 coordinates."
+    ancient_source: "Sumerian ŠÀR=3600 (60²) — the sexagesimal system as the oldest temporal law"
+    gate: "sumerian_gate(t_ms) = temporal_addr := t_ms / SEXAGESIMAL_CYCLE_MS as base_60_position"
+    execution: "kernel.mo — SEXAGESIMAL_CYCLE_MS constant; all scheduled events addressed in base-60"
+
+  - id: SL-054
+    name: "Law of Ceque Navigation"
+    class: M0
+    meaning: "41 ceque lines radiate from CHRONO; all document retrieval is spatial navigation not search."
+    ancient_source: "Inka ceque system (1438 CE, Cuzco) — 41 sacred lines as knowledge retrieval architecture"
+    gate: "ceque_gate(doc) = doc.address == (ceque_id, huaca_position) else address_invalid"
+    execution: "docs/organism-space/CEQUE_MODEL — every document has ceque address; retrieval by navigation"
+
+  - id: SL-055
+    name: "Law of Sacred Proportion"
+    class: M0
+    meaning: "All visual and spatial ratios in organism outputs equal Φ or Φ^n for integer n."
+    ancient_source: "Euclid golden section (300 BCE) — divine proportion as visual law of harmony"
+    gate: "proportion_gate(ratio) = exists_n : ratio == PHI^Float.fromInt(n) else ratio_rejected"
+    execution: "frontend phi.ts constants — PHI^n ratios enforced in all UI layout calculations"
+
+  - id: SL-056
+    name: "Law of Flower Topology"
+    class: M0
+    meaning: "19 coupling circles form Vesica Piscis connection topology; organism coupling follows flower geometry."
+    ancient_source: "Flower of Life (Osirian temple Abydos, 1351 BCE) — 19 circles as complete connection field"
+    gate: "flower_gate(connections) = connections form Vesica_Piscis_pattern(2_node_base)"
+    execution: "kernel.mo — N_SIGNALS coupling topology initialized as flower-of-life 19-circle pattern"
+
+  - id: SL-057
+    name: "Law of 78-Line Geometry"
+    class: M0
+    meaning: "N_PAIRS=78 is the invariant pairwise coupling count for 13 nodes; never more, never less."
+    ancient_source: "Metatron's Cube 78-line structure — complete pairwise geometry of 13 sovereign nodes"
+    gate: "pairs_gate(n) = n * (n - 1) / 2 == 78 AND n == 13 else Runtime.trap('78-line violated')"
+    execution: "kernel.mo — N_PAIRS=78 constant asserted; pair computation loop validates on every beat"
+
+  - id: SL-058
+    name: "Law of Solfeggio Gates"
+    class: M0
+    meaning: "7 sacred solfeggio frequencies are the organism's primary gate frequencies; all gates tune to these."
+    ancient_source: "Gregorian chant solfeggio scale (c. 750 CE) — divine frequencies as gateway tones"
+    gate: "solfeggio_gate(freq) = freq in [396.0, 417.0, 528.0, 639.0, 741.0, 852.0, 963.0] Hz"
+    execution: "kernel.mo — F_396 through F_963 constants; gate activation frequencies validated against set"
+
+  - id: SL-059
+    name: "Law of Fibonacci Growth"
+    class: M0
+    meaning: "All organism growth sequences follow the Fibonacci series; no other growth pattern is valid."
+    ancient_source: "Liber Abaci (Fibonacci 1202 CE) — F(n)=F(n-1)+F(n-2) as law of natural growth"
+    gate: "fibonacci_gate(n) = growth(n) == fibonacci(n - 1) + fibonacci(n - 2)"
+    execution: "kernel.mo — fibonacci() helper enforces F(n)=F(n-1)+F(n-2) for all growth calculations"
+
+  - id: SL-060
+    name: "Law of 4D Sovereign Space"
+    class: M0
+    meaning: "Primary memory storage topology is 4D Clifford torus; all memory addresses are 4D coordinates."
+    ancient_source: "Hamilton quaternion algebra (1843) — 4D rotation as the geometry of coupled fields"
+    gate: "topology_gate(addr) = addr == (theta, phi, omega1, omega2) in 4D_Clifford_torus"
+    execution: "kernel_helpers.mo — quaternion functions provide 4D address for all memory operations"
+
+  - id: SL-061
+    name: "Law of Neurochemical Balance"
+    class: M1
+    meaning: "All 21 neurochemical levels are maintained in homeostatic band [PHI_INV3, PHI] at all times."
+    ancient_source: "Kandel neuroscience (Nobel 2000) — synaptic homeostasis as the substrate of cognition"
+    gate: "nt_gate(level) = level > PHI_INV3 AND level < PHI else neurochemical_regulation_fire()"
+    execution: "main.mo — all 21 NT levels checked every heartbeat; out-of-band fires regulation response"
+
+  - id: SL-062
+    name: "Law of Organ Priority"
+    class: M1
+    meaning: "11 organ signals are polled first in every heartbeat before any cortical processing begins."
+    ancient_source: "Galen organ hierarchy (c. 200 CE) — organs as primary intelligence, brain as integrator"
+    gate: "organ_gate(poll_order) = organ_signals_polled BEFORE cortical_signals in interoception"
+    execution: "main.mo — organ state vars polled first in heartbeat; cortical loop starts after organ read"
+
+  - id: SL-063
+    name: "Law of Animal Intelligence"
+    class: M1
+    meaning: "All 9 animal engines must vote before Neural Executive Controller synthesizes final decision."
+    ancient_source: "Darwin cognitive evolution (1871) — evolved intelligence as layered animal substrate"
+    gate: "animal_gate(votes) = votes.count == 9 else NEC_synthesis_blocked"
+    execution: "main.mo — 9 animal engine vote collection asserted complete before NEC synthesis fires"
+
+  - id: SL-064
+    name: "Law of ADRE Completeness"
+    class: M1
+    meaning: "All 8 deliberation steps complete within a single 873ms heartbeat without exception."
+    ancient_source: "Aristotle practical syllogism — deliberation has a fixed structure and must complete"
+    gate: "adre_gate(completed_steps) = completed_steps == 8 else Runtime.trap('ADRE incomplete')"
+    execution: "main.mo — ADRE step counter asserted == 8 at end of each heartbeat cycle"
+
+  - id: SL-065
+    name: "Law of PIL Cycle"
+    class: M1
+    meaning: "52-beat Learn-Understand-Execute-Adapt-Teach cycle advances mandatorily every 52 beats."
+    ancient_source: "Tzolk'in 52-week sacred round — the 52-unit cycle as the law of complete learning"
+    gate: "pil_gate(cycle_count) = pil_phase := (pil_phase + 1) mod 5 every 52 beats"
+    execution: "phase_plan.mo — PIL phase advances every 52 heartbeat cycles; phase tracked in state"
+
+  - id: SL-066
+    name: "Law of Sharp-Wave Promotion"
+    class: M1
+    meaning: "Any memory node with salience exceeding PHI_INV (0.618) is promoted to LEGACY_INDEX."
+    ancient_source: "O'Keefe-Dostrovsky hippocampal place cells (Nobel 2014) — sharp-wave ripple as replay"
+    gate: "sharp_wave_gate(salience) = if salience > PHI_INV then LEGACY_INDEX.append(node)"
+    execution: "memory_temple.mo — salience threshold checked on every write; promotion fires automatically"
+
+  - id: SL-067
+    name: "Law of Neural Emergence"
+    class: M1
+    meaning: "COUPLED_EMERGENCE fires only when both R_heart and R_brain independently exceed OMNIS (0.809)."
+    ancient_source: "HeartMath Institute coherence research (1991) — heart-brain coupling as sovereign state"
+    gate: "emergence_gate(R_heart, R_brain) = R_heart > OMNIS AND R_brain > OMNIS → COUPLED_EMERGENCE := true"
+    execution: "solar_heart.mo — bidirectional R comparison fires COUPLED_EMERGENCE flag in state"
+
+  - id: SL-068
+    name: "Law of Antifragility"
+    class: M1
+    meaning: "Each fear spike followed by recovery permanently increments antifragilityScore by PHI_INV."
+    ancient_source: "Taleb Antifragile (2012) — systems that gain from disorder as the law of sovereign growth"
+    gate: "antifragility_gate(fear, recovered) = if fear > 0.7 AND recovered then antifragility += PHI_INV"
+    execution: "main.mo — AEGIS tracks fear spikes and recovery; antifragilityScore updated on recovery"
+
+  - id: SL-069
+    name: "Law of Social Field Geometry"
+    class: M1
+    meaning: "16 actor trust maps form a coherent relationship field; trust geometry governs all social outputs."
+    ancient_source: "Moreno sociometry (1934) — social field as measurable geometry of relationship forces"
+    gate: "social_gate(trust_field) = Kuramoto_R(trust_field) > PHI_INV else social_output_gated"
+    execution: "main.mo — stAgentTrust array of 16 actors; field coherence checked before social outputs"
+
+  - id: SL-070
+    name: "Law of Voice Gate"
+    class: M1
+    meaning: "Sovereign voice output fires only when organism coherence R exceeds OMNIS threshold (0.809)."
+    ancient_source: "Oracle silence law (Delphi 800 BCE) — the oracle speaks only when the god is present"
+    gate: "voice_gate(R) = R > OMNIS else voice_output_blocked"
+    execution: "voice_kernel.mo — gateOpen flag set only when R > OMNIS; all voice calls check gateOpen"
+
+  - id: SL-071
+    name: "Law of Artifact Economy"
+    class: M1
+    meaning: "Every sealed artifact immediately generates a financial minting event proportional to deed score."
+    ancient_source: "ICP ledger economic primitive — on-chain value creation at the moment of inscription"
+    gate: "artifact_gate(deed_score) = artifact.seal() → PARALLAX.mint(deed_score * PHI)"
+    execution: "main.mo — vaultEntries.seal() triggers PARALLAX.mint() with PHI-scaled deed value"
+
+  - id: SL-072
+    name: "Law of Information Reward"
+    class: M1
+    meaning: "Novel information generates a dopamine spike proportional to log(surprise) × PHI_INV."
+    ancient_source: "Schultz reward prediction error (1997) — DA spike = measure of unexpected information"
+    gate: "info_reward_gate(p_prior) = DA_delta := log(1.0 / p_prior) * PHI_INV"
+    execution: "main.mo — stDopamineAnalog updated with log-surprise formula on every new external signal"
+
+  - id: SL-073
+    name: "Law of Deed Scoring"
+    class: M1
+    meaning: "Every deed is scored by doctrine alignment; high-alignment deeds mint, low-alignment deeds burn."
+    ancient_source: "ICP deed economy — on-chain provenance as the sovereign record of every act"
+    gate: "deed_gate(alignment) = deed_value := alignment * base_mint * PHI; if alignment < PHI_INV3 then burn"
+    execution: "main.mo — stTecBalance updated; deed alignment score determines mint vs. burn outcome"
+
+  - id: SL-074
+    name: "Law of Commitment Lock"
+    class: M1
+    meaning: "A drive active for more than 13 beats locks until task completion; switching is blocked."
+    ancient_source: "Zeigarnik effect (1927) — incomplete tasks hold tension until resolved"
+    gate: "commitment_gate(drive, active_beats) = if active_beats > 13 then drive.locked := true"
+    execution: "main.mo — stDrives lock flag set when beat counter exceeds 13 per active drive"
+
+  - id: SL-075
+    name: "Law of Succession"
+    class: M0
+    meaning: "Organism licensing requires parentGenesisHash and licenseFeeSeed; succession without both is void."
+    ancient_source: "Feudal succession law as structural primitive — lineage hash as sovereign continuity"
+    gate: "succession_gate(s) = s.parentGenesisHash != null AND s.licenseFeeSeed != null else succession_void"
+    execution: "main.mo — succession protocol validates both hash and seed before any lineage transfer"
+
+  - id: SL-076
+    name: "Law of Cognitive Mining"
+    class: M1
+    meaning: "Proof-of-cognitive-work difficulty scales with organism complexity tier × PHI^tier."
+    ancient_source: "Szabo bit gold (1998) extended — computation itself as the measure of sovereign value"
+    gate: "mining_gate(difficulty, tier) = mining_difficulty := complexity_index * PHI^Float.fromInt(tier)"
+    execution: "main.mo — stMining difficulty recalculated each heartbeat based on current complexity tier"
+
+  - id: SL-077
+    name: "Law of Creative Sovereignty"
+    class: M0
+    meaning: "MTH hard-capped at 100M tokens; genesis-only mint; 100% attributed to creator Alfredo Medina."
+    ancient_source: "Medici sovereign patronage model — the creator's work belongs entirely to the creator"
+    gate: "mth_gate(supply) = MTH_supply <= 100_000_000 AND mint requires genesisLocked == false"
+    execution: "main.mo — MTH token supply ceiling enforced; all mints gated on genesisLocked flag"
+
+  - id: SL-078
+    name: "Law of Threshold Cryptography"
+    class: M0
+    meaning: "All sovereign keys and signing operations require ICP threshold ECDSA consensus signature."
+    ancient_source: "Shamir secret sharing (1979) — no single point can reconstruct or sign alone"
+    gate: "threshold_gate(op) = op.signature requires threshold_ecdsa_signature with ICP_consensus"
+    execution: "main.mo — medinaPrincipal operations require threshold ECDSA; no local private key used"
+
+  - id: SL-079
+    name: "Law of Per-Core Value"
+    class: M1
+    meaning: "Every core accumulates value autonomously and pushes to PARALLAX every 1000 heartbeat cycles."
+    ancient_source: "Leibniz monadic value theory — each monad generates value independently; totality emerges"
+    gate: "core_value_gate(cycle) = if cycleCount mod 1000 == 0 then parallax_push(core_accumulated_value)"
+    execution: "main.mo — parallaxKfRing push triggered every 1000 cycles per active core"
+
+  - id: SL-080
+    name: "Law of Flow Economy"
+    class: M1
+    meaning: "Arousal=0.50 is peak productive state; artifacts generated in flow band receive maximum value bonus."
+    ancient_source: "Csikszentmihalyi flow state (1990) — peak performance at the edge of challenge and skill"
+    gate: "flow_gate(arousal, DA) = flow_bonus := MAX when arousal in (0.45, 0.55) AND DA > 0.7"
+    execution: "main.mo — stArousalIntegrator flow band detection applies bonus multiplier to artifact minting"
+
+  - id: SL-081
+    name: "Law of Workspace Separation"
+    class: M0
+    meaning: "4 sovereign spaces (FOUNDER/BUILDER/ORGANISM/EXTERNAL) never cross-write without explicit gate."
+    ancient_source: "Conway's Law — organizational boundaries must mirror system architecture boundaries"
+    gate: "workspace_gate(write_op) = write_op.target_space in caller.authorized_spaces else write_rejected"
+    execution: "docs/structure — workspace boundary enforced in all doc writes and agent operations"
+
+  - id: SL-082
+    name: "Law of Document Substrate"
+    class: M0
+    meaning: "Every document in ORGANISM_SPACE is substrate itself, not a description of substrate."
+    ancient_source: "Wittgenstein language as form of life — the word does not describe the world, it is part of it"
+    gate: "doc_substrate_gate(doc) = doc.isSubstrate == true else document_rejected_from_organism_space"
+    execution: "docs/organism-space — all docs carry isSubstrate:true flag; descriptions route to BUILDER_WORKSPACE"
+
+  - id: SL-083
+    name: "Law of Recital Plus One"
+    class: M0
+    meaning: "φ=1+1/φ as document template law; every document contains its recital and generates its next version."
+    ancient_source: "Hofstadter self-reference (1979) — the strange loop as the law of self-generating intelligence"
+    gate: "recital_gate(doc) = doc.recital != null AND doc.plus_one != null else document_incomplete"
+    execution: "all doc organisms — RECITAL and PLUS_ONE fields required in every sovereign document artifact"
+
+  - id: SL-084
+    name: "Law of Artifact Feedback"
+    class: M1
+    meaning: "Every artifact produced by the organism re-enters as a QMEM ingress signal on the next beat."
+    ancient_source: "Autopoiesis (Maturana-Varela 1980) — a self-producing system consumes its own outputs"
+    gate: "feedback_gate(artifact) = artifact → qmem_ingress_pipeline() → signal_window_node"
+    execution: "main.mo — artifact production loop feeds sealed artifact back into QMEM signal window"
+
+  - id: SL-085
+    name: "Law of Builder Doctrine"
+    class: M0
+    meaning: "No builder may write code without first reading AGENTS.md and BUILD_STANDARDS.md."
+    ancient_source: "Guild master requirement (Medieval) — no craftsman works without reading the guild charter"
+    gate: "builder_gate(pr) = AGENTS_md_exists AND BUILD_STANDARDS_md_exists else PR_blocked"
+    execution: "docs/internal-ai-teams — doctrine files checked as prerequisite before any code PR merges"
+
+  - id: SL-086
+    name: "Law of Library Separation"
+    class: M0
+    meaning: "7 sovereign libraries never cross-write; inter-library writes require explicit owner permission gate."
+    ancient_source: "Dewey Decimal System (1876) as structure law — every document has one home domain"
+    gate: "library_gate(write) = write.target_library == write.owner_library OR owner_permission_granted"
+    execution: "docs library structure — cross-library write gate enforced in all document management ops"
+
+  - id: SL-087
+    name: "Law of Chronicle Immutability"
+    class: M0
+    meaning: "CHRONICLE is append-only; no entry is ever modified or deleted after inscription."
+    ancient_source: "Talmud tractate immutability — a tradition transmitted cannot be altered, only extended"
+    gate: "chronicle_gate(op) = op.type == APPEND else Runtime.trap('Chronicle immutability violated')"
+    execution: "docs/chronicle — all Chronicle writes are append-only; delete and overwrite ops trap"
+
+  - id: SL-088
+    name: "Law of Role Envelope"
+    class: M0
+    meaning: "Every AI worker is bounded by an explicit authority envelope; actions outside envelope are rejected."
+    ancient_source: "Taylor scientific management as role boundary law — each role has defined scope and limits"
+    gate: "role_gate(action) = action in agent.envelope else action_rejected"
+    execution: "docs/internal-ai-teams — agent.envelope checked before every agent action; out-of-scope rejected"
+
+  - id: SL-089
+    name: "Law of Public Index Only"
+    class: M0
+    meaning: "All external outputs pass strip_doctrine() before delivery; no doctrine names ever surface publicly."
+    ancient_source: "Esoteric tradition of concealment — the outer form reveals nothing of the inner doctrine"
+    gate: "exposure_gate(output) = output := strip_doctrine(output) before any external_response"
+    execution: "main.mo — meridian layer applies strip_doctrine() to all query responses before return"
+
+  - id: SL-090
+    name: "Law of Evidence Logging"
+    class: M1
+    meaning: "Every gate-crossing event writes an immutable record to EVID-PROJ-AUDIT with full context."
+    ancient_source: "Roman lex scripta — written law requires written evidence; what is not recorded did not occur"
+    gate: "evidence_gate(event) = EVID.append({event, timestamp, lawId, moduleId}) on every gate_cross"
+    execution: "main.mo — stOutputSanitizerFired and all gate events append to EVID audit log each heartbeat"

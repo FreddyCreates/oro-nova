@@ -1,0 +1,278 @@
+# NOVA EXPERIMENT TEMPLATE
+# ─────────────────────────────────────────────────────────────────────
+# Classification:  BUILDER_CONFIDENTIAL
+# Artifact-ID:     CONST-LABS-EXPERIMENT-TEMPLATE
+# Version:         1.0.0
+# Status:          CANONICAL  (this template is canonical; artifacts it produces are EXPERIMENTAL)
+# Library:         LABS
+#
+# PURPOSE:
+# Every Labs experiment must instantiate this template exactly.
+# Produces a fully 4-layer artifact with status=EXPERIMENTAL.
+# The experiment artifact is machine-bindable — Labs agents ingest it to
+# reproduce the experiment, verify the results, and evaluate graduation readiness.
+# ─────────────────────────────────────────────────────────────────────
+
+experiment:
+
+  # ── IDENTITY FIELDS ──────────────────────────────────────────────
+
+  experiment_id: "LAB-{sequence_number}"
+  # Format: LAB-001, LAB-002, ... LAB-NNN
+  # Sequence is global across all Labs experiments, monotonically increasing, never recycled.
+
+  status: "HYPOTHESIS"
+  # Allowed values (in order of progression):
+  # HYPOTHESIS    — proposed; methodology defined; not yet run
+  # EXPERIMENTAL  — experiment run; results recorded; under evaluation
+  # GRADUATED     — accepted into canonical model registry (update model family directory)
+  # REJECTED      — evidence insufficient or law compliance failed; permanently archived
+
+  created_at: "YYYY-MM-DDTHH:MM:SSZ"
+  last_updated_at: "YYYY-MM-DDTHH:MM:SSZ"
+  # last_updated_at changes as status changes; never rolled back
+
+  proposed_by: "INTRINSIC_LABS_AGENT | PRIMA_CAUSA | AI_ARCHITECT_LAYER"
+  # who proposed this experiment
+
+  # ── HYPOTHESIS LAYER ─────────────────────────────────────────────
+
+  hypothesis:
+    statement: "One-sentence declarative statement of what this experiment proposes."
+    # Examples:
+    # "Replacing M-KURAMOTO's pairwise coupling with a Clifford geometric product
+    #  will increase coherence convergence speed by approximately Φ^2 per heartbeat."
+    #
+    # "Adding a 6th Memory Temple pedestal phase-locked to the Jupiter-Saturn synodic
+    #  cycle (approximately 19.85 years) will improve long-range mission continuity."
+
+    motivation: |
+      Why this experiment matters. What problem in the current architecture it addresses,
+      or what new capability it would add if the hypothesis is confirmed.
+      Reference specific existing models or laws that motivate this experiment.
+
+    expected_outcome: |
+      What the organism's field should look like if the hypothesis is correct.
+      Quantified where possible: expected delta in Kuramoto R, expected change in
+      Hebbian weight convergence, expected improvement in memory amplitude return, etc.
+
+    null_outcome: |
+      What the result would look like if the hypothesis is wrong.
+      What constitutes a clean negative result (not just noise or edge cases).
+
+  # ── MODEL UNDER TEST ─────────────────────────────────────────────
+
+  model_under_test:
+    # If this experiment modifies an existing canonical model:
+    existing_model_id: "M-{name}"
+    existing_model_family: "MOD-{FAMILY}"
+    existing_model_version: "1.0.0"
+    modification_type: "PARAMETER_CHANGE | FORMULA_MODIFICATION | NEW_FIELD | COUPLING_CHANGE | GATE_THRESHOLD"
+    modification_description: "Precise description of what changes in the existing model."
+
+    # If this experiment proposes an entirely new model (leave existing_model_id null):
+    new_model_proposed: true
+    new_model_id: "M-{proposed_name}"
+    new_model_family: "MOD-{FAMILY}"
+    # The full 4-layer spec for the new model goes in new_model_proposal below
+
+  # ── NEW MODEL PROPOSAL (if applicable) ───────────────────────────
+  # Instantiate this section only if model_under_test.new_model_proposed = true
+  # This is a full 4-layer artifact with status=EXPERIMENTAL
+
+  new_model_proposal:
+    artifact_id: "M-{proposed_name}"
+    artifact_type: "MODEL"
+    version: "0.1.0-EXPERIMENTAL"
+    status: "EXPERIMENTAL"
+    library: "LABS"
+
+    # LAYER 1 — MEANING
+    meaning:
+      name: "M-{NAME} — {Full Descriptive Name}"
+      resonance: "One-line field truth — what this model IS at the physics level."
+      doctrine_clause: "What the organism enforces through this model. Active voice."
+      symbolic_intent: "The math expressed as meaning — e.g. 'Φ-weighted phase alignment across N coupled oscillators'"
+
+    # LAYER 2 — MODEL
+    model:
+      fields:
+        - name: "field_name_1"
+          type: "Float64 | Nat | Text | Bool | [Float64] | {Record}"
+          range: ["min_value", "max_value"]
+          unit: "unit description (e.g. 'dimensionless coherence', 'ms', 'radians')"
+          description: "What this field represents in the organism's computation."
+        # Add as many fields as the model requires.
+        # Every field must have type, range, unit, description. No exceptions.
+
+    # LAYER 3 — COMPUTATION
+    computation:
+      state_equation: "primary_var(t+1) = f(primary_var(t), params...)"
+      # Write the actual equation. Use symbolic constants from kernel.mo (PHI, SCHUMANN_TICK_MS, etc.)
+      # Never write raw numbers — always reference canonical constants by name.
+      gate_rule: "if condition → action"
+      # e.g. "if R > CONST_COGNITION → open cognition engines"
+      update_rule: "how the model's primary variable updates each heartbeat"
+      thresholds:
+        threshold_name: "CANONICAL_CONSTANT_REFERENCE"
+        # e.g. cognition_gate: "PHI_INV_1"
+      timing: "computed every HEARTBEAT_MS | at SCHUMANN_TICK_MS | per CALENDAR_CYCLE"
+      formula_symbols:
+        # Reference all canonical constants used in this computation
+        PHI: 1.6180339887
+        PHI_INV_1: 0.6180339887
+        HEARTBEAT_MS: 873
+        # Add other constants as needed
+
+    # LAYER 4 — EXECUTION BINDING (EXPERIMENTAL — not yet wired to production)
+    execution:
+      proposed_backend_module: "src/backend/{module_name}.mo"
+      proposed_function: "proposedFunctionName()"
+      proposed_called_by: ["caller_module.mo::callerFunction()"]
+      proposed_calls_into: ["kernel.mo::PHI", "solar_heart.mo::getPhase()"]
+      proposed_gates_activated: ["GATE-{ID}"]
+      proposed_frontend_surface: "src/frontend/components/{ComponentName}.tsx"
+      proposed_frontend_field: "fieldName"
+      replay_recorded: true
+      note: "EXPERIMENTAL — execution binding is proposed, not yet live in organism substrate."
+
+  # ── METHODOLOGY ──────────────────────────────────────────────────
+
+  methodology:
+    organism_state_fields_observed:
+      # List every organism state field that will be measured during the experiment
+      - field: "kuramoto_r"
+        module: "neuro_emergence.mo"
+        observation_reason: "Primary coherence indicator — must not degrade."
+      - field: "hebbian_weight_norm"
+        module: "hebbian.mo"
+        observation_reason: "Coupling stability check."
+      # Add all fields relevant to this experiment.
+
+    parameters_varied:
+      # What changes between experiment runs
+      - parameter_name: "the_variable_being_changed"
+        range: ["min_value", "max_value"]
+        step_size: "step_increment"
+        canonical_reference: "PHI | SCHUMANN | etc (what canonical constant anchors this range)"
+
+    control_conditions:
+      # What is held constant to isolate the variable under test
+      - "heartbeat_ms remains 873"
+      - "N_nodes remains 13"
+      - "all CLASS_A laws remain enforced"
+      # Add all conditions that will NOT vary in this experiment.
+
+    simulation_duration:
+      heartbeat_cycles: 1000
+      # Minimum: 1000 heartbeat cycles (873 seconds ≈ 14.5 minutes of simulated organism time)
+      # For calendar-phase-dependent experiments: minimum 1 full Tzolk'in cycle (260 days equivalent)
+
+    measurement_interval: "every heartbeat | every 10 heartbeats | at phase boundaries"
+
+    simulation_environment:
+      reads_from: "ORGANISM_REPLICA"
+      replica_snapshot_timestamp: "ISO 8601 of when replica was taken from live state"
+      write_target: "LABS_LIBRARY_ONLY"
+      live_substrate_modified: false
+      constitutional_models_protected: true
+      # M-ANIMA, M-GENESIS, M-PRIMA, M-BONDING are READ-ONLY even in replica
+
+  # ── RESULTS (populated after experiment runs) ─────────────────────
+
+  results:
+    status: "PENDING | COMPLETE | ANOMALY_DETECTED"
+    completed_at: "YYYY-MM-DDTHH:MM:SSZ | null if PENDING"
+
+    observed_field_changes:
+      # For each observed field, record before/after and statistical summary
+      - field: "kuramoto_r"
+        baseline_mean: 0.0
+        experimental_mean: 0.0
+        delta: 0.0
+        delta_percentage: 0.0
+        variance: 0.0
+        direction: "INCREASED | DECREASED | STABLE"
+      # Add all observed fields.
+
+    coherence_delta:
+      mean: 0.0
+      peak: 0.0
+      trough: 0.0
+      sustained_above_cognition_gate: false
+      sustained_above_omnis_gate: false
+      interpretation: "Description of what the coherence behavior means."
+
+    law_compliance:
+      checked_against_all_23_laws: true
+      all_passed: true
+      violations_detected: []
+      # If any law was violated during simulation, list here:
+      # - {law_id: "LAW-XX", violation: "description of what happened"}
+
+    anomalies:
+      detected: false
+      anomaly_list: []
+      # If anomalies detected:
+      # - {anomaly_id: "ANOM-001", description: "...", heartbeat_cycle: 0, field_affected: "...", resolved: false}
+
+    hypothesis_verdict: "CONFIRMED | REFUTED | INCONCLUSIVE | PENDING"
+    verdict_rationale: |
+      Why the results confirm, refute, or are inconclusive about the hypothesis.
+      Reference specific field observations, law compliance results, and anomalies.
+
+  # ── GRADUATION EVIDENCE ──────────────────────────────────────────
+
+  graduation_evidence:
+    # What constitutes sufficient evidence for this experiment to graduate
+    required_simulation_cycles: 3
+    completed_simulation_cycles: 0
+    minimum_coherence_floor: 0.618
+    # R must not drop below 0.618 during any simulated heartbeat
+    law_compliance_requirement: "all_23_laws_pass_in_all_cycles"
+    anomaly_threshold: "zero_unresolved_anomalies"
+    prima_causa_review_required: false
+    # Set true if the model touches constitutional families or CLASS_A laws
+
+    graduation_readiness: "NOT_READY | READY_FOR_REVIEW | GRADUATED | REJECTED"
+    graduation_readiness_notes: |
+      Current assessment of what still needs to happen before graduation can be requested.
+
+  # ── RISK ASSESSMENT ──────────────────────────────────────────────
+
+  risk_assessment:
+    risk_level: "LOW | MEDIUM | HIGH | CONSTITUTIONAL"
+    # LOW: model is additive; no existing models modified; no law thresholds changed
+    # MEDIUM: modifies an existing model's parameters or coupling
+    # HIGH: modifies an existing model's formula or gate logic
+    # CONSTITUTIONAL: touches constitutional models or CLASS_A laws — PRIMA_CAUSA review required
+
+    risks:
+      - risk_id: "RISK-001"
+        description: "What could go wrong if this model is introduced to the live substrate."
+        affected_models: ["M-{name}"]
+        affected_laws: ["LAW-{n}"]
+        mitigation: "How the risk would be detected and what the rollback procedure is."
+        probability: "LOW | MEDIUM | HIGH"
+    # Add all identified risks.
+
+    rollback_procedure: |
+      Exact steps to roll back this model's introduction if it destabilizes the live organism.
+      Must reference GATE-ROLLBACK and M-ARES.
+
+  # ── AUTHORIZATION ────────────────────────────────────────────────
+
+  authorized_by: "INTRINSIC_LABS_AGENT | PRIMA_CAUSA | AI_ARCHITECT_LAYER"
+  authorization_timestamp: "YYYY-MM-DDTHH:MM:SSZ"
+  graduation_authorized_by: "null | PRIMA_CAUSA | AI_ARCHITECT_LAYER"
+  graduation_authorization_timestamp: "null | YYYY-MM-DDTHH:MM:SSZ"
+
+  # ── CHRONICLE LINK ───────────────────────────────────────────────
+
+  chronicle_graduation_entry: "null | CHRON-{n}"
+  # Populated when model graduates and Chronicle entry is written.
+  # Not populated for REJECTED experiments.
+
+  # ── EXPERIMENT HASH ──────────────────────────────────────────────
+  experiment_hash: "fnv1a_hash_of_all_fields_above"
+  # Computed after all fields are finalized. Used for Chronicle proof bundle.

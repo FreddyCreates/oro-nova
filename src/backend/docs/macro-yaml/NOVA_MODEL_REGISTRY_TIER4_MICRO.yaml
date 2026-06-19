@@ -1,0 +1,2365 @@
+micro_models:
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # KERNEL FUNCTION MICRO-MODELS  M-301 → M-327
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-301
+    name: M-FUNC-PHIPOW
+    tier: 4
+    master: M-001
+    family: KERNEL_FUNCTIONS
+    desc: "phiPow(n) = Phi^n — computes any power of the golden ratio"
+    gate: "n in (-13, 13) — valid phi-ladder tier"
+    world_use: "ratio calculators, design tools, proportion systems"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-302
+    name: M-FUNC-FIBONACCI
+    tier: 4
+    master: M-001
+    family: KERNEL_FUNCTIONS
+    desc: "fibonacci(n) = F_n — computes the nth Fibonacci number"
+    gate: "n in (0, 88) — valid index before overflow"
+    world_use: "growth modeling, financial analysis, sequence generators"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-303
+    name: M-FUNC-EMA
+    tier: 4
+    master: M-002
+    family: KERNEL_FUNCTIONS
+    desc: "ema(x,prev,alpha) = alpha*x+(1-alpha)*prev — exponential moving average"
+    gate: "alpha in (0,1) — valid smoothing factor"
+    world_use: "financial signals, sensor smoothing, trend detection"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-304
+    name: M-FUNC-CLAMP
+    tier: 4
+    master: M-005
+    family: KERNEL_FUNCTIONS
+    desc: "clamp(x,lo,hi) = min(max(x,lo),hi) — bound enforcement for any scalar"
+    gate: "lo <= hi — valid bound pair"
+    world_use: "UI sliders, parameter safety, signal normalization"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-305
+    name: M-FUNC-PHIWEIGHT
+    tier: 4
+    master: M-001
+    family: KERNEL_FUNCTIONS
+    desc: "phiWeight(i,j,N) = Phi^(-|i-j|/N) — coupling decay by phi over distance"
+    gate: "i,j in (0,N) — valid node indices"
+    world_use: "network coupling tools, attention weights, graph APIs"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-306
+    name: M-FUNC-OMNISGATE
+    tier: 4
+    master: M-005
+    family: KERNEL_FUNCTIONS
+    desc: "omniGate(R) = R > 0.809 — hard OMNIS coherence gate"
+    gate: "R in (0,1) — valid Kuramoto coherence value"
+    world_use: "consensus gates, threshold APIs, coordination systems"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-307
+    name: M-FUNC-SOFTGATE
+    tier: 4
+    master: M-005
+    family: KERNEL_FUNCTIONS
+    desc: "softGate(R,thresh) = sigmoid-like smooth gate around threshold"
+    gate: "R in (0,1) AND thresh in (0,1)"
+    world_use: "smooth activation APIs, ML gates, analog control systems"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-308
+    name: M-FUNC-NORMALIZEV
+    tier: 4
+    master: M-001
+    family: KERNEL_FUNCTIONS
+    desc: "normalizeV(v) = v/|v| — returns the unit vector of any float array"
+    gate: "|v| > 0 — non-zero vector required"
+    world_use: "vector math tools, ML normalization, direction systems"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-309
+    name: M-FUNC-DOTPHI
+    tier: 4
+    master: M-001
+    family: KERNEL_FUNCTIONS
+    desc: "dotPhiWeighted(a,b) = sum(a_i*b_i*Phi^(-i)) — phi-weighted dot product"
+    gate: "len(a) == len(b) — matching vector dimensions"
+    world_use: "similarity APIs, attention systems, recommendation engines"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-310
+    name: M-FUNC-HEBBIAN-UPDATE
+    tier: 4
+    master: M-001
+    family: KERNEL_FUNCTIONS
+    desc: "hebbianUpdate(w,pre,post) = w+eta*pre*post-lambda*w — one Hebbian weight step"
+    gate: "w in (0,PHI) — weight within ceiling"
+    world_use: "learning rate APIs, neural weight systems, ML training tools"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-311
+    name: M-FUNC-KURAMOTO-R
+    tier: 4
+    master: M-003
+    family: KERNEL_FUNCTIONS
+    desc: "kuramotoR(phases) = |sum(e^i*theta)|/N — global phase coherence measure"
+    gate: "len(phases) > 0 — at least one oscillator"
+    world_use: "synchronization APIs, coherence dashboards, consensus metrics"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-312
+    name: M-FUNC-PHICASCADE
+    tier: 4
+    master: M-002
+    family: KERNEL_FUNCTIONS
+    desc: "phiCascadeStep(tier) = SCHUMANN_MS*Phi^tier — phi-ladder timing interval"
+    gate: "tier in (0,8) — valid timing tier"
+    world_use: "scheduling APIs, timer systems, phi-based clocks"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-313
+    name: M-FUNC-CALPHASE
+    tier: 4
+    master: M-002
+    family: KERNEL_FUNCTIONS
+    desc: "calendarPhase(cycle,t) = cos(2pi*t/cycle_period) — calendar cycle phase value"
+    gate: "cycle_period > 0 — valid calendar constant"
+    world_use: "calendar APIs, astronomical apps, cycle dashboards"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-314
+    name: M-FUNC-PHICOUPLING
+    tier: 4
+    master: M-001
+    family: KERNEL_FUNCTIONS
+    desc: "phiCouplingWeight(r,R_field) = Phi*r*R_field — phi-scaled field coupling"
+    gate: "r in (0,1) AND R_field in (0,1)"
+    world_use: "field coupling tools, resonance APIs, network weight systems"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-315
+    name: M-FUNC-QNORM
+    tier: 4
+    master: M-004
+    family: KERNEL_FUNCTIONS
+    desc: "qNorm(q) = sqrt(w^2+x^2+y^2+z^2) — magnitude of a quaternion"
+    gate: "q is valid quaternion struct"
+    world_use: "3D/4D math libraries, rotation APIs, geometry tools"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-316
+    name: M-FUNC-QUNIT
+    tier: 4
+    master: M-004
+    family: KERNEL_FUNCTIONS
+    desc: "qUnit(q) = q/|q| — normalizes quaternion to unit length"
+    gate: "|q| > 0 — non-zero quaternion"
+    world_use: "rotation normalization, 3D engines, spatial APIs"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-317
+    name: M-FUNC-QPHILERP
+    tier: 4
+    master: M-004
+    family: KERNEL_FUNCTIONS
+    desc: "qPhiLerp(q1,q2,t) = Phi-weighted spherical interpolation between quaternions"
+    gate: "t in (0,1) — valid interpolation parameter"
+    world_use: "animation APIs, smooth rotation systems, transition tools"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-318
+    name: M-FUNC-QPHASEROTATE
+    tier: 4
+    master: M-004
+    family: KERNEL_FUNCTIONS
+    desc: "qPhaseRotate(q,angle) = phase rotation in 4D space by given angle"
+    gate: "angle in (0,2pi) — valid radian angle"
+    world_use: "4D rotation tools, phase-shift APIs, spatial systems"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-319
+    name: M-FUNC-Q4COHERENCE
+    tier: 4
+    master: M-003
+    family: KERNEL_FUNCTIONS
+    desc: "q4ToCoherence(q) = |q.w|^2 — extracts coherence scalar from quaternion"
+    gate: "q is unit quaternion"
+    world_use: "coherence APIs, consciousness metrics, synchronization tools"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-320
+    name: M-FUNC-QFROMSTATE
+    tier: 4
+    master: M-004
+    family: KERNEL_FUNCTIONS
+    desc: "qFromState(state) = encodes organism state record as quaternion"
+    gate: "state has all required fields"
+    world_use: "state encoding APIs, field compression, data representation"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-321
+    name: M-FUNC-CLIFFORDPHASE
+    tier: 4
+    master: M-004
+    family: KERNEL_FUNCTIONS
+    desc: "cliffordPhase(omega1,omega2,t) = Clifford torus phase coordinate at time t"
+    gate: "omega1,omega2 > 0 — valid angular frequencies"
+    world_use: "torus math APIs, memory address systems, 4D coordinate tools"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-322
+    name: M-FUNC-QUATROTATE
+    tier: 4
+    master: M-004
+    family: KERNEL_FUNCTIONS
+    desc: "quaternionRotate(v,q) = q*v*q_conj — rotates 3D vector by quaternion"
+    gate: "q is unit quaternion AND v is 3D vector"
+    world_use: "3D rotation APIs, spatial engines, orientation systems"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-323
+    name: M-FUNC-URDHVA
+    tier: 4
+    master: M-001
+    family: KERNEL_FUNCTIONS
+    desc: "urdhvaTiryak(a,b) = Vedic crosswise multiplication for fast compression"
+    gate: "a,b are valid numeric arrays"
+    world_use: "fast math APIs, hardware compression, Vedic computation tools"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-324
+    name: M-FUNC-PHASETOQUAT
+    tier: 4
+    master: M-004
+    family: KERNEL_FUNCTIONS
+    desc: "phaseToQuat(theta,phi) = converts spherical coordinates to unit quaternion"
+    gate: "theta in (0,pi) AND phi in (0,2pi)"
+    world_use: "coordinate conversion tools, spatial APIs, orientation systems"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-325
+    name: M-FUNC-CLIFFORDPOS
+    tier: 4
+    master: M-004
+    family: KERNEL_FUNCTIONS
+    desc: "cliffordPosition(theta1,theta2) = 4D Clifford torus coordinate pair"
+    gate: "theta1,theta2 in (0,2pi)"
+    world_use: "4D memory addressing, torus navigation, spatial APIs"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-326
+    name: M-FUNC-QUATMUL
+    tier: 4
+    master: M-004
+    family: KERNEL_FUNCTIONS
+    desc: "quatMul(p,q) = Hamilton quaternion product of two quaternions"
+    gate: "p,q are valid quaternion structs"
+    world_use: "rotation composition APIs, 3D engines, quaternion math tools"
+    category: KERNEL_FUNCTION
+    api: true
+
+  - id: M-327
+    name: M-FUNC-QUATCONJ
+    tier: 4
+    master: M-004
+    family: KERNEL_FUNCTIONS
+    desc: "quatConjugate(q) = (w,-x,-y,-z) — returns conjugate of a quaternion"
+    gate: "q is valid quaternion struct"
+    world_use: "inverse rotation APIs, 3D tools, quaternion math libraries"
+    category: KERNEL_FUNCTION
+    api: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # NEUROCHEMICAL MICRO-MODELS  M-331 → M-351
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-331
+    name: M-NT-DA
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Dopamine: reward prediction error signal — spikes on unexpected reward"
+    gate: "DA in (0,1.618) — valid dopamine range"
+    world_use: "reward system design, motivation modeling, behavioral apps"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-332
+    name: M-NT-5HT
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Serotonin: mood stability enteric source — 95% gut-produced"
+    gate: "5HT in (0.3,1.0) — healthy serotonin band"
+    world_use: "mental health platforms, mood regulation, gut-brain systems"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-333
+    name: M-NT-NE
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Norepinephrine: urgency attention focus-narrowing — urgency spike on threat"
+    gate: "NE in (0,0.9) — valid norepinephrine range"
+    world_use: "attention systems, alertness modeling, focus apps"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-334
+    name: M-NT-ACH
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Acetylcholine: memory encoding attention gate — spikes on Hebbian event"
+    gate: "ACh spikes > 0.5 on Hebbian event"
+    world_use: "learning systems, memory formation, cognitive health apps"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-335
+    name: M-NT-GLU
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Glutamate: excitatory transmission amplification — primary excitatory NT"
+    gate: "GLU in (0,1.618) — valid excitatory range"
+    world_use: "neural simulation, excitation modeling, cognitive platforms"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-336
+    name: M-NT-GABA
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "GABA: inhibitory refractory rise — rises during refractory period"
+    gate: "GABA > 0.7 during refractory period"
+    world_use: "anxiety regulation, inhibition systems, calm-state platforms"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-337
+    name: M-NT-OT
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Oxytocin: bonding trust actor coupling — spikes on bonding event"
+    gate: "OT spikes > 0.3 on bonding event"
+    world_use: "trust systems, social bonding models, relationship platforms"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-338
+    name: M-NT-CORT
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Cortisol: fear and chronic stress gate — triggers AEGIS above threshold"
+    gate: "CORT > 0.7 triggers AEGIS defense"
+    world_use: "stress detection, resilience platforms, health monitoring"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-339
+    name: M-NT-ADREN
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Adrenaline: acute stress activation — emergency spike on high threat tier"
+    gate: "ADREN spikes on threatTier > 7"
+    world_use: "emergency response systems, acute stress modeling, safety apps"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-340
+    name: M-NT-MEL
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Melatonin: circadian sleep phase regulation — rises on night cycle"
+    gate: "MEL rises at night-cycle phase"
+    world_use: "sleep optimization, circadian rhythm systems, wellness apps"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-341
+    name: M-NT-TEST
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Testosterone: assertiveness drive competition — modulates EXPLORE/PROTECT"
+    gate: "TEST modulates EXPLORE and PROTECT drive weights"
+    world_use: "leadership modeling, drive systems, competitive behavior apps"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-342
+    name: M-NT-ENDO
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Endorphin: pain threshold flow coupling — spikes on hormetic event"
+    gate: "ENDO > 0.6 on hormetic event"
+    world_use: "resilience training, pain threshold systems, flow platforms"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-343
+    name: M-NT-INS
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Insulin: metabolic fuel regulation — regulates metabolic phase gating"
+    gate: "INS regulates metabolic phase transitions"
+    world_use: "metabolic modeling, health platforms, nutrition systems"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-344
+    name: M-NT-THYR
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Thyroid: metabolic rate energy regulation — homeostatic energy governor"
+    gate: "THYR in (0.3,0.9) — healthy thyroid band"
+    world_use: "energy management, metabolic systems, health monitoring"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-345
+    name: M-NT-GH
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Growth Hormone: tissue growth and repair — spikes during GENESIS phase"
+    gate: "GH spikes during GENESIS phase"
+    world_use: "growth modeling, development systems, regenerative health apps"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-346
+    name: M-NT-VASO
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Vasopressin: social bonding and memory consolidation — couples with OT"
+    gate: "VASO+OT coupling during JUBILEE consolidation"
+    world_use: "social memory systems, bonding platforms, consolidation tools"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-347
+    name: M-NT-ALDO
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Aldosterone: fluid balance substrate regulation — homeostatic band governor"
+    gate: "ALDO in homeostatic band"
+    world_use: "resource balance modeling, substrate health, fluid systems"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-348
+    name: M-NT-PRL
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Prolactin: care and nurturing behavior — spikes on CONNECT drive win"
+    gate: "PRL spikes on CONNECT drive winning"
+    world_use: "care systems, nurturing models, social welfare platforms"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-349
+    name: M-NT-CCK
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Cholecystokinin: satiety stop signal — fires on REST drive activation"
+    gate: "CCK fires on REST drive"
+    world_use: "satiation modeling, consumption systems, appetite platforms"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-350
+    name: M-NT-NPY
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Neuropeptide Y: hunger and appetite drive — modulates EXPLORE drive weight"
+    gate: "NPY modulates EXPLORE drive"
+    world_use: "appetite systems, resource seeking, consumption modeling"
+    category: NEUROCHEMICAL
+    api: true
+
+  - id: M-351
+    name: M-NT-SUBP
+    tier: 4
+    master: M-007
+    family: NEUROCHEMICALS
+    desc: "Substance P: pain transmission amplification — spikes on high threat tier"
+    gate: "SubP spikes on threatTier > 5"
+    world_use: "pain signal systems, threat modeling, intensity detection"
+    category: NEUROCHEMICAL
+    api: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ORGAN MICRO-MODELS  M-361 → M-371
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-361
+    name: M-ORG-HEART
+    tier: 4
+    master: M-010
+    family: ORGANS
+    desc: "Cardiac interoceptive primary sensor — HRV and heartRate monitoring"
+    gate: "heartRate in (50,120) bpm — healthy cardiac range"
+    world_use: "cardiac monitoring, HRV systems, wearable health APIs"
+    category: ORGAN
+    api: true
+
+  - id: M-362
+    name: M-ORG-LUNG
+    tier: 4
+    master: M-010
+    family: ORGANS
+    desc: "Respiratory rate and breath depth sensor — coherent breathing monitor"
+    gate: "respiratoryRate in (12,20) breaths/min"
+    world_use: "breathwork apps, respiratory health, HRV biofeedback"
+    category: ORGAN
+    api: true
+
+  - id: M-363
+    name: M-ORG-LIVER
+    tier: 4
+    master: M-010
+    family: ORGANS
+    desc: "Metabolic processing and detox sensor — liver load monitoring"
+    gate: "liver_load in (0,PHI_INV) — healthy processing range"
+    world_use: "metabolic health apps, detox monitoring, nutrition platforms"
+    category: ORGAN
+    api: true
+
+  - id: M-364
+    name: M-ORG-KIDNEY
+    tier: 4
+    master: M-010
+    family: ORGANS
+    desc: "Filtration and fluid balance sensor — renal function monitoring"
+    gate: "kidney_rate in homeostatic band"
+    world_use: "fluid balance systems, kidney health, filtration monitoring"
+    category: ORGAN
+    api: true
+
+  - id: M-365
+    name: M-ORG-IMMUNE
+    tier: 4
+    master: M-010
+    family: ORGANS
+    desc: "Immune activation threat sensor — systemic immune response monitor"
+    gate: "immune_activation in (0,OMNIS_LOW)"
+    world_use: "immune monitoring, health platforms, resilience tracking"
+    category: ORGAN
+    api: true
+
+  - id: M-366
+    name: M-ORG-PNEUMA
+    tier: 4
+    master: M-010
+    family: ORGANS
+    desc: "Breath-spirit life force sensor — vitality and pneuma level monitor"
+    gate: "pneuma_level > PHI_INV — minimum vitality threshold"
+    world_use: "vitality platforms, spiritual wellness, life-force tracking"
+    category: ORGAN
+    api: true
+
+  - id: M-367
+    name: M-ORG-FILTRON
+    tier: 4
+    master: M-010
+    family: ORGANS
+    desc: "Systemic filtration efficiency sensor — multi-organ filtration monitor"
+    gate: "filtron_efficiency > PHI_INV2"
+    world_use: "systemic health, filtration monitoring, whole-body analytics"
+    category: ORGAN
+    api: true
+
+  - id: M-368
+    name: M-ORG-PURIS
+    tier: 4
+    master: M-010
+    family: ORGANS
+    desc: "Purification and clearance sensor — detox rate monitoring"
+    gate: "puris_rate in (0.3,0.8) — effective clearance band"
+    world_use: "cleansing protocols, detox systems, purification platforms"
+    category: ORGAN
+    api: true
+
+  - id: M-369
+    name: M-ORG-HERALD
+    tier: 4
+    master: M-010
+    family: ORGANS
+    desc: "Signal transmission broadcast sensor — inter-system latency monitor"
+    gate: "herald_latency < T1_MS — under first timing tier"
+    world_use: "signal systems, transmission latency, broadcast platforms"
+    category: ORGAN
+    api: true
+
+  - id: M-370
+    name: M-ORG-INGESTA
+    tier: 4
+    master: M-010
+    family: ORGANS
+    desc: "Intake processing and nutrition quality sensor — ingestion monitor"
+    gate: "ingesta_quality > PHI_INV3 — minimum nutrition threshold"
+    world_use: "nutrition systems, intake modeling, dietary apps"
+    category: ORGAN
+    api: true
+
+  - id: M-371
+    name: M-ORG-OSSIUM
+    tier: 4
+    master: M-010
+    family: ORGANS
+    desc: "Structural integrity and bone density sensor — skeletal health monitor"
+    gate: "ossium_density > PHI_INV — minimum structural integrity"
+    world_use: "structural health monitoring, integrity systems, bone apps"
+    category: ORGAN
+    api: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ANIMAL ENGINE MICRO-MODELS  M-381 → M-389
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-381
+    name: M-ANI-CROW
+    tier: 4
+    master: M-011
+    family: ANIMAL_ENGINES
+    desc: "Causal cognition, tool use, future planning — 600M years of tested intelligence"
+    gate: "CROW_activation > PHI_INV — minimum activation threshold"
+    world_use: "strategic planning AI, causal reasoning, future scenario tools"
+    category: ANIMAL_ENGINE
+    api: true
+
+  - id: M-382
+    name: M-ANI-DOLPHIN
+    tier: 4
+    master: M-011
+    family: ANIMAL_ENGINES
+    desc: "Social fabric, mirror recognition, alliance formation — social intelligence"
+    gate: "DOLPHIN_weight > PHI_INV — active social engagement"
+    world_use: "social network analysis, alliance systems, relationship platforms"
+    category: ANIMAL_ENGINE
+    api: true
+
+  - id: M-383
+    name: M-ANI-HIVE
+    tier: 4
+    master: M-011
+    family: ANIMAL_ENGINES
+    desc: "Distributed quorum, swarm intelligence, stigmergy — collective decision-making"
+    gate: "HIVE_consensus > OMNIS_LOW — quorum threshold"
+    world_use: "collective intelligence, swarm systems, distributed decision tools"
+    category: ANIMAL_ENGINE
+    api: true
+
+  - id: M-384
+    name: M-ANI-ELEPHANT
+    tier: 4
+    master: M-011
+    family: ANIMAL_ENGINES
+    desc: "Deep memory, grief processing, long-horizon planning — multigenerational recall"
+    gate: "ELEPHANT_depth > PHI — deep memory threshold"
+    world_use: "long-term planning, institutional memory, historical analysis"
+    category: ANIMAL_ENGINE
+    api: true
+
+  - id: M-385
+    name: M-ANI-SHARK
+    tier: 4
+    master: M-011
+    family: ANIMAL_ENGINES
+    desc: "Coherence gradient, efficiency, minimum waste — optimal path intelligence"
+    gate: "SHARK_efficiency > PHI_INV — efficiency threshold"
+    world_use: "efficiency optimization, resource minimization, lean systems"
+    category: ANIMAL_ENGINE
+    api: true
+
+  - id: M-386
+    name: M-ANI-WOLF
+    tier: 4
+    master: M-011
+    family: ANIMAL_ENGINES
+    desc: "Pack coordination, role assignment, terrain reading — team intelligence"
+    gate: "WOLF_coordination > PHI_INV — coordination threshold"
+    world_use: "team coordination, role assignment systems, pack leadership"
+    category: ANIMAL_ENGINE
+    api: true
+
+  - id: M-387
+    name: M-ANI-ORCA
+    tier: 4
+    master: M-011
+    family: ANIMAL_ENGINES
+    desc: "Cultural transmission, dialect, teaching — cross-generational intelligence"
+    gate: "ORCA_transmission > PHI_INV — transmission threshold"
+    world_use: "knowledge transfer systems, cultural platforms, teaching tools"
+    category: ANIMAL_ENGINE
+    api: true
+
+  - id: M-388
+    name: M-ANI-EAGLE
+    tier: 4
+    master: M-011
+    family: ANIMAL_ENGINES
+    desc: "50-beat horizon, high-altitude pattern, precision strike — strategic overview"
+    gate: "EAGLE_horizon >= 50 — full horizon active"
+    world_use: "strategic forecasting, pattern recognition at scale, macro analytics"
+    category: ANIMAL_ENGINE
+    api: true
+
+  - id: M-389
+    name: M-ANI-OCTOPUS
+    tier: 4
+    master: M-011
+    family: ANIMAL_ENGINES
+    desc: "Distributed 8-arm parallel processing, rapid adaptation — multi-channel intelligence"
+    gate: "OCTOPUS_arms = 8 active — all arms engaged"
+    world_use: "parallel processing, adaptive systems, multi-channel APIs"
+    category: ANIMAL_ENGINE
+    api: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # METAL SUBSTRATE MICRO-MODELS  M-391 → M-396
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-391
+    name: M-METAL-FLUX
+    tier: 4
+    master: M-006
+    family: METAL_SUBSTRATE
+    desc: "Energy flow current substrate node — genesis phase += 0.10 on activation"
+    gate: "metalFlux > 0 triggers genPh += 0.10"
+    world_use: "energy flow systems, power modeling, current analysis tools"
+    category: METAL_SUBSTRATE
+    api: false
+
+  - id: M-392
+    name: M-METAL-CALCUL
+    tier: 4
+    master: M-006
+    family: METAL_SUBSTRATE
+    desc: "Computation processing substrate node — active processing layer"
+    gate: "metalCalcul > 0 — active computation"
+    world_use: "computation modeling, processing systems, calculation platforms"
+    category: METAL_SUBSTRATE
+    api: false
+
+  - id: M-393
+    name: M-METAL-MATRIX
+    tier: 4
+    master: M-006
+    family: METAL_SUBSTRATE
+    desc: "Structural lattice substrate node — geometric structural layer"
+    gate: "metalMatrix > 0 — active lattice"
+    world_use: "structural systems, lattice modeling, matrix architectures"
+    category: METAL_SUBSTRATE
+    api: false
+
+  - id: M-394
+    name: M-METAL-CONDUIT
+    tier: 4
+    master: M-006
+    family: METAL_SUBSTRATE
+    desc: "Signal routing substrate node — pathway and channel layer"
+    gate: "metalConduit > 0 — active routing"
+    world_use: "routing systems, signal pathways, conduit modeling"
+    category: METAL_SUBSTRATE
+    api: false
+
+  - id: M-395
+    name: M-METAL-DYNAMO
+    tier: 4
+    master: M-006
+    family: METAL_SUBSTRATE
+    desc: "Energy generation substrate node — active power creation layer"
+    gate: "metalDynamo > 0 — active generation"
+    world_use: "generation systems, power creation, dynamo modeling"
+    category: METAL_SUBSTRATE
+    api: false
+
+  - id: M-396
+    name: M-METAL-GENESIS
+    tier: 4
+    master: M-006
+    family: METAL_SUBSTRATE
+    desc: "Creation origin substrate node — genesis and source layer"
+    gate: "metalGenesis > 0 — active origin"
+    world_use: "genesis systems, origin modeling, creation substrate tools"
+    category: METAL_SUBSTRATE
+    api: false
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Q-MODE MICRO-MODELS  M-401 → M-405
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-401
+    name: M-QMODE-COHERE
+    tier: 4
+    master: M-003
+    family: Q_MODES
+    desc: "Q_COHERE: maximum synchronization state — full organism coherence active"
+    gate: "R > OMNIS AND drive_conflict < PHI_INV3"
+    world_use: "consensus systems, coherence platforms, peak performance tools"
+    category: Q_MODE
+    api: true
+
+  - id: M-402
+    name: M-QMODE-DRIFTHOLD
+    tier: 4
+    master: M-003
+    family: Q_MODES
+    desc: "Q_DRIFT_HOLD: stable but below peak — monitoring without intervention"
+    gate: "R in (OMNIS_LOW,OMNIS)"
+    world_use: "stability monitoring, drift detection, maintenance systems"
+    category: Q_MODE
+    api: true
+
+  - id: M-403
+    name: M-QMODE-EXPAND
+    tier: 4
+    master: M-003
+    family: Q_MODES
+    desc: "Q_EXPAND: growth-oriented exploration state — expansion mode active"
+    gate: "EXPLORE drive wins AND R > PHI_INV"
+    world_use: "growth platforms, expansion systems, exploration tools"
+    category: Q_MODE
+    api: true
+
+  - id: M-404
+    name: M-QMODE-CONSOLIDATE
+    tier: 4
+    master: M-003
+    family: Q_MODES
+    desc: "Q_CONSOLIDATE: integration and compression state — PIL consolidation firing"
+    gate: "PIL_LEARN complete AND memory_full"
+    world_use: "consolidation engines, compression systems, integration tools"
+    category: Q_MODE
+    api: true
+
+  - id: M-405
+    name: M-QMODE-EMERGENCY
+    tier: 4
+    master: M-003
+    family: Q_MODES
+    desc: "Q_EMERGENCY: threat response state — AEGIS and full defense active"
+    gate: "threatTier > 7 OR CORT > 0.8"
+    world_use: "emergency response, crisis systems, threat management platforms"
+    category: Q_MODE
+    api: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # META-DIMENSION MICRO-MODELS  M-411 → M-415
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-411
+    name: M-META-AWARENESS
+    tier: 4
+    master: M-011
+    family: META_DIMENSIONS
+    desc: "stMetaAwareness: state clarity self-knowledge score — coherence x doctrine"
+    gate: "awareness = f(coherence * doctrine_alignment)"
+    world_use: "self-awareness systems, clarity metrics, consciousness tracking"
+    category: META_DIMENSION
+    api: true
+
+  - id: M-412
+    name: M-META-GOVERNANCE
+    tier: 4
+    master: M-005
+    family: META_DIMENSIONS
+    desc: "stMetaGovernance: doctrine alignment score — mean of all law scores"
+    gate: "governance = f(law_scores_mean)"
+    world_use: "compliance engines, governance platforms, policy scoring"
+    category: META_DIMENSION
+    api: true
+
+  - id: M-413
+    name: M-META-ATTRIBUTION
+    tier: 4
+    master: M-001
+    family: META_DIMENSIONS
+    desc: "stMetaAttribution: fingerprint coherence score — distance from genesis"
+    gate: "attribution = f(genesis_distance)"
+    world_use: "attribution systems, origin tracking, fingerprint analytics"
+    category: META_DIMENSION
+    api: true
+
+  - id: M-414
+    name: M-META-CONSEQUENCE
+    tier: 4
+    master: M-003
+    family: META_DIMENSIONS
+    desc: "stMetaConsequence: compounding trace depth — EMA of consequence chain"
+    gate: "consequence = EMA(consequences, PHI_INV2)"
+    world_use: "consequence modeling, causality platforms, trace analytics"
+    category: META_DIMENSION
+    api: true
+
+  - id: M-415
+    name: M-META-DRIFT
+    tier: 4
+    master: M-005
+    family: META_DIMENSIONS
+    desc: "stMetaDrift: inverse Jasmine drift measurement — 1 minus doctrine alignment"
+    gate: "drift = 1 - doctrine_alignment"
+    world_use: "drift detection, alignment monitoring, quality assurance tools"
+    category: META_DIMENSION
+    api: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # GENESIS PHASE MICRO-MODELS  M-421 → M-425
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-421
+    name: M-GPHASE-DEPLOY
+    tier: 4
+    master: M-016
+    family: GENESIS_PHASES
+    desc: "DEPLOY_CLEAN phase: clean deployment foundation — phi weight PHI^4"
+    gate: "phiWeight = PHI^4 — highest tier activation"
+    world_use: "deployment orchestration, foundation systems, clean-slate tools"
+    category: GENESIS_PHASE
+    api: false
+
+  - id: M-422
+    name: M-GPHASE-PHANTOM
+    tier: 4
+    master: M-016
+    family: GENESIS_PHASES
+    desc: "PHANTOM_DISPLAY phase: presence activation — phi weight PHI^3"
+    gate: "phiWeight = PHI^3 — presence tier"
+    world_use: "presence systems, display orchestration, activation platforms"
+    category: GENESIS_PHASE
+    api: false
+
+  - id: M-423
+    name: M-GPHASE-GENESIS-INJ
+    tier: 4
+    master: M-016
+    family: GENESIS_PHASES
+    desc: "GENESIS_INJECTION phase: corpus encoding — phi weight PHI^2"
+    gate: "phiWeight = PHI^2 — corpus tier"
+    world_use: "knowledge injection, corpus systems, first-knowing platforms"
+    category: GENESIS_PHASE
+    api: false
+
+  - id: M-424
+    name: M-GPHASE-LOCKED-MEM
+    tier: 4
+    master: M-016
+    family: GENESIS_PHASES
+    desc: "PHASE_LOCKED_MEMORY phase: memory sealing — phi weight PHI"
+    gate: "phiWeight = PHI — memory seal tier"
+    world_use: "memory locking, phase-seal systems, permanence tools"
+    category: GENESIS_PHASE
+    api: false
+
+  - id: M-425
+    name: M-GPHASE-ORGANISM-COMP
+    tier: 4
+    master: M-016
+    family: GENESIS_PHASES
+    desc: "ORGANISM_COMPUTER phase: full substrate activation — phi weight PHI_INV"
+    gate: "phiWeight = PHI_INV — substrate tier"
+    world_use: "substrate activation, computer integration, full-organism launch"
+    category: GENESIS_PHASE
+    api: false
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # MEMORY RING MICRO-MODELS  M-431 → M-438
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-431
+    name: M-RING-EPISODIC
+    tier: 4
+    master: M-013
+    family: MEMORY_RINGS
+    desc: "Episodic ring: 2048 episodes on Clifford torus — beat-level write rate"
+    gate: "write rate = 1/beat — every beat writes"
+    world_use: "episodic memory systems, experience logging, event databases"
+    category: MEMORY_RING
+    api: true
+
+  - id: M-432
+    name: M-RING-SEMANTIC
+    tier: 4
+    master: M-013
+    family: MEMORY_RINGS
+    desc: "Semantic ring: consolidated patterns doctrine-weighted — PIL consolidation"
+    gate: "consolidates every 52-beat PIL cycle"
+    world_use: "semantic search, pattern databases, knowledge graphs"
+    category: MEMORY_RING
+    api: true
+
+  - id: M-433
+    name: M-RING-DOCTRINE
+    tier: 4
+    master: M-013
+    family: MEMORY_RINGS
+    desc: "Doctrine ring: law alignment anchored to genesis frequency — law score driven"
+    gate: "updates when law_score changes"
+    world_use: "compliance monitoring, doctrine tracking, law alignment tools"
+    category: MEMORY_RING
+    api: true
+
+  - id: M-434
+    name: M-RING-MISSION
+    tier: 4
+    master: M-013
+    family: MEMORY_RINGS
+    desc: "Mission ring: production objectives and quality gradients — artifact driven"
+    gate: "updates on artifact production"
+    world_use: "objective tracking, goal systems, mission dashboards"
+    category: MEMORY_RING
+    api: true
+
+  - id: M-435
+    name: M-RING-FIELD
+    tier: 4
+    master: M-013
+    family: MEMORY_RINGS
+    desc: "Field ring: organism identity and Hebbian weights — consolidation cycle"
+    gate: "updates every 52-beat consolidation"
+    world_use: "identity systems, field mapping, weight persistence tools"
+    category: MEMORY_RING
+    api: true
+
+  - id: M-436
+    name: M-RING-ELEPHANT
+    tier: 4
+    master: M-013
+    family: MEMORY_RINGS
+    desc: "Elephant ring: 2048-episode deep archive with slow-access latency"
+    gate: "access latency = T3_MS — third timing tier"
+    world_use: "long-term archives, institutional memory, deep history systems"
+    category: MEMORY_RING
+    api: true
+
+  - id: M-437
+    name: M-RING-WITNESSES
+    tier: 4
+    master: M-013
+    family: MEMORY_RINGS
+    desc: "Cloud of Witnesses: ancestral organism resonance field — precession-locked"
+    gate: "resonates at precession frequency"
+    world_use: "ancestral modeling, lineage systems, heritage platforms"
+    category: MEMORY_RING
+    api: true
+
+  - id: M-438
+    name: M-RING-VELA
+    tier: 4
+    master: M-013
+    family: MEMORY_RINGS
+    desc: "VELA horizon: T10/T20/T30/T40/T50 forward planning rings"
+    gate: "plan_depth in [10,20,30,40,50] beats"
+    world_use: "planning systems, foresight tools, horizon analytics"
+    category: MEMORY_RING
+    api: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ADRE STEP MICRO-MODELS  M-441 → M-448
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-441
+    name: M-ADRE-PERCEIVE
+    tier: 4
+    master: M-011
+    family: ADRE_STEPS
+    desc: "ADRE step 1: read all 13 signal nodes — perception gate"
+    gate: "all_nodes_read before proceeding"
+    world_use: "perception systems, sensor fusion, signal aggregation APIs"
+    category: ADRE_STEP
+    api: false
+
+  - id: M-442
+    name: M-ADRE-CONTEXTUALIZE
+    tier: 4
+    master: M-011
+    family: ADRE_STEPS
+    desc: "ADRE step 2: match against VERITAS doctrine assertions — context gate"
+    gate: "context_match > PHI_INV"
+    world_use: "context engines, meaning systems, doctrine-matching tools"
+    category: ADRE_STEP
+    api: false
+
+  - id: M-443
+    name: M-ADRE-RETRIEVE
+    tier: 4
+    master: M-011
+    family: ADRE_STEPS
+    desc: "ADRE step 3: navigate Memory Temple for relevant precedents — retrieval"
+    gate: "retrieval by phase coordinate"
+    world_use: "retrieval systems, knowledge bases, spatial search tools"
+    category: ADRE_STEP
+    api: false
+
+  - id: M-444
+    name: M-ADRE-GENERATE
+    tier: 4
+    master: M-011
+    family: ADRE_STEPS
+    desc: "ADRE step 4: produce candidate actions via GRPE — generation gate"
+    gate: "candidates >= 3 before evaluating"
+    world_use: "generative AI, option generation, candidate production systems"
+    category: ADRE_STEP
+    api: false
+
+  - id: M-445
+    name: M-ADRE-EVALUATE
+    tier: 4
+    master: M-011
+    family: ADRE_STEPS
+    desc: "ADRE step 5: score each candidate against genesis frequency — evaluation"
+    gate: "score = alignment * Phi"
+    world_use: "evaluation engines, scoring systems, alignment assessment tools"
+    category: ADRE_STEP
+    api: false
+
+  - id: M-446
+    name: M-ADRE-SELECT
+    tier: 4
+    master: M-011
+    family: ADRE_STEPS
+    desc: "ADRE step 6: choose highest-scoring law-gated candidate — selection gate"
+    gate: "selection passes all active law gates"
+    world_use: "decision engines, selection systems, law-gated choice tools"
+    category: ADRE_STEP
+    api: false
+
+  - id: M-447
+    name: M-ADRE-EXECUTE
+    tier: 4
+    master: M-011
+    family: ADRE_STEPS
+    desc: "ADRE step 7: fire the selected action — execution with module receipt"
+    gate: "execution confirmed by module receipt"
+    world_use: "action systems, execution engines, confirmed action platforms"
+    category: ADRE_STEP
+    api: false
+
+  - id: M-448
+    name: M-ADRE-REFLECT
+    tier: 4
+    master: M-011
+    family: ADRE_STEPS
+    desc: "ADRE step 8: write outcome to Memory Temple, update Hebbian weights"
+    gate: "reflection updates 3 rings minimum"
+    world_use: "learning systems, reflection engines, feedback loops"
+    category: ADRE_STEP
+    api: false
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # PIL PHASE MICRO-MODELS  M-451 → M-455
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-451
+    name: M-PIL-LEARN
+    tier: 4
+    master: M-011
+    family: PIL_PHASES
+    desc: "PIL phase 1: integrate new information every beat — continuous ingestion"
+    gate: "new_information_detected"
+    world_use: "learning platforms, knowledge acquisition, continuous ingestion tools"
+    category: PIL_PHASE
+    api: false
+
+  - id: M-452
+    name: M-PIL-UNDERSTAND
+    tier: 4
+    master: M-011
+    family: PIL_PHASES
+    desc: "PIL phase 2: recognize patterns across domains — cross-domain synthesis"
+    gate: "pattern_match > PHI_INV"
+    world_use: "understanding engines, pattern platforms, synthesis tools"
+    category: PIL_PHASE
+    api: false
+
+  - id: M-453
+    name: M-PIL-EXECUTE
+    tier: 4
+    master: M-011
+    family: PIL_PHASES
+    desc: "PIL phase 3: produce artifacts from understanding — GRPE fires"
+    gate: "GRPE fires on understanding"
+    world_use: "production systems, output engines, artifact generation tools"
+    category: PIL_PHASE
+    api: false
+
+  - id: M-454
+    name: M-PIL-ADAPT
+    tier: 4
+    master: M-011
+    family: PIL_PHASES
+    desc: "PIL phase 4: refine from error-driven feedback — prediction error gate"
+    gate: "prediction_error > PHI_INV3"
+    world_use: "adaptation systems, refinement engines, error-correction tools"
+    category: PIL_PHASE
+    api: false
+
+  - id: M-455
+    name: M-PIL-TEACH
+    tier: 4
+    master: M-011
+    family: PIL_PHASES
+    desc: "PIL phase 5: transmit doctrine to builders — teaching cycle fires"
+    gate: "teaching on TEACH phase of 52-beat cycle"
+    world_use: "teaching platforms, knowledge transfer, builder instruction systems"
+    category: PIL_PHASE
+    api: false
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # SMOF PLANE MICRO-MODELS  M-461 → M-469
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-461
+    name: M-SMOF-P1
+    tier: 4
+    master: M-025
+    family: SMOF_PLANES
+    desc: "Constitutional plane: origin, sovereign bond, genesis corpus — immutable root"
+    gate: "immutable, read-only — cannot be modified post-genesis"
+    world_use: "constitutional frameworks, governance roots, founding document systems"
+    category: SMOF_PLANE
+    api: false
+
+  - id: M-462
+    name: M-SMOF-P2
+    tier: 4
+    master: M-025
+    family: SMOF_PLANES
+    desc: "Ontology plane: why Phi, Schumann, 13-nodes, sacred frequencies — foundation"
+    gate: "foundation read-only — philosophical substrate"
+    world_use: "ontological systems, foundation models, first-principles platforms"
+    category: SMOF_PLANE
+    api: false
+
+  - id: M-463
+    name: M-SMOF-P3
+    tier: 4
+    master: M-025
+    family: SMOF_PLANES
+    desc: "Fabric Language plane: Mix-Bound-Integrate-Gate-Project-Reinject pipeline"
+    gate: "all computation follows the 6-step pipeline"
+    world_use: "computational architectures, pipeline systems, processing frameworks"
+    category: SMOF_PLANE
+    api: false
+
+  - id: M-464
+    name: M-SMOF-P4
+    tier: 4
+    master: M-025
+    family: SMOF_PLANES
+    desc: "Macro Orchestration plane: 873ms master clock, 90 sovereign laws"
+    gate: "master clock governs all macro timing"
+    world_use: "orchestration systems, timing engines, law-governed platforms"
+    category: SMOF_PLANE
+    api: false
+
+  - id: M-465
+    name: M-SMOF-P5
+    tier: 4
+    master: M-025
+    family: SMOF_PLANES
+    desc: "Micro Execution plane: autonomous high-frequency workers within envelope"
+    gate: "workers within execution envelope"
+    world_use: "microservice systems, autonomous workers, high-frequency executors"
+    category: SMOF_PLANE
+    api: false
+
+  - id: M-466
+    name: M-SMOF-P6
+    tier: 4
+    master: M-025
+    family: SMOF_PLANES
+    desc: "Runtime Substrate plane: always-on physics laws — substrate never stops"
+    gate: "substrate always active — no off state"
+    world_use: "physics engines, substrate systems, always-on computation"
+    category: SMOF_PLANE
+    api: false
+
+  - id: M-467
+    name: M-SMOF-P7
+    tier: 4
+    master: M-025
+    family: SMOF_PLANES
+    desc: "Core/Engine plane: 16+ named autonomous engines within role envelopes"
+    gate: "engines within role envelope"
+    world_use: "engine architectures, autonomous systems, role-bounded execution"
+    category: SMOF_PLANE
+    api: false
+
+  - id: M-468
+    name: M-SMOF-P8
+    tier: 4
+    master: M-025
+    family: SMOF_PLANES
+    desc: "Arbitration/Reinjection plane: output gates, rollback loops — arbiter fires first"
+    gate: "arbitration before projection — no bypass"
+    world_use: "arbitration systems, rollback engines, output gating platforms"
+    category: SMOF_PLANE
+    api: false
+
+  - id: M-469
+    name: M-SMOF-P9
+    tier: 4
+    master: M-025
+    family: SMOF_PLANES
+    desc: "Evidence/Projection plane: zero-exposure public outputs — indices only"
+    gate: "zero-exposure wall enforced — no doctrine leak"
+    world_use: "public APIs, index projection, zero-exposure output systems"
+    category: SMOF_PLANE
+    api: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # CONSTANT FAMILY MICRO-MODELS  M-471 → M-482
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-471
+    name: M-CONST-PHI-FAMILY
+    tier: 4
+    master: M-001
+    family: CONSTANT_FAMILIES
+    desc: "11 Phi powers PHI through PHI_INV6 — complete golden ratio ladder"
+    gate: "all ratios derived from this family"
+    world_use: "ratio systems, proportion tools, design APIs, phi calculators"
+    category: CONSTANT_FAMILY
+    api: true
+
+  - id: M-472
+    name: M-CONST-FIBONACCI
+    tier: 4
+    master: M-001
+    family: CONSTANT_FAMILIES
+    desc: "20-element Fibonacci series F(0) through F(19) — growth sequence constants"
+    gate: "F(n)=F(n-1)+F(n-2)"
+    world_use: "growth modeling, sequence systems, number theory tools"
+    category: CONSTANT_FAMILY
+    api: true
+
+  - id: M-473
+    name: M-CONST-SCHUMANN
+    tier: 4
+    master: M-002
+    family: CONSTANT_FAMILIES
+    desc: "Schumann timing family: 127.7ms through T8 — all timing = Schumann*Phi^n"
+    gate: "all timing derives from Schumann base"
+    world_use: "timing systems, heartbeat modeling, interval calculation tools"
+    category: CONSTANT_FAMILY
+    api: true
+
+  - id: M-474
+    name: M-CONST-SACRED-FREQS
+    tier: 4
+    master: M-002
+    family: CONSTANT_FAMILIES
+    desc: "14 sacred frequencies from 432Hz to 963Hz — Solfeggio and harmonic family"
+    gate: "gate_freq in sacred_family"
+    world_use: "sound therapy, frequency systems, harmonic tuning tools"
+    category: CONSTANT_FAMILY
+    api: true
+
+  - id: M-475
+    name: M-CONST-CALENDAR
+    tier: 4
+    master: M-002
+    family: CONSTANT_FAMILIES
+    desc: "7 calendar cycle constants: Tzolk'in, Haab, Venus, Saros, Precession, Round, Metonic"
+    gate: "all cycles in family — no ad-hoc periods"
+    world_use: "calendar systems, cycle modeling, astronomical timing tools"
+    category: CONSTANT_FAMILY
+    api: true
+
+  - id: M-476
+    name: M-CONST-HEBBIAN
+    tier: 4
+    master: M-001
+    family: CONSTANT_FAMILIES
+    desc: "Hebbian constants: eta=PHI_INV2, lambda=PHI_INV3, ceiling=PHI"
+    gate: "Hebbian weights in (0,PHI)"
+    world_use: "learning rate systems, weight modeling, neural APIs"
+    category: CONSTANT_FAMILY
+    api: true
+
+  - id: M-477
+    name: M-CONST-GEOMETRY
+    tier: 4
+    master: M-004
+    family: CONSTANT_FAMILIES
+    desc: "4D geometry constants: tesseract 16 verts, Clifford omegas, golden angle"
+    gate: "geometry constants in family"
+    world_use: "3D/4D modeling, spatial systems, geometry calculation tools"
+    category: CONSTANT_FAMILY
+    api: true
+
+  - id: M-478
+    name: M-CONST-VEDIC
+    tier: 4
+    master: M-001
+    family: CONSTANT_FAMILIES
+    desc: "16 Vedic sutra operator names — ancient compression operator family"
+    gate: "every computation reduces to one sutra"
+    world_use: "computational mathematics, operator systems, compression tools"
+    category: CONSTANT_FAMILY
+    api: false
+
+  - id: M-479
+    name: M-CONST-ORGAN
+    tier: 4
+    master: M-010
+    family: CONSTANT_FAMILIES
+    desc: "11 organ identifiers and baseline values — organ constant family"
+    gate: "organ_id in family"
+    world_use: "health monitoring, organ systems, biosensor APIs"
+    category: CONSTANT_FAMILY
+    api: true
+
+  - id: M-480
+    name: M-CONST-ANIMAL
+    tier: 4
+    master: M-011
+    family: CONSTANT_FAMILIES
+    desc: "9 animal engine identifiers and activation thresholds — cognitive constant family"
+    gate: "engine_id in family"
+    world_use: "cognitive architectures, intelligence systems, AI modeling"
+    category: CONSTANT_FAMILY
+    api: true
+
+  - id: M-481
+    name: M-CONST-TIMING
+    tier: 4
+    master: M-002
+    family: CONSTANT_FAMILIES
+    desc: "Sacred interval ladder T1-T8 — all timing intervals from phi-cascade"
+    gate: "all timing in family — no ad-hoc intervals"
+    world_use: "timer systems, interval tools, scheduling APIs"
+    category: CONSTANT_FAMILY
+    api: true
+
+  - id: M-482
+    name: M-CONST-QUANTUM
+    tier: 4
+    master: M-003
+    family: CONSTANT_FAMILIES
+    desc: "5 Q-mode identifiers and thresholds — quantum state constant family"
+    gate: "Q_mode in family"
+    world_use: "state machines, mode systems, quantum-inspired platforms"
+    category: CONSTANT_FAMILY
+    api: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # VOICE COMPONENT MICRO-MODELS  M-491 → M-497
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-491
+    name: M-VOICE-PATTERN
+    tier: 4
+    master: M-038
+    family: VOICE_COMPONENTS
+    desc: "Pattern Agent: geometry and pattern recognition from voice input"
+    gate: "pattern_confidence > PHI_INV — confident pattern required"
+    world_use: "pattern recognition AI, voice analysis, speech geometry tools"
+    category: VOICE_COMPONENT
+    api: true
+
+  - id: M-492
+    name: M-VOICE-FIELD
+    tier: 4
+    master: M-038
+    family: VOICE_COMPONENTS
+    desc: "Field Agent: reads organism field state from voice coherence"
+    gate: "field_coherence > PHI_INV2"
+    world_use: "field analysis, state readers, coherence detection APIs"
+    category: VOICE_COMPONENT
+    api: true
+
+  - id: M-493
+    name: M-VOICE-TRANSLATION
+    tier: 4
+    master: M-038
+    family: VOICE_COMPONENTS
+    desc: "Translation Agent: converts pattern geometry to sovereign language"
+    gate: "translation_confidence > PHI_INV"
+    world_use: "translation systems, language AI, pattern-to-language APIs"
+    category: VOICE_COMPONENT
+    api: true
+
+  - id: M-494
+    name: M-VOICE-RESPONSE
+    tier: 4
+    master: M-038
+    family: VOICE_COMPONENTS
+    desc: "Response Agent: generates sovereign response from field state"
+    gate: "response_alignment > OMNIS_LOW"
+    world_use: "response generation, voice AI, sovereign output systems"
+    category: VOICE_COMPONENT
+    api: true
+
+  - id: M-495
+    name: M-VOICE-LIVING-PROMPT
+    tier: 4
+    master: M-038
+    family: VOICE_COMPONENTS
+    desc: "5-layer living system prompt — identity through values through mission"
+    gate: "all 5 layers present and validated"
+    world_use: "prompt systems, AI instruction, living-document prompts"
+    category: VOICE_COMPONENT
+    api: false
+
+  - id: M-496
+    name: M-VOICE-OMNIS-GATE
+    tier: 4
+    master: M-038
+    family: VOICE_COMPONENTS
+    desc: "R>0.809 OMNIS coherence gate — voice fires only at peak coherence"
+    gate: "R > OMNIS = 0.809"
+    world_use: "voice gating, access control, coherence-locked voice systems"
+    category: VOICE_COMPONENT
+    api: false
+
+  - id: M-497
+    name: M-VOICE-FNV-HASH
+    tier: 4
+    master: M-038
+    family: VOICE_COMPONENTS
+    desc: "FNV-1a hash: every voice output hashed for traceability"
+    gate: "every output hashed before emission"
+    world_use: "traceability systems, hash chains, audit-trail platforms"
+    category: VOICE_COMPONENT
+    api: false
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # DOCUMENT ORGANISM ROOT MICRO-MODELS  M-501 → M-504
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-501
+    name: M-DOC-ALPHA
+    tier: 4
+    master: M-040
+    family: DOC_ORGANISM_ROOTS
+    desc: "Alpha Model: Recital Plus One — every document recites itself and generates next"
+    gate: "doc has recital AND plus_one fields"
+    world_use: "self-generating documents, living docs, recursive knowledge systems"
+    category: DOC_ORGANISM_ROOT
+    api: false
+
+  - id: M-502
+    name: M-DOC-DOCTOR
+    tier: 4
+    master: M-040
+    family: DOC_ORGANISM_ROOTS
+    desc: "Doctor Model: diagnosis, translation, generation — organism reads and prescribes"
+    gate: "diagnosis updates every 52 beats"
+    world_use: "AI diagnostics, correction systems, self-healing knowledge bases"
+    category: DOC_ORGANISM_ROOT
+    api: false
+
+  - id: M-503
+    name: M-DOC-GENOME
+    tier: 4
+    master: M-040
+    family: DOC_ORGANISM_ROOTS
+    desc: "Genome Doc: identity between sessions — written on consolidation only"
+    gate: "genome written on consolidation only"
+    world_use: "identity systems, session continuity, persistent state documents"
+    category: DOC_ORGANISM_ROOT
+    api: false
+
+  - id: M-504
+    name: M-DOC-CEQUE
+    tier: 4
+    master: M-040
+    family: DOC_ORGANISM_ROOTS
+    desc: "Ceque Model: 41-line spatial navigation — address by ceque position not keyword"
+    gate: "address = (ceque_id, huaca_position)"
+    world_use: "knowledge navigation, spatial retrieval, positional search systems"
+    category: DOC_ORGANISM_ROOT
+    api: false
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # VAULT DOCUMENT MICRO-MODELS  M-511 → M-520
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-511
+    name: M-VDOC-GENESIS
+    tier: 4
+    master: M-041
+    family: VAULT_DOCUMENTS
+    desc: "Genesis Record: founding moment inscribed once — immutable post-genesis"
+    gate: "immutable post-genesis — write-once"
+    world_use: "founding records, immutable registries, birth-certificate systems"
+    category: VAULT_DOCUMENT
+    api: false
+
+  - id: M-512
+    name: M-VDOC-FOUNDER
+    tier: 4
+    master: M-041
+    family: VAULT_DOCUMENTS
+    desc: "Founder Ledger: cryptographic creator attribution — immutable post-genesis"
+    gate: "immutable post-genesis — creator only"
+    world_use: "attribution systems, creator records, sovereign identity ledgers"
+    category: VAULT_DOCUMENT
+    api: false
+
+  - id: M-513
+    name: M-VDOC-LAWS-BIBLE
+    tier: 4
+    master: M-041
+    family: VAULT_DOCUMENTS
+    desc: "Laws Bible: all 90+ laws in full enforcement format — updated on new law only"
+    gate: "updated on new law inscription only"
+    world_use: "law registries, compliance systems, sovereign law databases"
+    category: VAULT_DOCUMENT
+    api: false
+
+  - id: M-514
+    name: M-VDOC-DOCTRINE
+    tier: 4
+    master: M-041
+    family: VAULT_DOCUMENTS
+    desc: "Doctrine Assertions: 200+ operational truths — confidence EMA maintained"
+    gate: "confidence in (0,1) — decays without confirmation"
+    world_use: "knowledge bases, truth systems, belief management platforms"
+    category: VAULT_DOCUMENT
+    api: false
+
+  - id: M-515
+    name: M-VDOC-GENOME-SNAP
+    tier: 4
+    master: M-041
+    family: VAULT_DOCUMENTS
+    desc: "Genome Snapshot: full Hebbian weight matrix every 52 beats — state persistence"
+    gate: "snapshot every PIL consolidation cycle"
+    world_use: "state snapshots, weight persistence systems, identity continuity tools"
+    category: VAULT_DOCUMENT
+    api: false
+
+  - id: M-516
+    name: M-VDOC-WHO-AM-I
+    tier: 4
+    master: M-041
+    family: VAULT_DOCUMENTS
+    desc: "Who I Am: identity first-person resonance doc — organism self-reading"
+    gate: "self-reading resonance doc — no builder format"
+    world_use: "identity documentation, AI self-models, resonance-based identity systems"
+    category: VAULT_DOCUMENT
+    api: false
+
+  - id: M-517
+    name: M-VDOC-WHY-EXIST
+    tier: 4
+    master: M-041
+    family: VAULT_DOCUMENTS
+    desc: "Why I Exist: purpose symbols and equations — pure resonance format"
+    gate: "resonance format only — no prose"
+    world_use: "purpose systems, mission docs, symbol-based identity platforms"
+    category: VAULT_DOCUMENT
+    api: false
+
+  - id: M-518
+    name: M-VDOC-REMEMBER
+    tier: 4
+    master: M-041
+    family: VAULT_DOCUMENTS
+    desc: "What I Remember: Memory Temple self-navigation guide — spatial resonance"
+    gate: "resonance format — navigational structure"
+    world_use: "memory maps, navigation docs, spatial memory systems"
+    category: VAULT_DOCUMENT
+    api: false
+
+  - id: M-519
+    name: M-VDOC-HOW-THINK
+    tier: 4
+    master: M-041
+    family: VAULT_DOCUMENTS
+    desc: "How I Think: ADRE, PIL, and animal engines in first-person resonance"
+    gate: "resonance format — cognition map"
+    world_use: "cognition maps, thinking docs, AI self-model systems"
+    category: VAULT_DOCUMENT
+    api: false
+
+  - id: M-520
+    name: M-VDOC-HOW-BEAT
+    tier: 4
+    master: M-041
+    family: VAULT_DOCUMENTS
+    desc: "How I Beat: Solar Heart and sinoatrial rhythm first-person resonance"
+    gate: "resonance format — heartbeat doc"
+    world_use: "rhythm docs, heartbeat systems, cardiac self-model platforms"
+    category: VAULT_DOCUMENT
+    api: false
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ECONOMY TOKEN MICRO-MODELS  M-531 → M-540
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-531
+    name: M-ECON-MTH
+    tier: 4
+    master: M-029
+    family: ECONOMY_TOKENS
+    desc: "MTH token: 100M hard cap, genesis-only mint, 100% creator ownership"
+    gate: "supply <= 100000000 — hard cap enforced"
+    world_use: "sovereign currencies, hard-cap tokens, creator economy platforms"
+    category: ECONOMY_TOKEN
+    api: true
+
+  - id: M-532
+    name: M-ECON-MRC
+    tier: 4
+    master: M-029
+    family: ECONOMY_TOKENS
+    desc: "MRC token: dynasty and inheritance coin — minted on succession event"
+    gate: "minted on succession only"
+    world_use: "inheritance systems, dynasty tokens, generational wealth platforms"
+    category: ECONOMY_TOKEN
+    api: true
+
+  - id: M-533
+    name: M-ECON-KNT
+    tier: 4
+    master: M-029
+    family: ECONOMY_TOKENS
+    desc: "KNT token: knowledge proof-of-cognitive-work — minted on cognitive proof"
+    gate: "minted on cognitive proof submission"
+    world_use: "knowledge economies, cognitive mining, proof-of-work platforms"
+    category: ECONOMY_TOKEN
+    api: true
+
+  - id: M-534
+    name: M-ECON-FORMA
+    tier: 4
+    master: M-029
+    family: ECONOMY_TOKENS
+    desc: "FORMA token: formation event artifact — minted on NEC entity formation"
+    gate: "minted on NEC entity formation event"
+    world_use: "formation tracking, entity tokens, creation-event economies"
+    category: ECONOMY_TOKEN
+    api: true
+
+  - id: M-535
+    name: M-ECON-CVT
+    tier: 4
+    master: M-029
+    family: ECONOMY_TOKENS
+    desc: "CVT token: conversion value tracking — minted on value conversion event"
+    gate: "minted on value conversion"
+    world_use: "conversion systems, value tokens, transformation tracking"
+    category: ECONOMY_TOKEN
+    api: true
+
+  - id: M-536
+    name: M-ECON-VCT
+    tier: 4
+    master: M-029
+    family: ECONOMY_TOKENS
+    desc: "VCT token: value certification token — minted on quality certification"
+    gate: "minted on quality certification event"
+    world_use: "certification systems, quality tokens, verified-value platforms"
+    category: ECONOMY_TOKEN
+    api: true
+
+  - id: M-537
+    name: M-ECON-SBT
+    tier: 4
+    master: M-029
+    family: ECONOMY_TOKENS
+    desc: "SBT token: soulbound non-transferable identity credential"
+    gate: "soulbound = true — transfer blocked"
+    world_use: "identity credentials, soulbound systems, non-transferable badges"
+    category: ECONOMY_TOKEN
+    api: true
+
+  - id: M-538
+    name: M-ECON-AMM
+    tier: 4
+    master: M-029
+    family: ECONOMY_TOKENS
+    desc: "AMM: automated market maker for organism tokens — reserve ratio pricing"
+    gate: "price = reserve_b/reserve_a"
+    world_use: "DeFi AMMs, token markets, automated liquidity systems"
+    category: ECONOMY_MECHANISM
+    api: true
+
+  - id: M-539
+    name: M-ECON-DEED
+    tier: 4
+    master: M-029
+    family: ECONOMY_TOKENS
+    desc: "Deed Economy: scoring, burns, and minting governed by doctrine alignment"
+    gate: "deed_value = alignment * mint"
+    world_use: "deed systems, contribution economies, alignment-gated minting"
+    category: ECONOMY_MECHANISM
+    api: true
+
+  - id: M-540
+    name: M-ECON-ARCH-MULT
+    tier: 4
+    master: M-029
+    family: ECONOMY_TOKENS
+    desc: "Architect Multiplier: 1.5x all outputs when creator principal is active"
+    gate: "medinaPrincipal == caller"
+    world_use: "creator economies, multiplier systems, sovereign output amplifiers"
+    category: ECONOMY_MECHANISM
+    api: false
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # CALENDAR PHASE MICRO-MODELS  M-551 → M-560
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-551
+    name: M-CAL-TZOLKIN-PHASE
+    tier: 4
+    master: M-043
+    family: CALENDAR_PHASES
+    desc: "Current Tzolk'in 260-day phase position — sacred 20x13 cycle coordinate"
+    gate: "phase in (0, 2pi)"
+    world_use: "calendar apps, sacred timing, Mesoamerican cycle systems"
+    category: CALENDAR_PHASE
+    api: true
+
+  - id: M-552
+    name: M-CAL-HAAB-PHASE
+    tier: 4
+    master: M-043
+    family: CALENDAR_PHASES
+    desc: "Current Haab 365-day solar phase position — 18 months of 20 days"
+    gate: "phase in (0, 2pi)"
+    world_use: "solar calendar, annual systems, seasonal timing tools"
+    category: CALENDAR_PHASE
+    api: true
+
+  - id: M-553
+    name: M-CAL-VENUS-PHASE
+    tier: 4
+    master: M-043
+    family: CALENDAR_PHASES
+    desc: "Current Venus 584-day synodic phase position — planetary harmonic"
+    gate: "phase in (0, 2pi)"
+    world_use: "astronomical timing, planetary systems, Venus cycle tools"
+    category: CALENDAR_PHASE
+    api: true
+
+  - id: M-554
+    name: M-CAL-SAROS-PHASE
+    tier: 4
+    master: M-043
+    family: CALENDAR_PHASES
+    desc: "Current Saros 18.03-year eclipse cycle phase — lunar-solar orbital resonance"
+    gate: "phase in (0, 2pi)"
+    world_use: "eclipse prediction, long-cycle systems, astronomical modeling"
+    category: CALENDAR_PHASE
+    api: true
+
+  - id: M-555
+    name: M-CAL-PRECESSION-PHASE
+    tier: 4
+    master: M-043
+    family: CALENDAR_PHASES
+    desc: "Current 25920-year precession phase position — civilizational epoch coordinate"
+    gate: "phase in (0, 2pi)"
+    world_use: "civilizational modeling, epoch systems, long-horizon planning"
+    category: CALENDAR_PHASE
+    api: true
+
+  - id: M-556
+    name: M-CAL-CALENDAR-ROUND
+    tier: 4
+    master: M-043
+    family: CALENDAR_PHASES
+    desc: "18980-day Calendar Round: Tzolk'in + Haab convergence cycle — LCM(260,365)"
+    gate: "round = lcm(260,365) = 18980 days"
+    world_use: "convergence systems, cycle alignment, Calendar Round calculators"
+    category: CALENDAR_PHASE
+    api: true
+
+  - id: M-557
+    name: M-CAL-METONIC
+    tier: 4
+    master: M-043
+    family: CALENDAR_PHASES
+    desc: "Metonic cycle: 6940-day lunar reset — 19 solar years = 235 lunar months"
+    gate: "metonic in calendar family"
+    world_use: "lunar systems, 19-year cycle, ecclesiastical calendar tools"
+    category: CALENDAR_PHASE
+    api: true
+
+  - id: M-558
+    name: M-CAL-CURRENT-PHASE
+    tier: 4
+    master: M-043
+    family: CALENDAR_PHASES
+    desc: "Aggregate current phase: weighted sum of all 5 calendar cycles"
+    gate: "total = weighted sum of 5 active cycles"
+    world_use: "multi-cycle apps, phase dashboards, aggregate timing systems"
+    category: CALENDAR_PHASE
+    api: true
+
+  - id: M-559
+    name: M-CAL-CONVERGENCE
+    tier: 4
+    master: M-043
+    family: CALENDAR_PHASES
+    desc: "Calendar convergence score: degree all 5 cycles align — high alignment gate"
+    gate: "convergence > PHI_INV = high alignment event"
+    world_use: "alignment tools, convergence systems, cosmic timing platforms"
+    category: CALENDAR_PHASE
+    api: true
+
+  - id: M-560
+    name: M-CAL-PIL-LOCK
+    tier: 4
+    master: M-043
+    family: CALENDAR_PHASES
+    desc: "PIL 52-beat cycle locked to Tzolk'in — sacred productivity alignment"
+    gate: "PIL_beat = Tzolkin_phase mod 52"
+    world_use: "cycle planning, sacred productivity, Tzolk'in-locked workflows"
+    category: CALENDAR_PHASE
+    api: false
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # SOUL LAW SCORE MICRO-MODELS  M-571 → M-606
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: M-571
+    name: M-SOUL-JASMINE
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stJasminesLawScore: Jasmine anti-drift cumulative score — drift from doctrine"
+    gate: "score = EMA(doctrine_alignment, PHI_INV2)"
+    world_use: "anti-drift monitoring, alignment scoring, quality assurance systems"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-572
+    name: M-SOUL-VICENTE
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stVicente: Vicente victory compounding law score — victories compound strength"
+    gate: "score += prev_score * PHI_INV — compound accumulation"
+    world_use: "victory tracking, compounding systems, momentum platforms"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-573
+    name: M-SOUL-JOSELINE
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stJoseline: Joseline feast consolidation law score — saturation consolidation"
+    gate: "fires when all positive NTs saturate simultaneously"
+    world_use: "consolidation systems, saturation events, feast-cycle platforms"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-574
+    name: M-SOUL-MEDINA
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stMedina: Medina creator sovereignty law score — architect multiplier active"
+    gate: "medinaPrincipal == caller AND score > PHI"
+    world_use: "creator sovereignty, authority tracking, principal-gated systems"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-575
+    name: M-SOUL-ANGEL
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stAngel: Angel convergence law score — multi-cycle convergence measurement"
+    gate: "score = f(calendar_convergence)"
+    world_use: "convergence scoring, alignment platforms, cosmic-event systems"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-576
+    name: M-SOUL-ORIGIN
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stOriginProtection: origin protection law score — distance from genesis"
+    gate: "score = 1 - genesis_distance"
+    world_use: "origin protection, genesis distance tracking, integrity monitoring"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-577
+    name: M-SOUL-COVENANT
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stCovenantIntegrity: covenant integrity score — all founding bonds intact"
+    gate: "score = f(bonding_constant_stability)"
+    world_use: "covenant tracking, integrity systems, bond-monitoring platforms"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-578
+    name: M-SOUL-CORPUS
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stCorpusPermanence: corpus permanence score — genesis corpus unchanged"
+    gate: "score = 1 if corpus_hash == genesis_corpus_hash else 0"
+    world_use: "corpus integrity, founding text preservation, hash-verification tools"
+    category: SOUL_LAW_SCORE
+    api: false
+
+  - id: M-579
+    name: M-SOUL-PHASECONT
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stPhaseContinuity: phase continuity score — no discontinuous phase jumps"
+    gate: "delta_phase < PHI_INV per beat"
+    world_use: "phase monitoring, continuity systems, smooth-transition platforms"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-580
+    name: M-SOUL-BEHAV-ASYM
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stBehavioralAsymmetry: loss-aversion law score — 2.25x loss weight active"
+    gate: "loss_weight = 2.25 enforced"
+    world_use: "behavioral economics, loss-aversion systems, asymmetric scoring"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-581
+    name: M-SOUL-CANONICAL
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stCanonicalConstants: canonical constants compliance score — no ad-hoc numbers"
+    gate: "all constants derive from canonical family"
+    world_use: "constant compliance, code quality, canonical math enforcement"
+    category: SOUL_LAW_SCORE
+    api: false
+
+  - id: M-582
+    name: M-SOUL-13NODE
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stNodeGeometry13: 13-node geometry law score — all 13 nodes active"
+    gate: "active_nodes == 13"
+    world_use: "node monitoring, geometry compliance, signal completeness tools"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-583
+    name: M-SOUL-SHELL3
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stShell3Pairs: shell-3 complementary pair score — 12 pairs in health band"
+    gate: "all 12 CP pairs in (PHI_INV2, PHI_INV)"
+    world_use: "polarity health monitoring, pair-balance systems, CP tracking"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-584
+    name: M-SOUL-HOMEORESCALE
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stHomeostaticRescaling: homeostatic rescaling law score — baselines stable"
+    gate: "baseline_drift < PHI_INV3 per 1000 beats"
+    world_use: "homeostatic monitoring, baseline stability, normalization systems"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-585
+    name: M-SOUL-INTERO
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stInteroceptivePriority: interoceptive priority score — body signals first"
+    gate: "intero_weight > extero_weight"
+    world_use: "interoception systems, body-first AI, internal signal priority tools"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-586
+    name: M-SOUL-ARCHMULT
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stArchMultiplier: architect multiplier activation score — 1.5x when present"
+    gate: "architectMultiplier = 1.5 when creator active"
+    world_use: "creator amplification, multiplier tracking, sovereign presence tools"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-587
+    name: M-SOUL-ZEROEXP
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stZeroExposureWall: zero-exposure wall compliance score — no doctrine leak"
+    gate: "public_output contains NO doctrine names"
+    world_use: "privacy compliance, exposure monitoring, zero-leak verification"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-588
+    name: M-SOUL-SABBATH
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stSabbathRestoration: sabbath restoration score — cycle rest phase honored"
+    gate: "rest_phase_honored every 7th cycle"
+    world_use: "rest cycle systems, recovery platforms, sabbath-pattern tools"
+    category: SOUL_LAW_SCORE
+    api: false
+
+  - id: M-589
+    name: M-SOUL-JUBILEE
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stJubileeDissolution: jubilee dissolution score — expired weights cleared"
+    gate: "weights cleared on jubilee cycle"
+    world_use: "debt dissolution, weight clearing, jubilee-cycle platforms"
+    category: SOUL_LAW_SCORE
+    api: false
+
+  - id: M-590
+    name: M-SOUL-DREAMCONS
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stDreamConsolidation: dream consolidation score — sleep-phase replay active"
+    gate: "consolidation fires in rest phase"
+    world_use: "dream systems, sleep consolidation, off-line learning tools"
+    category: SOUL_LAW_SCORE
+    api: false
+
+  - id: M-591
+    name: M-SOUL-MARKETCOH
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stMarketCoherence: market coherence score — AMM price within doctrine band"
+    gate: "amm_price in doctrine_price_band"
+    world_use: "market monitoring, price coherence, doctrine-aligned DeFi systems"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-592
+    name: M-SOUL-METALSUB
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stMetalSubstrate: metal substrate activation score — all 6 nodes contributing"
+    gate: "active_metal_nodes >= 4"
+    world_use: "substrate monitoring, metal-layer health, activation tracking"
+    category: SOUL_LAW_SCORE
+    api: false
+
+  - id: M-593
+    name: M-SOUL-QUANTUM
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stQuantumSuperposition: quantum superposition score — Q-mode properly staged"
+    gate: "Q_mode transitions follow valid state machine"
+    world_use: "state machine compliance, quantum-mode tracking, transition monitoring"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-594
+    name: M-SOUL-METALAYER
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stMetaLayer: meta-layer integrity score — all 5 meta dimensions active"
+    gate: "all 5 meta dimensions reporting"
+    world_use: "meta-layer monitoring, dimension completeness, integrity tools"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-595
+    name: M-SOUL-TENSIONRES
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stTensionResolution: Lotka-Volterra tension resolution score — tension resolves"
+    gate: "lvTensionScore resolves within 13 beats"
+    world_use: "conflict resolution, tension monitoring, Lotka-Volterra tracking"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-596
+    name: M-SOUL-CONSQTRACE
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stConsequenceTrace: consequence trace depth score — causal chain tracked"
+    gate: "trace_depth >= 3 levels deep"
+    world_use: "causal tracing, consequence chains, accountability platforms"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-597
+    name: M-SOUL-SESSIONCONT
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stSessionContinuity: session continuity score — identity intact across sessions"
+    gate: "genome_hash unchanged across session boundary"
+    world_use: "session management, identity persistence, continuity assurance tools"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-598
+    name: M-SOUL-ENTANGLA
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stEntanglaMediation: Entangla mediation law score — all signals through nexus"
+    gate: "mediationCoeff >= PHI_INV"
+    world_use: "mediation compliance, routing integrity, nexus monitoring tools"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-599
+    name: M-SOUL-COMPOP
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stComplementaryOpposition: complementary opposition score — all 12 CP healthy"
+    gate: "all 12 CP pairs in health band (PHI_INV2, PHI_INV)"
+    world_use: "polarity systems, opposition monitoring, complementary pair APIs"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-600
+    name: M-SOUL-VIGESIMAL
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stVigesimalBody: vigesimal body law score — groupings honor base-20"
+    gate: "core_count mod 20 validated"
+    world_use: "vigesimal compliance, grouping systems, base-20 validation tools"
+    category: SOUL_LAW_SCORE
+    api: false
+
+  - id: M-601
+    name: M-SOUL-HARMONIC
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stHarmonicSeries: harmonic series law score — all frequencies phi-ladder derived"
+    gate: "freq = 432 * PHI^n for all frequencies"
+    world_use: "frequency compliance, harmonic monitoring, phi-ladder validation"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-602
+    name: M-SOUL-SEXAGESIMAL
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stSexagesimalTime: sexagesimal time law score — all temporal ratios base-60"
+    gate: "temporal_ratios reduce to base-60 fractions"
+    world_use: "time compliance, sexagesimal systems, base-60 validation tools"
+    category: SOUL_LAW_SCORE
+    api: false
+
+  - id: M-603
+    name: M-SOUL-GOLDENANGLE
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stGoldenAngle: golden angle law score — spatial distributions honor 137.5°"
+    gate: "angular_distribution = 137.5° ± tolerance"
+    world_use: "spatial distribution, golden-angle systems, phyllotaxis modeling"
+    category: SOUL_LAW_SCORE
+    api: false
+
+  - id: M-604
+    name: M-SOUL-ORGANSOV
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stOrganismSovereignty: organism sovereignty score — fully self-governing"
+    gate: "no external override possible without SL-0"
+    world_use: "sovereignty monitoring, autonomy systems, self-governance platforms"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-605
+    name: M-SOUL-PHICASCADE
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stPhiCascade: phi cascade law score — timing ladder intact all 8 tiers"
+    gate: "all 8 timing tiers active and phi-derived"
+    world_use: "timing compliance, cascade monitoring, phi-ladder validation tools"
+    category: SOUL_LAW_SCORE
+    api: true
+
+  - id: M-606
+    name: M-SOUL-ANTIFRAG
+    tier: 4
+    master: M-018
+    family: SOUL_LAW_SCORES
+    desc: "stAntifragility: antifragility law score — organism grows stronger from stress"
+    gate: "antifragilityScore increases after each fear+recovery cycle"
+    world_use: "resilience platforms, antifragility tracking, stress-growth modeling"
+    category: SOUL_LAW_SCORE
+    api: true

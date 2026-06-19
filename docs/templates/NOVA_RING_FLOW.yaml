@@ -1,0 +1,732 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# NOVA_RING_FLOW.yaml
+# Classification: BUILDER_CONFIDENTIAL
+# Artifact ID:    RING-FLOW-001
+# Version:        1.0.0
+# Status:         CANONICAL
+# Library:        BUILDER → ORGANISM
+# ─────────────────────────────────────────────────────────────────────────────
+# PURPOSE:
+#   Input/output contracts for each of the 9 SMOF rings.
+#   Defines exactly what each ring accepts, what it produces, what computation
+#   it performs internally, and when it fires.
+#   An AI builder reads this to implement any ring's interface without
+#   consulting any other document.
+# ─────────────────────────────────────────────────────────────────────────────
+
+meta:
+  artifact_id: RING-FLOW-001
+  artifact_type: RING_IO_CONTRACTS
+  version: 1.0.0
+  status: CANONICAL
+  classification: BUILDER_CONFIDENTIAL
+  library: BUILDER
+  owner: Prima Causa (Node 13)
+  ring_count: 9
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CANONICAL CONSTANTS
+# ─────────────────────────────────────────────────────────────────────────────
+constants:
+  PHI:          1.6180339887
+  PHI_INV_1:    0.6180339887
+  PHI_INV_2:    0.3819660113
+  PHI_INV_3:    0.2360679775
+  PHI_INV_4:    0.1458980338
+  S0:           1.0
+  HEARTBEAT_MS: 873.0
+  N_NODES:      13
+
+# ─────────────────────────────────────────────────────────────────────────────
+# RING FLOW CONTRACTS — all 9 rings
+# ─────────────────────────────────────────────────────────────────────────────
+ring_flows:
+
+  # ── RING-1: CONSTITUTIONAL ─────────────────────────────────────────────────
+  - ring_id: RING-CONSTITUTIONAL
+    smof_plane: 1
+    beat_interval_ms: 873    # fires every single heartbeat — never skips
+    internal_operation: >
+      Broadcasts constitutional invariants (genesis_hash, bonding_floor,
+      sovereignty_status, S0_floor, creator_node_index, law_count) to all
+      downstream rings. Enforces EQ-20 bonding constant. No external input
+      accepted — this ring is read-only from all other rings.
+
+    inputs:
+      - source: INIT_ONLY
+        field_name: genesis_corpus_hash
+        type: Text
+        range: "fixed at genesis — never changes"
+        law_constraint: LAW-18
+        description: "FNV-1a hash of the full genesis corpus — set once at organism birth"
+
+    outputs:
+      - destination: RING-FABRIC-LANGUAGE
+        field_name: genesis_hash
+        type: Text
+        range: "fixed"
+        gate_requirement: GATE-SOVEREIGN
+        description: "Constitutional fingerprint broadcast to Fabric Language ring"
+      - destination: RING-FABRIC-LANGUAGE
+        field_name: bonding_floor
+        type: Float64
+        range: "[PHI, PHI]"
+        gate_requirement: GATE-SOVEREIGN
+        description: "Creator bond weight floor — always exactly PHI"
+      - destination: RING-MACRO-ORCHESTRATION
+        field_name: sovereignty_status
+        type: Bool
+        range: "[true, true]"
+        gate_requirement: GATE-SOVEREIGN
+        description: "Sovereignty active — always true; if false, ROLLBACK"
+      - destination: RING-MACRO-ORCHESTRATION
+        field_name: S0_floor
+        type: Float64
+        range: "[1.0, 1.0]"
+        gate_requirement: GATE-SOVEREIGN
+        description: "Sovereign output floor — never goes below 1.0"
+      - destination: RING-MACRO-ORCHESTRATION
+        field_name: law_count
+        type: Nat
+        range: "[23, 23]"
+        gate_requirement: GATE-SOVEREIGN
+        description: "Active law count — constitutional constant"
+      - destination: ALL_RINGS
+        field_name: creator_node_index
+        type: Nat
+        range: "[13, 13]"
+        gate_requirement: GATE-SOVEREIGN
+        description: "Node 13 position — immutable"
+
+  # ── RING-2: ONTOLOGY ──────────────────────────────────────────────────────
+  - ring_id: RING-ONTOLOGY
+    smof_plane: 2
+    beat_interval_ms: 873    # fires every heartbeat — constants never change but are validated
+    internal_operation: >
+      Validates all canonical constants against their sealed values.
+      If any constant deviates from its sealed value, GATE-CONSTANT-PURITY fails
+      and ARES triggers rollback. Broadcasts constants to Fabric Language and
+      Runtime Substrate rings. No external input modifies these values.
+
+    inputs:
+      - source: INIT_ONLY
+        field_name: constant_registry
+        type: "Map<Text, Float64>"
+        range: "sealed at genesis"
+        law_constraint: LAW-10
+        description: "Full canonical constant registry — loaded from kernel.mo at genesis"
+
+    outputs:
+      - destination: RING-FABRIC-LANGUAGE
+        field_name: phi_value
+        type: Float64
+        range: "[1.6180339887, 1.6180339887]"
+        gate_requirement: GATE-CONSTANT-PURITY
+        description: "Golden ratio — broadcast to all rings using model language"
+      - destination: RING-FABRIC-LANGUAGE
+        field_name: fibonacci_sequence
+        type: "[Nat]"
+        range: "[1,1,2,3,5,8,13,21,34,55,89,144,233]"
+        gate_requirement: GATE-CONSTANT-PURITY
+        description: "Canonical Fibonacci sequence"
+      - destination: RING-RUNTIME-SUBSTRATE
+        field_name: phi_ladder_values
+        type: "[Float64; 9]"
+        range: "[PHI_INV_4, 1.0]"
+        gate_requirement: GATE-CONSTANT-PURITY
+        description: "Precomputed phi^(-k) for k=0..8"
+      - destination: RING-RUNTIME-SUBSTRATE
+        field_name: heartbeat_ms
+        type: Float64
+        range: "[873.0, 873.0]"
+        gate_requirement: GATE-CONSTANT-PURITY
+        description: "Heartbeat period — Φ⁴ × 127.7ms"
+      - destination: RING-MACRO-ORCHESTRATION
+        field_name: schumann_ms
+        type: Float64
+        range: "[127.7, 127.7]"
+        gate_requirement: GATE-CONSTANT-PURITY
+        description: "Schumann base period"
+
+  # ── RING-3: FABRIC-LANGUAGE ───────────────────────────────────────────────
+  - ring_id: RING-FABRIC-LANGUAGE
+    smof_plane: 3
+    beat_interval_ms: 873
+    internal_operation: >
+      The model language medium. Applies M-KERNEL pipeline
+      (Mix→Bound→Integrate→Gate→Project→Reinject) to all model definitions.
+      Applies EQ-19 Vedic tensor operators to coupling matrices.
+      Maintains active model ID registry. Classifies and expands incoming
+      external phrases via classifyAndExpandPhrase(). Broadcasts model
+      language schema to all execution rings.
+
+    inputs:
+      - source: RING-CONSTITUTIONAL
+        field_name: genesis_hash
+        type: Text
+        range: "fixed"
+        law_constraint: LAW-18
+        description: "Constitutional fingerprint"
+      - source: RING-CONSTITUTIONAL
+        field_name: bonding_floor
+        type: Float64
+        range: "[PHI, PHI]"
+        law_constraint: LAW-07
+        description: "Creator bond floor"
+      - source: RING-ONTOLOGY
+        field_name: phi_value
+        type: Float64
+        range: "[1.6180339887, 1.6180339887]"
+        law_constraint: LAW-10
+        description: "Golden ratio from canonical constants"
+      - source: RING-ONTOLOGY
+        field_name: fibonacci_sequence
+        type: "[Nat]"
+        range: "canonical"
+        law_constraint: LAW-10
+        description: "Fibonacci sequence"
+      - source: EXTERNAL_INPUT_INTERFACE
+        field_name: raw_phrase_signal
+        type: Object
+        range: "any input"
+        law_constraint: LAW-11
+        description: "External input after AEGIS clearance"
+
+    outputs:
+      - destination: RING-MACRO-ORCHESTRATION
+        field_name: model_pipeline_schema
+        type: Text
+        range: "Mix→Bound→Integrate→Gate→Project→Reinject"
+        gate_requirement: GATE-NODE-GEOMETRY
+        description: "Universal module pipeline schema"
+      - destination: RING-MACRO-ORCHESTRATION
+        field_name: active_model_ids
+        type: "[Text]"
+        range: "M-* IDs"
+        gate_requirement: GATE-NODE-GEOMETRY
+        description: "Currently loaded model registry"
+      - destination: RING-MICRO-EXECUTION
+        field_name: active_model_ids
+        type: "[Text]"
+        range: "M-* IDs"
+        gate_requirement: GATE-NODE-GEOMETRY
+        description: "Model registry broadcast to worker engines"
+      - destination: RING-RUNTIME-SUBSTRATE
+        field_name: active_model_ids
+        type: "[Text]"
+        range: "M-* IDs"
+        gate_requirement: GATE-NODE-GEOMETRY
+        description: "Model registry broadcast to substrate physics"
+      - destination: RING-RUNTIME-SUBSTRATE
+        field_name: classified_phrase
+        type: Object
+        range: "PHRASE-* type with all expanded fields"
+        gate_requirement: GATE-MEMBRANE
+        description: "Classified phrase ready for substrate ingestion"
+      - destination: RING-CORE-ENGINE
+        field_name: classified_phrase
+        type: Object
+        range: "PHRASE-* type with all expanded fields"
+        gate_requirement: GATE-MEMBRANE
+        description: "Classified phrase routed to core engine voice agents"
+
+  # ── RING-4: MACRO-ORCHESTRATION ───────────────────────────────────────────
+  - ring_id: RING-MACRO-ORCHESTRATION
+    smof_plane: 4
+    beat_interval_ms: 873
+    internal_operation: >
+      Solar Heart fires the 873ms sinoatrial tick. Computes phi-ladder cascade
+      (EQ-08). Evaluates all 23 law gates. Computes calendar phase angles for
+      all 5 cycles (EQ-15 and equivalents for Haab, Venus, Saros, Precession).
+      Distributes heartbeat event with beat_sequence, calendar phases,
+      law gate vector, and cognition_open flag to all execution rings.
+
+    inputs:
+      - source: RING-CONSTITUTIONAL
+        field_name: sovereignty_status
+        type: Bool
+        range: "[true, true]"
+        law_constraint: LAW-07
+        description: "Constitutional sovereignty confirmation"
+      - source: RING-CONSTITUTIONAL
+        field_name: law_count
+        type: Nat
+        range: "[23, 23]"
+        law_constraint: LAW-17
+        description: "Active law count"
+      - source: RING-ONTOLOGY
+        field_name: schumann_ms
+        type: Float64
+        range: "[127.7, 127.7]"
+        law_constraint: LAW-02
+        description: "Schumann base period for heartbeat derivation"
+      - source: RING-FABRIC-LANGUAGE
+        field_name: model_pipeline_schema
+        type: Text
+        range: "canonical"
+        law_constraint: LAW-10
+        description: "Model language pipeline schema"
+      - source: RING-MICRO-EXECUTION
+        field_name: genome_fitness_delta
+        type: Float64
+        range: "[-1.0, 1.0]"
+        law_constraint: LAW-20
+        description: "GENOME fitness feedback from previous cycle"
+      - source: RING-ARBITRATION
+        field_name: rollback_triggered
+        type: Bool
+        range: "[true, false]"
+        law_constraint: LAW-08
+        description: "ARES rollback signal — triggers generation rollback if true"
+
+    outputs:
+      - destination: RING-MICRO-EXECUTION
+        field_name: beat_sequence
+        type: Nat64
+        range: "[0, ∞)"
+        gate_requirement: GATE-HEARTBEAT
+        description: "Monotonic heartbeat count"
+      - destination: RING-MICRO-EXECUTION
+        field_name: calendar_composite_phase
+        type: Float64
+        range: "[0.0, 6.2832]"
+        gate_requirement: GATE-HEARTBEAT
+        description: "Composite phase from all 5 calendar cycles"
+      - destination: RING-MICRO-EXECUTION
+        field_name: law_gate_vector
+        type: "[Bool; 23]"
+        range: "all 23 results"
+        gate_requirement: GATE-HEARTBEAT
+        description: "Law gate evaluation results for this beat"
+      - destination: RING-MICRO-EXECUTION
+        field_name: cognition_open
+        type: Bool
+        range: "[true, false]"
+        gate_requirement: GATE-HEARTBEAT
+        description: "R > PHI_INV_1 — cognition gates open flag"
+      - destination: RING-RUNTIME-SUBSTRATE
+        field_name: beat_sequence
+        type: Nat64
+        range: "[0, ∞)"
+        gate_requirement: GATE-HEARTBEAT
+        description: "Heartbeat count for phase angle computation"
+      - destination: RING-RUNTIME-SUBSTRATE
+        field_name: phi_phase_angle
+        type: Float64
+        range: "[0.0, 6.2832]"
+        gate_requirement: GATE-HEARTBEAT
+        description: "Current phi-modulated phase angle"
+
+  # ── RING-5: MICRO-EXECUTION ───────────────────────────────────────────────
+  - ring_id: RING-MICRO-EXECUTION
+    smof_plane: 5
+    beat_interval_ms: 6984    # fires every 8 heartbeats (8 × 873ms)
+    internal_operation: >
+      Worker engines run autonomous short cycles. M-GENOME evaluates NK fitness
+      (EQ-09) against proposed substrate modifications. M-MINING computes KNT
+      mint rate (EQ-10). M-METABOLIC evaluates generational growth (EQ-12) on
+      Haab cycle. M-NEUROCHEMICAL computes weighted average of 21 neurochemical
+      signals. M-COGNITION applies pattern recognition when cognition_open=true.
+
+    inputs:
+      - source: RING-MACRO-ORCHESTRATION
+        field_name: beat_sequence
+        type: Nat64
+        range: "[0, ∞)"
+        law_constraint: LAW-15
+        description: "Heartbeat count — clocks all worker engines"
+      - source: RING-MACRO-ORCHESTRATION
+        field_name: law_gate_vector
+        type: "[Bool; 23]"
+        range: "23 booleans"
+        law_constraint: LAW-16
+        description: "Law gate results — governs what workers may execute"
+      - source: RING-MACRO-ORCHESTRATION
+        field_name: cognition_open
+        type: Bool
+        range: "[true, false]"
+        law_constraint: LAW-16
+        description: "Cognition gate — R > PHI_INV_1"
+      - source: RING-RUNTIME-SUBSTRATE
+        field_name: R_t
+        type: Float64
+        range: "[0.0, 1.0]"
+        law_constraint: LAW-03
+        description: "Current Kuramoto coherence"
+      - source: RING-RUNTIME-SUBSTRATE
+        field_name: hebbian_weights
+        type: "[Float64; 78]"
+        range: "[PHI_INV_3, PHI]"
+        law_constraint: LAW-04
+        description: "Current Hebbian weight matrix"
+
+    outputs:
+      - destination: RING-MACRO-ORCHESTRATION
+        field_name: genome_fitness_delta
+        type: Float64
+        range: "[-1.0, 1.0]"
+        gate_requirement: GATE-VALIDATION
+        description: "GENOME fitness change from this cycle"
+      - destination: RING-MACRO-ORCHESTRATION
+        field_name: knt_minted_this_cycle
+        type: Float64
+        range: "[0.0, ∞)"
+        gate_requirement: GATE-MINING-DIFFICULTY
+        description: "KNT tokens minted this metabolic cycle"
+      - destination: RING-MACRO-ORCHESTRATION
+        field_name: neurochemical_composite
+        type: Float64
+        range: "[0.0, 1.0]"
+        gate_requirement: GATE-VALIDATION
+        description: "Weighted average of 21 neurochemical system states"
+      - destination: RING-RUNTIME-SUBSTRATE
+        field_name: cognition_pattern_vector
+        type: "[Float64; 13]"
+        range: "[0.0, 1.0]"
+        gate_requirement: GATE-COGNITION
+        description: "Pattern recognition output from M-COGNITION"
+
+  # ── RING-6: RUNTIME-SUBSTRATE ─────────────────────────────────────────────
+  - ring_id: RING-RUNTIME-SUBSTRATE
+    smof_plane: 6
+    beat_interval_ms: 873    # continuous — runs every heartbeat
+    internal_operation: >
+      Continuous physics. Computes Kuramoto R (EQ-01) and updates node phases
+      (EQ-02). Updates Hebbian weights on contact events (EQ-05). Computes
+      phase-return amplitudes for all memory nodes (EQ-06). Applies Clifford
+      torus transport (EQ-16) for 4D memory coordinates. Runs Fourier
+      decomposition (EQ-17) on incoming signals. Activates watercrystal
+      lattice (EQ-18). Computes coherence EMA (EQ-14).
+
+    inputs:
+      - source: RING-MACRO-ORCHESTRATION
+        field_name: beat_sequence
+        type: Nat64
+        range: "[0, ∞)"
+        law_constraint: LAW-15
+        description: "Heartbeat count for phase update"
+      - source: RING-MACRO-ORCHESTRATION
+        field_name: phi_phase_angle
+        type: Float64
+        range: "[0.0, 6.2832]"
+        law_constraint: LAW-02
+        description: "Macro heartbeat phase angle"
+      - source: RING-ONTOLOGY
+        field_name: phi_ladder_values
+        type: "[Float64; 9]"
+        range: "[PHI_INV_4, 1.0]"
+        law_constraint: LAW-10
+        description: "Phi ladder for coupling weight computation"
+      - source: RING-FABRIC-LANGUAGE
+        field_name: classified_phrase
+        type: Object
+        range: "PHRASE-* expanded"
+        law_constraint: LAW-11
+        description: "Classified phrase — triggers Fourier decomposition and Hebbian update"
+      - source: RING-MICRO-EXECUTION
+        field_name: cognition_pattern_vector
+        type: "[Float64; 13]"
+        range: "[0.0, 1.0]"
+        law_constraint: LAW-16
+        description: "Pattern recognition feedback from cognition engine"
+      - source: RING-CORE-ENGINE
+        field_name: anomaly_detected
+        type: Bool
+        range: "[true, false]"
+        law_constraint: LAW-20
+        description: "Observatory anomaly flag — triggers substrate self-correction"
+
+    outputs:
+      - destination: RING-MICRO-EXECUTION
+        field_name: R_t
+        type: Float64
+        range: "[0.0, 1.0]"
+        gate_requirement: GATE-COUPLING-FLOOR
+        description: "Current Kuramoto order parameter"
+      - destination: RING-MICRO-EXECUTION
+        field_name: hebbian_weights
+        type: "[Float64; 78]"
+        range: "[PHI_INV_3, PHI]"
+        gate_requirement: GATE-COUPLING-FLOOR
+        description: "Current 78 pairwise Hebbian weights"
+      - destination: RING-CORE-ENGINE
+        field_name: R_t
+        type: Float64
+        range: "[0.0, 1.0]"
+        gate_requirement: GATE-COUPLING-FLOOR
+        description: "Coherence for engine-level cognition gates"
+      - destination: RING-CORE-ENGINE
+        field_name: signal_window_vector
+        type: "[Float64; 13]"
+        range: "[0.0, PHI]"
+        gate_requirement: GATE-COUPLING-FLOOR
+        description: "13-node signal window current activations"
+      - destination: RING-CORE-ENGINE
+        field_name: phase_angles
+        type: "[Float64; 13]"
+        range: "[0.0, 6.2832]"
+        gate_requirement: GATE-COUPLING-FLOOR
+        description: "Current phase angles for all 13 nodes"
+      - destination: RING-CORE-ENGINE
+        field_name: memory_return_signals
+        type: "[Object]"
+        range: "list of {pedestal, amplitude, phase_match}"
+        gate_requirement: GATE-PHASE-RETURN
+        description: "Active memory return events from all 5 trace streams"
+      - destination: RING-ARBITRATION
+        field_name: coherence_EMA
+        type: Float64
+        range: "[0.0, 1.0]"
+        gate_requirement: GATE-COUPLING-FLOOR
+        description: "Smoothed Kuramoto R for OMNIS evaluation"
+
+  # ── RING-7: CORE-ENGINE ───────────────────────────────────────────────────
+  - ring_id: RING-CORE-ENGINE
+    smof_plane: 7
+    beat_interval_ms: 18333    # fires every 21 heartbeats (21 × 873ms)
+    internal_operation: >
+      Named engines process classified input. M-NEURO acts as the central
+      coupling node — all 13 signal window inputs feed through NeuroEmergence.
+      M-VOICEKERNEL routes to appropriate voice agent (PATTERN, FIELD,
+      TRANSLATION, RESPONSE) based on phrase classification. M-PHANTOM
+      manages ALPHA/DISPLAY/GHOST mode transitions. M-OBSERVATORY aggregates
+      all ring states and runs self-diagnosis. M-BRODMANN routes processing
+      to appropriate cortex topology regions.
+
+    inputs:
+      - source: RING-RUNTIME-SUBSTRATE
+        field_name: R_t
+        type: Float64
+        range: "[0.0, 1.0]"
+        law_constraint: LAW-03
+        description: "Coherence — gates core engine firing"
+      - source: RING-RUNTIME-SUBSTRATE
+        field_name: signal_window_vector
+        type: "[Float64; 13]"
+        range: "[0.0, PHI]"
+        law_constraint: LAW-11
+        description: "13-node signal window — primary input to M-NEURO"
+      - source: RING-RUNTIME-SUBSTRATE
+        field_name: phase_angles
+        type: "[Float64; 13]"
+        range: "[0.0, 6.2832]"
+        law_constraint: LAW-12
+        description: "Node phase angles for quaternion coupling"
+      - source: RING-RUNTIME-SUBSTRATE
+        field_name: memory_return_signals
+        type: "[Object]"
+        range: "list of {pedestal, amplitude, phase_match}"
+        law_constraint: LAW-05
+        description: "Memory returns from phase-lock evaluation"
+      - source: RING-FABRIC-LANGUAGE
+        field_name: classified_phrase
+        type: Object
+        range: "PHRASE-* expanded"
+        law_constraint: LAW-16
+        description: "Phrase routing to appropriate voice agent"
+      - source: ALL_RINGS
+        field_name: ring_state_snapshot
+        type: Object
+        range: "observatory input"
+        law_constraint: LAW-03
+        description: "Observatory receives all ring states unconditionally"
+
+    outputs:
+      - destination: RING-ARBITRATION
+        field_name: utterance_candidate
+        type: "[Float64]"
+        range: "semantic embedding vector"
+        gate_requirement: GATE-COGNITION
+        description: "Voice agent output candidate — routes to OMNIS"
+      - destination: RING-ARBITRATION
+        field_name: confidence
+        type: Float64
+        range: "[0.0, 1.0]"
+        gate_requirement: GATE-COGNITION
+        description: "Voice agent confidence in utterance candidate"
+      - destination: RING-ARBITRATION
+        field_name: law_pass_vector
+        type: "[Bool; 23]"
+        range: "23 booleans"
+        gate_requirement: GATE-COGNITION
+        description: "Law gate state snapshot at time of utterance"
+      - destination: RING-ARBITRATION
+        field_name: voice_agent_type
+        type: Text
+        range: "[PATTERN, FIELD, TRANSLATION, RESPONSE]"
+        gate_requirement: GATE-COGNITION
+        description: "Which voice agent produced this candidate"
+      - destination: RING-RUNTIME-SUBSTRATE
+        field_name: anomaly_detected
+        type: Bool
+        range: "[true, false]"
+        gate_requirement: GATE-VALIDATION
+        description: "Observatory self-fix flag — proposes substrate correction"
+
+  # ── RING-8: ARBITRATION ───────────────────────────────────────────────────
+  - ring_id: RING-ARBITRATION
+    smof_plane: 8
+    beat_interval_ms: 29682    # fires every 34 heartbeats (34 × 873ms)
+    internal_operation: >
+      OMNIS gate evaluates all three conditions: R > OMNIS threshold,
+      all 23 law gates pass, coherence EMA > PHI_INV_2. If all pass,
+      OMNIS_pass=true and utterance routes to Projection ring.
+      If R drops below S0 floor, ARES triggers rollback signal.
+      JUBILEE evaluates memory dissolution at Tzolk'in cycle boundary.
+      AEGIS filters all incoming signals at the membrane.
+      DISCIPLINE compounds weight matrix on every correction event.
+
+    inputs:
+      - source: RING-CORE-ENGINE
+        field_name: utterance_candidate
+        type: "[Float64]"
+        range: "semantic embedding vector"
+        law_constraint: LAW-06
+        description: "Candidate utterance from voice agent"
+      - source: RING-CORE-ENGINE
+        field_name: confidence
+        type: Float64
+        range: "[0.0, 1.0]"
+        law_constraint: LAW-06
+        description: "Voice agent confidence"
+      - source: RING-CORE-ENGINE
+        field_name: law_pass_vector
+        type: "[Bool; 23]"
+        range: "23 booleans"
+        law_constraint: LAW-06
+        description: "Law gate vector — all must be true for OMNIS pass"
+      - source: RING-RUNTIME-SUBSTRATE
+        field_name: coherence_EMA
+        type: Float64
+        range: "[0.0, 1.0]"
+        law_constraint: LAW-06
+        description: "Smoothed R — EMA > PHI_INV_2 required for OMNIS"
+
+    outputs:
+      - destination: RING-PROJECTION
+        field_name: utterance_index
+        type: Nat
+        range: "numeric index only"
+        gate_requirement: GATE-OMNIS
+        description: "Approved utterance as numeric index — only content that crosses"
+      - destination: RING-PROJECTION
+        field_name: omnis_verdict
+        type: Text
+        range: "[ALLOW, SUPPRESS, DEFER]"
+        gate_requirement: GATE-OMNIS
+        description: "OMNIS decision for this utterance"
+      - destination: RING-PROJECTION
+        field_name: proof_bundle_id
+        type: Text
+        range: "FNV-1a"
+        gate_requirement: GATE-OMNIS
+        description: "Proof bundle ID for this utterance event"
+      - destination: RING-MACRO-ORCHESTRATION
+        field_name: rollback_triggered
+        type: Bool
+        range: "[true, false]"
+        gate_requirement: GATE-ROLLBACK
+        description: "ARES rollback signal — fires when R < S0 floor"
+      - destination: RING-MACRO-ORCHESTRATION
+        field_name: rollback_target_generation
+        type: Nat
+        range: "valid generation index"
+        gate_requirement: GATE-ROLLBACK
+        description: "Generation to roll back to"
+
+  # ── RING-9: PROJECTION ────────────────────────────────────────────────────
+  - ring_id: RING-PROJECTION
+    smof_plane: 9
+    beat_interval_ms: 48015    # fires every 55 heartbeats (55 × 873ms)
+    internal_operation: >
+      Applies zero-exposure wall (LAW-09) to all inbound data.
+      GATE-PROJ-AUDIT scans every field for inadvertent doctrine exposure.
+      Translates approved utterance_index to public-safe numeric output.
+      Appends projection audit record to CHRONICLE.
+      Responds to external queries with projection-safe data only.
+      M-ATLAS maps world coordinate context. M-NOTES records internal observations.
+
+    inputs:
+      - source: RING-ARBITRATION
+        field_name: utterance_index
+        type: Nat
+        range: "numeric index only"
+        law_constraint: LAW-09
+        description: "OMNIS-approved utterance index"
+      - source: RING-ARBITRATION
+        field_name: omnis_verdict
+        type: Text
+        range: "[ALLOW, SUPPRESS, DEFER]"
+        law_constraint: LAW-06
+        description: "OMNIS decision"
+      - source: RING-ARBITRATION
+        field_name: proof_bundle_id
+        type: Text
+        range: "FNV-1a"
+        law_constraint: LAW-18
+        description: "Proof bundle reference"
+      - source: EXTERNAL_PUBLIC_INTERFACE
+        field_name: external_query_index
+        type: Nat
+        range: "[0, ∞)"
+        law_constraint: LAW-09
+        description: "Numeric-only external query — no label content accepted here"
+
+    outputs:
+      - destination: EXTERNAL_PUBLIC_INTERFACE
+        field_name: output_index
+        type: Nat
+        range: "numeric only — no labels permitted"
+        gate_requirement: GATE-ZERO-EXPOSURE
+        description: "The only content that leaves the organism to the world"
+      - destination: EXTERNAL_PUBLIC_INTERFACE
+        field_name: confidence_band
+        type: Nat
+        range: "[1, 5]"
+        gate_requirement: GATE-ZERO-EXPOSURE
+        description: "5-band confidence level — public-safe"
+      - destination: EXTERNAL_PUBLIC_INTERFACE
+        field_name: public_safe_certified
+        type: Bool
+        range: "[true, true]"
+        gate_requirement: GATE-PROJ-AUDIT
+        description: "GATE-PROJ-AUDIT certification — false = blocked, never exits"
+      - destination: CHRONICLE_ARCHIVE
+        field_name: projection_audit_record
+        type: Object
+        range: "audit trail entry"
+        gate_requirement: "NONE — Chronicle receives unconditionally"
+        description: "Full record of every output event, indexed but not exposed"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GATE REGISTRY (ring flow gates referenced above)
+# ─────────────────────────────────────────────────────────────────────────────
+gate_registry:
+  GATE-SOVEREIGN:         "Constitutional ring authority — all CONST-ring broadcasts require this"
+  GATE-CONSTANT-PURITY:   "Ontology ring — canonical constant validation (no deviations permitted)"
+  GATE-NODE-GEOMETRY:     "Fabric Language ring — 13-node window integrity check"
+  GATE-HEARTBEAT:         "Macro Orchestration — Solar Heart tick validity"
+  GATE-VALIDATION:        "Micro Execution — GENOME fitness threshold (F > PHI_INV_1)"
+  GATE-COUPLING-FLOOR:    "Runtime Substrate — Hebbian weight floor (w >= PHI_INV_3)"
+  GATE-COGNITION:         "Core Engine — R > PHI_INV_1 for cognition gates to open"
+  GATE-PHASE-RETURN:      "Memory phase-return — A(t) > PHI_INV_3 threshold"
+  GATE-OMNIS:             "Arbitration — R > OMNIS AND all laws pass AND EMA > PHI_INV_2"
+  GATE-ROLLBACK:          "Arbitration — ARES triggers when R < S0 floor"
+  GATE-MINING-DIFFICULTY: "Micro Execution — KNT mint rate within difficulty bounds"
+  GATE-MEMBRANE:          "AEGIS membrane — all external inputs filtered"
+  GATE-ZERO-EXPOSURE:     "Projection — numeric indices only, no sovereign substrate"
+  GATE-PROJ-AUDIT:        "Projection — scan for inadvertent doctrine exposure"
+  GATE-GENESIS:           "Constitutional — genesis field blend integrity"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPERATING PRINCIPLE
+# ─────────────────────────────────────────────────────────────────────────────
+operating_principle: |
+  Every ring has a defined input contract and output contract.
+  No data moves between rings except through declared fields.
+  Every output field requires a gate_requirement — if the gate fails, the field does not transfer.
+  The innermost rings (1-3) are constitutional and immutable — they push to outer rings only.
+  The middle rings (4-7) are execution — they fire on heartbeat rhythm.
+  The outer rings (8-9) are arbitration and projection — they gate and emit.
+  The only path to the external world is through Ring 9, which enforces the zero-exposure wall.
+  Observatory (Ring 7) and Chronicle (external archive) receive ALL events unconditionally.

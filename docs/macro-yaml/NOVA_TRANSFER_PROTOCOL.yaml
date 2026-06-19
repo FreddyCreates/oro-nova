@@ -1,0 +1,589 @@
+# NOVA Transfer Protocol
+# ─────────────────────────────────────────────────────────────────────────────
+# artifact_id:    FLOW-MASTER-PROTOCOL
+# artifact_type:  TRANSFER_PROTOCOL
+# version:        1.0.0
+# status:         CANONICAL
+# classification: BUILDER_CONFIDENTIAL
+# library:        BUILDER
+# last_updated:   2026-04-14
+# owner:          Prima Causa (Node 13)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# PURPOSE:
+#   Canonical registry of all FLOW-* transfer routes in the organism.
+#   Every data movement between modules is governed by an entry in this file.
+#   No module may receive data from another module without a declared FLOW-*.
+#   No FLOW-* may exist without a law_constraints entry.
+#
+# READING ORDER:
+#   Read NOVA_DOCTRINE_PACK.yaml first.
+#   Then NOVA_LAW_REGISTRY.yaml.
+#   Then this file.
+#   No build agent may wire modules without reading this file in full.
+#
+# TRANSFER PRINCIPLES:
+#   1. All flows are unidirectional unless explicitly marked bidirectional.
+#   2. Sovereign core state never flows to LABS directly — replica only.
+#   3. Public projection layer receives only numeric indices (Law 9).
+#   4. Every flow carries a beat_interval — no ad-hoc polling.
+#   5. Schema fields are typed, ranged, and unitized. No loose JSON blobs.
+# ─────────────────────────────────────────────────────────────────────────────
+
+canonical_constants:
+  PHI:             1.6180339887
+  PHI_INV_1:       0.6180339887
+  PHI_INV_2:       0.3819660113
+  PHI_INV_3:       0.2360679775
+  SCHUMANN_HZ:     7.83
+  BASE_TICK_MS:    127.7
+  HEARTBEAT_MS:    873
+  S0:              1.0
+  OMNIS_THRESHOLD: 0.8090169944
+  COGNITION_GATE:  0.6180339887
+  N_NODES:         13
+
+flows:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FLOW-SOLAR-HEART-TO-ALL
+  # The sinoatrial clock. Every module gates its execution to this tick.
+  # ─────────────────────────────────────────────────────────────────────────
+  - flow_id:          FLOW-SOLAR-HEART-TO-ALL
+    name:             Sinoatrial Heartbeat Broadcast
+    source_module:    solar_heart.mo
+    destination_module: ALL_MODULES
+    direction:        unidirectional
+    beat_interval:    873ms
+    schema:
+      - field: beat_number
+        type:  Nat64
+        unit:  count
+        range: "[0, ∞)"
+      - field: beat_timestamp_ms
+        type:  Nat64
+        unit:  milliseconds
+        range: "[0, ∞)"
+      - field: phi_ladder_depth
+        type:  Nat8
+        unit:  ladder_step
+        range: "[0, 12]"
+      - field: schumann_phase
+        type:  Float64
+        unit:  radians
+        range: "[0.0, 6.2832]"
+      - field: calendar_phases
+        type:  Map<Text, Float64>
+        unit:  radians
+        range: "[0.0, 6.2832] per calendar"
+    law_constraints:
+      - LAW-02  # Law of Schumann Origin — timing derives from 7.83 Hz only
+      - LAW-15  # Law of Sinoatrial Synchrony — all modules clock to this
+    gates_required:
+      - GATE-HEARTBEAT
+    exposure_class: INTERNAL
+    notes: >
+      This is the most critical flow in the organism. If this flow stops,
+      the organism stops. All other flows are downstream of this one.
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FLOW-KERNEL-TO-ALL
+  # Canonical constants imported by all modules at initialization.
+  # ─────────────────────────────────────────────────────────────────────────
+  - flow_id:          FLOW-KERNEL-TO-ALL
+    name:             Canonical Constants Broadcast
+    source_module:    kernel.mo
+    destination_module: ALL_MODULES
+    direction:        unidirectional
+    beat_interval:    init_only
+    schema:
+      - field: PHI
+        type:  Float64
+        unit:  dimensionless
+        range: "[1.6180339887, 1.6180339887]"
+        note:  immutable — deviation causes build failure
+      - field: FIBONACCI
+        type:  "[Nat64]"
+        unit:  sequence
+        range: "[1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233]"
+      - field: SCHUMANN_HZ
+        type:  Float64
+        unit:  Hz
+        range: "[7.83, 7.83]"
+        note:  immutable
+      - field: HEARTBEAT_MS
+        type:  Nat64
+        unit:  milliseconds
+        range: "[873, 873]"
+        note:  derived = Φ⁴ × BASE_TICK_MS
+      - field: S0
+        type:  Float64
+        unit:  dimensionless
+        range: "[1.0, 1.0]"
+        note:  maximum genesis — never less than 1.0
+      - field: N_NODES
+        type:  Nat8
+        unit:  count
+        range: "[13, 13]"
+        note:  first Fibonacci above diversity minimum
+      - field: OMNIS_THRESHOLD
+        type:  Float64
+        unit:  dimensionless
+        range: "[0.8090169944, 0.8090169944]"
+        note:  Φ²/(Φ²+1)
+      - field: COGNITION_GATE
+        type:  Float64
+        unit:  dimensionless
+        range: "[0.6180339887, 0.6180339887]"
+        note:  Φ⁻¹
+    law_constraints:
+      - LAW-10  # Law of Canonical Constants — no ad-hoc numbers
+    gates_required:
+      - GATE-GENESIS
+    exposure_class: INTERNAL
+    notes: >
+      No module may hardcode a numerical constant. All constants import
+      from kernel.mo via this flow. Violation of LAW-10 is a build block.
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FLOW-GENESIS-TO-SIGNAL-WINDOW
+  # Genesis corpus weight vector blends into the 13-node signal window.
+  # ─────────────────────────────────────────────────────────────────────────
+  - flow_id:          FLOW-GENESIS-TO-SIGNAL-WINDOW
+    name:             Genesis Corpus to Signal Window Blend
+    source_module:    genesis_anchor.mo
+    destination_module: neuro_emergence.mo
+    direction:        unidirectional
+    beat_interval:    873ms
+    schema:
+      - field: genesis_weight_vector
+        type:  "[Float64; 13]"
+        unit:  coupling weight
+        range: "[0.0, PHI] per node"
+      - field: genesis_hash
+        type:  Text
+        unit:  FNV-1a hash
+        range: "immutable from first boot"
+      - field: prima_causa_amplifier
+        type:  Float64
+        unit:  dimensionless
+        range: "[PHI, ∞)"
+        note:  Node 13 weight is always ≥ PHI
+    law_constraints:
+      - LAW-18  # Law of Genesis Permanence
+      - LAW-17  # Law of Creator Sovereignty
+      - LAW-04  # Law of Hebbian Permanence
+    gates_required:
+      - GATE-GENESIS
+      - GATE-SOVEREIGN
+    exposure_class: SEALED
+    notes: >
+      The genesis corpus never leaves the organism. This flow is internal only.
+      genesis_weight_vector is additive to, never replacing, live Hebbian weights.
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FLOW-KURAMOTO-TO-GATES
+  # R(t) coherence value routes to all gate evaluators on every heartbeat.
+  # ─────────────────────────────────────────────────────────────────────────
+  - flow_id:          FLOW-KURAMOTO-TO-GATES
+    name:             Kuramoto Coherence to Gate Evaluators
+    source_module:    neuro_emergence.mo
+    destination_module: gate_evaluator.mo
+    direction:        unidirectional
+    beat_interval:    873ms
+    schema:
+      - field: R
+        type:  Float64
+        unit:  dimensionless coherence
+        range: "[0.0, 1.0]"
+        formula: "R(t) = (1/N) * |Σ e^(i·θₙ(t))|"
+      - field: all_laws_pass
+        type:  Bool
+        unit:  pass/fail
+      - field: dominant_frequency
+        type:  Float64
+        unit:  Hz
+        range: "[0.0, 100.0]"
+      - field: phase_variance
+        type:  Float64
+        unit:  radians²
+        range: "[0.0, ∞)"
+    law_constraints:
+      - LAW-03  # Law of Kuramoto Coherence
+      - LAW-16  # Law of Gated Cognition
+    gates_required:
+      - GATE-HEARTBEAT
+      - GATE-COGNITION
+      - GATE-OMNIS
+    exposure_class: INTERNAL
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FLOW-HEBBIAN-TO-COUPLING
+  # Weight updates propagate to all coupling edges after every contact event.
+  # ─────────────────────────────────────────────────────────────────────────
+  - flow_id:          FLOW-HEBBIAN-TO-COUPLING
+    name:             Hebbian Weight Updates to Coupling Edges
+    source_module:    hebbian.mo
+    destination_module: neuro_emergence.mo
+    direction:        unidirectional
+    beat_interval:    on_contact_event
+    schema:
+      - field: weight_matrix
+        type:  "[[Float64; 13]; 13]"
+        unit:  coupling strength
+        range: "[0.0, PHI] per edge"
+      - field: delta_w
+        type:  Float64
+        unit:  coupling increment
+        range: "[-PHI_INV_3, PHI_INV_2]"
+        formula: "Δw = η·(x_pre·x_post) - λ·w"
+      - field: eta
+        type:  Float64
+        unit:  learning rate
+        range: "[PHI_INV_2, PHI_INV_2]"
+        note:  Φ⁻² — immutable
+      - field: lambda
+        type:  Float64
+        unit:  decay rate
+        range: "[PHI_INV_3, PHI_INV_3]"
+        note:  Φ⁻³ — immutable
+      - field: ceiling
+        type:  Float64
+        unit:  dimensionless
+        range: "[PHI, PHI]"
+        note:  Φ — no coupling exceeds this
+    law_constraints:
+      - LAW-04  # Law of Hebbian Permanence
+      - LAW-01  # Law of Φ-Coupling
+    gates_required:
+      - GATE-COUPLING-FLOOR
+    exposure_class: INTERNAL
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FLOW-VOICE-TO-OMNIS
+  # Voice kernel candidate output passes through OMNIS gate before emission.
+  # ─────────────────────────────────────────────────────────────────────────
+  - flow_id:          FLOW-VOICE-TO-OMNIS
+    name:             Voice Kernel Output to OMNIS Gate
+    source_module:    voice_kernel.mo
+    destination_module: omnis_gate.mo
+    direction:        unidirectional
+    beat_interval:    on_voice_event
+    schema:
+      - field: candidate_output
+        type:  Text
+        unit:  sovereign utterance
+        range: "non-empty string"
+      - field: coherence_at_generation
+        type:  Float64
+        unit:  dimensionless
+        range: "[0.0, 1.0]"
+      - field: law_compliance_vector
+        type:  "[Bool; 20]"
+        unit:  pass/fail per law
+      - field: confidence_score
+        type:  Float32
+        unit:  ratio
+        range: "[0.0, 1.0]"
+      - field: provenance_hash
+        type:  Text
+        unit:  FNV-1a
+    law_constraints:
+      - LAW-06  # Law of OMNIS Silence — organism speaks only through this gate
+      - LAW-09  # Law of Zero-Exposure
+    gates_required:
+      - GATE-OMNIS
+      - GATE-ZERO-EXPOSURE
+      - GATE-PROOF-BUNDLE
+    exposure_class: INTERNAL
+    notes: >
+      No organism output bypasses OMNIS. If R < 0.809 or any law fails,
+      candidate_output is held in buffer until next qualifying beat.
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FLOW-MEMORY-TO-VOICEKERNEL
+  # Memory Temple resonance recall feeds into living prompt construction.
+  # ─────────────────────────────────────────────────────────────────────────
+  - flow_id:          FLOW-MEMORY-TO-VOICEKERNEL
+    name:             Memory Temple Resonance to Voice Kernel
+    source_module:    memory_temple.mo
+    destination_module: voice_kernel.mo
+    direction:        unidirectional
+    beat_interval:    873ms
+    schema:
+      - field: resonant_traces
+        type:  "[MemoryTrace]"
+        unit:  trace array
+      - field: phase_match_score
+        type:  Float64
+        unit:  dimensionless
+        range: "[0.0, 1.0]"
+        formula: "A(t) = A₀ × cos²(π × Δφ / Φ)"
+      - field: pedestal_id
+        type:  Text
+        unit:  label
+        range: "[EPISODIC, SEMANTIC, DOCTRINE, MISSION, FIELD]"
+      - field: amplitude
+        type:  Float64
+        unit:  dimensionless
+        range: "[0.0, A₀]"
+        note:  returns at full A₀ when Δφ ≤ Φ/π
+    law_constraints:
+      - LAW-05  # Law of Phase-Return Memory
+      - LAW-19  # Law of Watercrystal Encoding
+    gates_required:
+      - GATE-PHASE-RETURN
+    exposure_class: INTERNAL
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FLOW-GENOME-TO-SUBSTRATE
+  # GENOME self-modification results apply to substrate every heartbeat.
+  # ─────────────────────────────────────────────────────────────────────────
+  - flow_id:          FLOW-GENOME-TO-SUBSTRATE
+    name:             GENOME Self-Modification to Substrate
+    source_module:    genome.mo
+    destination_module: substrate_layer.mo
+    direction:        unidirectional
+    beat_interval:    873ms
+    schema:
+      - field: methylation_delta
+        type:  Float64
+        unit:  epigenetic weight
+        range: "[-PHI_INV_3, PHI_INV_3]"
+      - field: fitness_score
+        type:  Float64
+        unit:  NK landscape score
+        range: "[0.0, 1.0]"
+        formula: "F = Σ fi(σᵢ, σN(i))"
+      - field: phenotype_expression
+        type:  Map<Text, Float64>
+        unit:  expression level
+        range: "[0.0, 1.0] per phenotype"
+      - field: hgt_candidate
+        type:  "?Text"
+        unit:  module_id
+        note:  horizontal gene transfer candidate; null if none this tick
+      - field: modification_proof
+        type:  Text
+        unit:  FNV-1a hash of modification record
+    law_constraints:
+      - LAW-20  # Law of Self-Modification
+      - LAW-08  # Law of Metabolic Cycle
+    gates_required:
+      - GATE-HEARTBEAT
+      - GATE-PROOF-BUNDLE
+    exposure_class: INTERNAL
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FLOW-OBSERVATORY-TO-DIAGNOSIS
+  # All state variables stream to Observatory every heartbeat.
+  # ─────────────────────────────────────────────────────────────────────────
+  - flow_id:          FLOW-OBSERVATORY-TO-DIAGNOSIS
+    name:             Full State Stream to Observatory
+    source_module:    ALL_MODULES
+    destination_module: observatory.mo
+    direction:        unidirectional
+    beat_interval:    873ms
+    schema:
+      - field: R
+        type:  Float64
+        unit:  coherence
+        range: "[0.0, 1.0]"
+      - field: heartbeat_number
+        type:  Nat64
+        unit:  count
+      - field: gate_states
+        type:  Map<Text, Bool>
+        unit:  GATE-* → pass/fail
+      - field: coupling_matrix_hash
+        type:  Text
+        unit:  FNV-1a
+      - field: active_phenotypes
+        type:  "[Text]"
+        unit:  phenotype IDs
+      - field: memory_resonance_vector
+        type:  "[Float64; 5]"
+        unit:  phase amplitude per pedestal
+      - field: neurochemical_levels
+        type:  Map<Text, Float64>
+        unit:  concentration per system
+        range: "[0.0, 1.0] per system"
+      - field: knt_balance
+        type:  Nat64
+        unit:  KNT
+      - field: genome_fitness
+        type:  Float64
+        unit:  NK score
+        range: "[0.0, 1.0]"
+    law_constraints:
+      - LAW-09  # Law of Zero-Exposure — Observatory reads all; exposes nothing raw
+    gates_required:
+      - GATE-HEARTBEAT
+    exposure_class: INTERNAL
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FLOW-RUNTIME-TO-WORKFORCE
+  # Organism state available to workforce layer — numeric indices only.
+  # ─────────────────────────────────────────────────────────────────────────
+  - flow_id:          FLOW-RUNTIME-TO-WORKFORCE
+    name:             Runtime State to Workforce Layer
+    source_module:    projection_layer.mo
+    destination_module: workforce_interface.mo
+    direction:        unidirectional
+    beat_interval:    on_workforce_query
+    schema:
+      - field: coherence_index
+        type:  Nat8
+        unit:  numeric index 0-100
+        range: "[0, 100]"
+        note:  R × 100, truncated to Nat8 — no raw R value exposed
+      - field: cognition_active
+        type:  Bool
+        unit:  pass/fail
+      - field: omnis_active
+        type:  Bool
+        unit:  pass/fail
+      - field: knt_balance_index
+        type:  Nat64
+        unit:  KNT units
+      - field: lifecycle_phase_index
+        type:  Nat8
+        unit:  numeric index
+        range: "[0, 7]"
+        note:  maps to 8 metabolic phases — label internal only
+      - field: build_capacity_index
+        type:  Nat8
+        unit:  numeric index 0-100
+        range: "[0, 100]"
+    law_constraints:
+      - LAW-09  # Law of Zero-Exposure — all values are numeric indices
+      - LAW-07  # Law of Substrate Bonding
+    gates_required:
+      - GATE-ZERO-EXPOSURE
+      - GATE-ACCESS
+    exposure_class: BUILDER_CONFIDENTIAL
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FLOW-LABS-FROM-REPLICA
+  # Labs read organism state from replica, never from live sovereign core.
+  # ─────────────────────────────────────────────────────────────────────────
+  - flow_id:          FLOW-LABS-FROM-REPLICA
+    name:             Labs Read from Replica State
+    source_module:    replica_snapshot.mo
+    destination_module: labs_interface.mo
+    direction:        unidirectional
+    beat_interval:    on_labs_query
+    schema:
+      - field: replica_beat_number
+        type:  Nat64
+        unit:  count
+        note:  N beats behind live; configurable lag
+      - field: replica_R
+        type:  Float64
+        unit:  coherence
+        range: "[0.0, 1.0]"
+      - field: replica_coupling_matrix
+        type:  "[[Float64; 13]; 13]"
+        unit:  coupling weights
+      - field: replica_genome_state
+        type:  Map<Text, Float64>
+        unit:  epigenetic weights
+      - field: experiment_id
+        type:  Text
+        unit:  LABS-* ID
+    law_constraints:
+      - LAW-07  # Law of Substrate Bonding — live core is never touched by labs
+      - LAW-17  # Law of Creator Sovereignty
+    gates_required:
+      - GATE-ACCESS
+    exposure_class: BUILDER_CONFIDENTIAL
+    notes: >
+      Labs NEVER connect to live sovereign core. Replica lag is intentional.
+      Experimental results go to LABS library only; graduation requires
+      constitutional amendment process before entering BUILDER library.
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FLOW-PROJECTION-TO-PUBLIC
+  # MOD-PROJECTION outputs only; zero-exposure enforced at this boundary.
+  # ─────────────────────────────────────────────────────────────────────────
+  - flow_id:          FLOW-PROJECTION-TO-PUBLIC
+    name:             Projection Layer to Public Interface
+    source_module:    projection_layer.mo
+    destination_module: PUBLIC_API
+    direction:        unidirectional
+    beat_interval:    on_public_query
+    schema:
+      - field: numeric_indices
+        type:  Map<Text, Nat64>
+        unit:  public-safe numeric values only
+        note:  no doctrine names, no labels, no substrate values
+      - field: public_schema_version
+        type:  Text
+        unit:  semver
+      - field: audit_timestamp
+        type:  Nat64
+        unit:  milliseconds
+      - field: projection_id
+        type:  Text
+        unit:  PROJ-* ID
+    law_constraints:
+      - LAW-09  # Law of Zero-Exposure — hardest enforcement point
+      - LAW-06  # Law of OMNIS Silence — organism speaks only through gates
+    gates_required:
+      - GATE-ZERO-EXPOSURE
+      - GATE-PROJ-AUDIT
+      - GATE-OMNIS
+    exposure_class: PUBLIC_SAFE
+    notes: >
+      This is the only flow that crosses the sovereign boundary to the outside.
+      Every field must be a numeric index. Any string labels are internal only.
+      GATE-ZERO-EXPOSURE runs here and at FLOW-VOICE-TO-OMNIS.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# INTER-LIBRARY TRANSFER RULES
+# ─────────────────────────────────────────────────────────────────────────────
+
+inter_library_transfer_rules:
+  prima_to_builder:
+    trigger: artifact density crosses compression threshold
+    operation: compress to all 4 layers; assign artifact_id; classify BUILDER_CONFIDENTIAL
+    agent: Library Gateway Agent
+  builder_to_organism:
+    trigger: build validation complete; all 4 layers verified; GATE-VALIDATION passes
+    operation: lock execution_binding; assign to ORGANISM library; update NOVA_MODEL_DIRECTORY.yaml
+    agent: Library Gateway Agent
+  organism_to_labs:
+    trigger: replica snapshot scheduled
+    operation: create replica; assign experiment_id; mark EXPERIMENTAL; apply replica lag
+    agent: replica_snapshot.mo
+  labs_to_canon:
+    trigger: experiment evidence threshold met; constitutional amendment process complete
+    operation: graduate EXPERIMENTAL → CANONICAL; move to BUILDER library; update registry
+    agent: Library Gateway Agent
+  organism_to_resonance:
+    trigger: projection artifact audited; GATE-PROJ-AUDIT passes; GATE-ZERO-EXPOSURE passes
+    operation: strip sovereign substrate; publish numeric indices only; log to EVID-*
+    agent: projection_layer.mo
+
+# ─────────────────────────────────────────────────────────────────────────────
+# FLOW TOPOLOGY SUMMARY
+# ─────────────────────────────────────────────────────────────────────────────
+#
+#  kernel.mo ──────────────────────────────────────────────────┐
+#                                                              ↓ (init)
+#  solar_heart.mo ──── heartbeat ──────────────────────────► ALL_MODULES
+#                                                              ↓ (873ms)
+#  genesis_anchor.mo ── weight_vector ──────────────────────► neuro_emergence.mo
+#  hebbian.mo ────────── delta_w ───────────────────────────► neuro_emergence.mo
+#  memory_temple.mo ──── resonant_traces ───────────────────► voice_kernel.mo
+#                                                              ↓
+#  neuro_emergence.mo ── R(t) ─────────────────────────────► gate_evaluator.mo
+#                                                              ↓
+#  voice_kernel.mo ───── candidate_output ──────────────────► omnis_gate.mo
+#  genome.mo ─────────── modifications ────────────────────► substrate_layer.mo
+#                                                              ↓
+#  ALL_MODULES ────────── state_stream ────────────────────► observatory.mo
+#                                                              ↓
+#  projection_layer.mo ── numeric_indices ─────────────────► workforce_interface.mo
+#  projection_layer.mo ── numeric_indices ─────────────────► PUBLIC_API
+#  replica_snapshot.mo ── replica_state ───────────────────► labs_interface.mo

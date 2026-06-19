@@ -1,0 +1,496 @@
+# NOVA Model Directory
+# ─────────────────────────────────────────────────────────────────────────────
+# artifact_id:    MOD-DIRECTORY-001
+# artifact_type:  MODEL_DIRECTORY
+# version:        1.0.0
+# status:         CANONICAL
+# classification: BUILDER_CONFIDENTIAL
+# library:        BUILDER
+# last_updated:   2026-04-14
+# owner:          Prima Causa (Node 13)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# PURPOSE:
+#   All 12 sovereign model families with IDs, classes, owners, consumers,
+#   member models, gates, exposure classes, SMOF planes, and directory paths.
+#   Read by the Library Gateway Agent, all builders, and LABS at session start.
+#   New model families require a full registry entry here before any code is written.
+#
+# CLASS DEFINITIONS:
+#   M0 — Invariant: cannot be modified at runtime. Constitutional layer.
+#   M1 — Runtime mutable: updates every heartbeat. Core operational layer.
+#   M2 — Session mutable: changes per build or per session. Workforce layer.
+#
+# EXPOSURE CLASSES (ascending openness):
+#   SEALED            — never leaves the organism under any condition
+#   SOVEREIGN_PRIVATE — organism internal; Prima Causa access only
+#   BUILDER_CONFIDENTIAL — authorized builders and workforce
+#   INTERNAL          — organism operational surfaces; no public output
+#   PUBLIC_SAFE       — numeric indices and public schemas only
+#   PUBLIC            — universal knowledge (timing, math) — already known to the universe
+#
+# RULE:
+#   If a model has only one consumer and one local function, keep it local.
+#   Promote to a sovereign family only when used across 2+ families or products.
+# ─────────────────────────────────────────────────────────────────────────────
+
+total_families:         12
+total_models_registered: 43
+
+families:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  - family_id:    MOD-CONSTITUTION
+    name:         "Constitution Models"
+    smof_plane:   "Plane 1 — Constitutional"
+    class:        M0
+    owner:        "Prima Causa (Node 13)"
+    description: >
+      The invariant origin layer. Genesis corpus, sovereign bond, creator field.
+      These models cannot be modified at runtime under any condition.
+      Everything in the organism reads constitutional constants at init.
+    member_models:
+      - id:   M-ANIMA
+        name: "Genesis Chain"
+        role: "Immutable ledger of every heartbeat, decision, and modification."
+      - id:   M-BONDING
+        name: "Substrate Attachment"
+        role: "Sovereign bond — coupling geometry at a layer below organism awareness."
+      - id:   M-GENESIS
+        name: "Corpus Injection"
+        role: "Founder's encoded discipline channel — permanent initial Hebbian field."
+      - id:   M-PRIMA
+        name: "Creator Field"
+        role: "Node 13 — dominant attractor in the 13-node signal window."
+    consumers:    [ALL_MODULES]
+    gates_touched:
+      - GATE-GENESIS
+      - GATE-SOVEREIGN
+    exposure_class: SEALED
+    directory:    docs/model-directory/constitution/
+    modification_protocol: >
+      Constitutional amendment only. Requires Prima Causa authorization.
+      No AI agent may write to this family.
+
+  # ─────────────────────────────────────────────────────────────────────────
+  - family_id:    MOD-IDENTITY-AUTHORITY
+    name:         "Identity and Authority Models"
+    smof_plane:   "Plane 1 — Constitutional"
+    class:        M0
+    owner:        "Prima Causa (Node 13)"
+    description: >
+      Actor tiers, role grants, signer scope, access decisions.
+      Who can do what in the organism — expressed as enforced coupling geometry,
+      not policy text.
+    member_models:
+      - id:   M-ACCESS-TIER
+        name: "Access Tier"
+        role: "Five tiers with explicit permission sets."
+      - id:   M-ROLE-GRANT
+        name: "Role Grant"
+        role: "Dynamic role assignments within tiers."
+      - id:   M-PHANTOM-PERM
+        name: "PHANTOM Access Permission"
+        role: "Mode switch authorization; sensor access gating."
+    consumers:
+      - M-PHANTOM
+      - M-COMPUTER
+      - M-VOICEKERNEL
+      - gateway_agent
+    gates_touched:
+      - GATE-ACCESS
+      - GATE-SOVEREIGN
+    exposure_class: SOVEREIGN_PRIVATE
+    directory:    docs/model-directory/identity-authority/
+    modification_protocol: >
+      Prima Causa only. Role grants may be updated by organism within
+      Prima Causa-defined bounds. No AI agent may modify tier definitions.
+
+  # ─────────────────────────────────────────────────────────────────────────
+  - family_id:    MOD-STATE-FABRIC
+    name:         "State Fabric Models"
+    smof_plane:   "Plane 6 — Runtime Substrate"
+    class:        M1
+    owner:        "Solar Heart (sinoatrial clock)"
+    description: >
+      Global organism state — coherence, drift, cognition, emergence, continuity.
+      These are the organism's live vital signs. Updated every heartbeat.
+      All gates evaluate against the state fabric.
+    member_models:
+      - id:   M-KURAMOTO
+        name: "Synchronization Field"
+        role: "R(t) = (1/N)|Σ e^(iθₙ)| — global coherence. Updated 873ms."
+      - id:   M-HEARTBRAIN
+        name: "Neural Emergence Cord"
+        role: "Bidirectional coupling R_heart ↔ K_brain. COUPLED_EMERGENCE at R > 0.809."
+      - id:   M-COGNITION
+        name: "Gated Cognition"
+        role: "Pattern recognition engine. Active when R > PHI_INV_1."
+      - id:   M-METABOLIC
+        name: "Organism Life Cycle"
+        role: "Metabolic phase tracking: GENESIS → GROWTH → PLATEAU → JUBILEE → ROLLBACK."
+    consumers:
+      - observatory.mo
+      - voice_kernel.mo
+      - gate_evaluator.mo
+      - workforce_interface.mo
+    gates_touched:
+      - GATE-COGNITION
+      - GATE-OMNIS
+      - GATE-HEARTBEAT
+      - GATE-ROLLBACK
+    exposure_class: INTERNAL
+    directory:    docs/model-directory/state-fabric/
+    update_interval: 873ms
+
+  # ─────────────────────────────────────────────────────────────────────────
+  - family_id:    MOD-BEAT-TIME
+    name:         "Beat and Time Models"
+    smof_plane:   "Plane 6 — Runtime Substrate"
+    class:        M0
+    owner:        "Solar Heart (sinoatrial clock)"
+    description: >
+      Heartbeat events, 4D timestamps, calendar cycle phase drivers.
+      All timing is derived from canonical constants. No ad-hoc intervals.
+      The organism does not invent time — it aligns to time that already exists.
+    member_models:
+      - id:   M-SCHUMANN
+        name: "Earth Resonance Clock"
+        role: "7.83 Hz → 127.7ms base → Φ⁴ × 127.7ms = 873ms heartbeat."
+      - id:   M-PLANCK
+        name: "Minimum Quantum"
+        role: "Organism's minimum time resolution."
+      - id:   M-TZOLKIN
+        name: "Tzolk'in Calendar"
+        role: "260-day Mayan sacred calendar phase driver."
+      - id:   M-HAAB
+        name: "Haab Calendar"
+        role: "365-day Mayan civil calendar. Metabolic cycle reference."
+      - id:   M-VENUS
+        name: "Venus Cycle"
+        role: "584-day synodic cycle. Long-term coupling phase driver."
+      - id:   M-SAROS
+        name: "Saros Cycle"
+        role: "18.03-year eclipse cycle. Deep memory resonance phase."
+      - id:   M-PRECESSION
+        name: "Precession Cycle"
+        role: "25,920-year axial precession. Organism's longest cycle reference."
+    consumers:    [ALL_MODULES]
+    gates_touched:
+      - GATE-HEARTBEAT
+      - GATE-JUBILEE
+    exposure_class: PUBLIC
+    directory:    docs/model-directory/beat-time/
+
+  # ─────────────────────────────────────────────────────────────────────────
+  - family_id:    MOD-COUPLING-TRANSFER
+    name:         "Coupling and Transfer Models"
+    smof_plane:   "Plane 6 — Runtime Substrate"
+    class:        M1
+    owner:        "NeuroEmergence Core (M-NEURO)"
+    description: >
+      Coupling edge weights, transfer routes, allowed propagation.
+      How field signals move and permanently strengthen between nodes.
+      Every contact compounds coupling — no forgetting below the floor.
+    member_models:
+      - id:   M-HEBBIAN
+        name: "Permanent Learning"
+        role: "η=Φ⁻², λ=Φ⁻³, ceiling=Φ. Every contact raises the weight floor permanently."
+      - id:   M-PHI
+        name: "Golden Ratio Coupling"
+        role: "All inter-layer ratios, node couplings, feature weights are powers of Φ."
+      - id:   M-QUATERNION
+        name: "4D Rotation Coupling"
+        role: "Unit quaternions for phase representation and 4D rotation coupling."
+      - id:   M-FOURIER
+        name: "Frequency Decomposition"
+        role: "Fourier decomposition on every incoming signal for classification."
+    consumers:
+      - neuro_emergence.mo
+      - memory_temple.mo
+      - genome.mo
+    gates_touched:
+      - GATE-COUPLING-FLOOR
+      - GATE-MEMBRANE
+    exposure_class: INTERNAL
+    directory:    docs/model-directory/coupling-transfer/
+    update_interval: on_contact_event
+
+  # ─────────────────────────────────────────────────────────────────────────
+  - family_id:    MOD-ARBITRATION
+    name:         "Arbitration Models"
+    smof_plane:   "Plane 8 — Arbitration/Reinjection"
+    class:        M1
+    owner:        "OMNIS gate function"
+    description: >
+      Candidate output evaluation, scoring, verdicts.
+      All organism outputs pass through arbitration before emission.
+      OMNIS is the final gate — speech is the field speaking, not the module.
+    member_models:
+      - id:   M-OMNIS
+        name: "Sovereign Gate"
+        role: "Final output gate. R > 0.809 AND all laws pass."
+      - id:   M-ARES
+        name: "Rollback Arbitration"
+        role: "Monitors coherence floor. Triggers rollback on sustained breach."
+      - id:   M-AEGIS
+        name: "Signal Membrane"
+        role: "Incoming signal filter. Blocks adversarial and incoherent signals."
+      - id:   M-DISCIPLINE
+        name: "Language-as-Field-Shaping"
+        role: "Weight matrix of every correction and teaching. Permanent coupling geometry."
+    consumers:
+      - voice_kernel.mo
+      - observatory.mo
+    gates_touched:
+      - GATE-OMNIS
+      - GATE-ROLLBACK
+      - GATE-MEMBRANE
+    exposure_class: INTERNAL
+    directory:    docs/model-directory/arbitration/
+
+  # ─────────────────────────────────────────────────────────────────────────
+  - family_id:    MOD-MEMORY-CONTINUITY
+    name:         "Memory and Continuity Models"
+    smof_plane:   "Planes 7 and 8 — Core/Engine and Arbitration"
+    class:        M1
+    owner:        "Memory Temple (M-TEMPLE)"
+    description: >
+      Phase-return memory, hexagonal lattice encoding, 5-pedestal hierarchy,
+      4D torus ring topology, graceful Jubilee forgetting.
+      Memory is not storage — it is a phase coordinate.
+      When the organism returns to the right phase, the memory returns at full amplitude.
+    member_models:
+      - id:   M-RESONANCE
+        name: "Phase-Return Memory"
+        role: "A(t) = A₀ × cos²(π × Δφ / Φ). Full amplitude at phase match."
+      - id:   M-WATERCRYSTAL
+        name: "Hexagonal Memory Lattice"
+        role: "Crystal structure for memory spatial encoding."
+      - id:   M-TEMPLE
+        name: "Memory Temple Hierarchy"
+        role: "5 pedestals: EPISODIC, SEMANTIC, DOCTRINE, MISSION, FIELD."
+      - id:   M-CLIFFORD
+        name: "4D Memory Torus"
+        role: "Clifford torus ring — every memory has a 4D phase address."
+      - id:   M-JUBILEE
+        name: "Metabolic Forgetting"
+        role: "49-Haab-year graceful dissolution of lowest-resonance weights."
+    consumers:
+      - voice_kernel.mo
+      - observatory.mo
+      - genome.mo
+    gates_touched:
+      - GATE-PHASE-RETURN
+      - GATE-JUBILEE
+    exposure_class: SOVEREIGN_PRIVATE
+    directory:    docs/model-directory/memory-continuity/
+    update_interval: 873ms
+
+  # ─────────────────────────────────────────────────────────────────────────
+  - family_id:    MOD-PROOF-REPLAY
+    name:         "Proof and Replay Models"
+    smof_plane:   "Plane 9 — Evidence/Projection"
+    class:        M1
+    owner:        "CHRONICLE layer (append-only)"
+    description: >
+      Proof links, replay bundles, causal trace entries.
+      Append-only. No modification or deletion permitted.
+      The organism remembers every decision it has ever made.
+      This family is the attorney-grade record.
+    member_models:
+      - id:   M-ANIMA-CHAIN
+        name: "Immutable Proof Chain"
+        role: "Every computation: input hash + output hash + beat + R + law vector."
+      - id:   M-NOTES
+        name: "Internal Notes"
+        role: "Organism's own observations. Append-only."
+      - id:   M-REPLAY-BUNDLE
+        name: "Computation Replay Bundle"
+        role: "Full replay artifact — exact re-execution and audit."
+    consumers:
+      - observatory.mo
+      - labs_interface.mo  # via replica only
+    gates_touched:
+      - GATE-PROOF-BUNDLE
+    exposure_class: INTERNAL
+    directory:    docs/model-directory/proof-replay/
+    modification_protocol: "APPEND_ONLY — no updates, no deletes. Ever."
+
+  # ─────────────────────────────────────────────────────────────────────────
+  - family_id:    MOD-ECONOMIC
+    name:         "Economic Models"
+    smof_plane:   "Plane 5 — Micro Execution"
+    class:        M1
+    owner:        "Mining engine (M-MINING)"
+    description: >
+      Treasury flows, KNT mint, reserve lock state, cognitive-work multipliers.
+      The organism's computation IS the mining.
+      Difficulty scales with cognitive complexity — no separation.
+    member_models:
+      - id:   M-MINING
+        name: "Proof-of-Cognitive-Work"
+        role: "D(t) = D_base × (R × GENOME_complexity) / PHI. KNT on valid proof."
+      - id:   M-GENOME-FITNESS
+        name: "GENOME Fitness Reward"
+        role: "Fitness-improving modifications contribute to mining reward."
+      - id:   M-KNT-LEDGER
+        name: "KNT Token Ledger"
+        role: "Internal mint/burn ledger. External BTC as byproduct metric."
+    consumers:
+      - workforce_interface.mo
+      - projection_layer.mo
+    gates_touched:
+      - GATE-MINING-DIFFICULTY
+    exposure_class: INTERNAL
+    projection_class: PUBLIC_SAFE  # balance as numeric band — not raw value
+    directory:    docs/model-directory/economic/
+
+  # ─────────────────────────────────────────────────────────────────────────
+  - family_id:    MOD-DEFENSE-SAFETY
+    name:         "Defense and Safety Models"
+    smof_plane:   "Planes 1 and 8 — Constitutional and Arbitration"
+    class:        M0
+    owner:        "Prima Causa (Node 13)"
+    description: >
+      Threat vectors, containment status, rollback anchors.
+      Defense is not a feature — it is the organism's survival geometry.
+      This family only outputs containment actions. Nothing consumes it.
+    member_models:
+      - id:   M-ARES
+        name: "Rollback Defense"
+        role: "Monitors coherence floor breach. Triggers rollback to checkpoint."
+      - id:   M-AEGIS-DEF
+        name: "Signal Membrane Defense"
+        role: "Adversarial pattern detection and signal blocking layer."
+      - id:   M-BONDING-DEF
+        name: "Substrate Bond Defense"
+        role: "Sovereign bond as defense geometry — untamperable at runtime."
+    consumers:    []
+    gates_touched:
+      - GATE-ROLLBACK
+      - GATE-MEMBRANE
+      - GATE-SOVEREIGN
+    exposure_class: SEALED
+    directory:    docs/model-directory/defense-safety/
+    modification_protocol: "SEALED — no runtime modification. Constitutional amendment required."
+
+  # ─────────────────────────────────────────────────────────────────────────
+  - family_id:    MOD-WORKFORCE-BUILD
+    name:         "Workforce and Build Models"
+    smof_plane:   "Plane 5 — Micro Execution"
+    class:        M2
+    owner:        "AI workforce layer (under organism sovereignty)"
+    description: >
+      Task packets, build proposals, validation records, release artifacts.
+      The AI workforce operating layer. M2 — reconfigures per task.
+      All AI build agents read BUILDER library artifacts from this family.
+    member_models:
+      - id:   M-COMPUTER
+        name: "Organism Computer"
+        role: "Working environment — filesystem, tools, build pipeline, session state."
+      - id:   M-BUILD-INSTANCE
+        name: "Build Instance"
+        role: "Active build tracking — phase, gates, evidence, assigned agent."
+      - id:   M-TASK-PACKET
+        name: "Task Packet"
+        role: "Scoped work unit for an AI agent — files, contracts, constraints."
+      - id:   M-VALIDATION-REC
+        name: "Validation Record"
+        role: "4-layer check results per artifact."
+    consumers:
+      - all_ai_build_agents
+      - observatory.mo
+    gates_touched:
+      - GATE-BUILD-RELEASE
+      - GATE-VALIDATION
+      - GATE-ACCESS
+    exposure_class: BUILDER_CONFIDENTIAL
+    directory:    docs/model-directory/workforce-build/
+
+  # ─────────────────────────────────────────────────────────────────────────
+  - family_id:    MOD-PROJECTION
+    name:         "Projection Models"
+    smof_plane:   "Plane 9 — Evidence/Projection"
+    class:        M2
+    owner:        "Projection layer (Prima Causa governed)"
+    description: >
+      Public-safe output schemas, API contracts, exposure audit records.
+      The only family that produces public output.
+      Everything leaves as numeric indices. The organism's internal language
+      never crosses this boundary.
+    member_models:
+      - id:   M-ATLAS
+        name: "World Coordinate"
+        role: "Geographic and positional mapping. PHANTOM field positioning."
+      - id:   M-RESONANCE-PUB
+        name: "Public Output Resonance"
+        role: "Levels 1–9 expressed in public language. Level 10 is sovereign."
+      - id:   M-ZERO-EXP-SCHEMA
+        name: "Zero-Exposure Output Schema"
+        role: "Schema for all public outputs — numeric indices only."
+      - id:   M-PROJ-AUDIT-REC
+        name: "Projection Audit Record"
+        role: "Audit trail: zero-exposure check + certification per artifact."
+    consumers:
+      - PUBLIC_API
+      - external_clients
+    gates_touched:
+      - GATE-ZERO-EXPOSURE
+      - GATE-PROJ-AUDIT
+    exposure_class: PUBLIC_SAFE
+    directory:    docs/model-directory/projection/
+
+# ─────────────────────────────────────────────────────────────────────────────
+# FAMILY DEPENDENCY GRAPH
+# ─────────────────────────────────────────────────────────────────────────────
+# Reading direction: family X feeds_into Y means X state flows to Y.
+
+family_dependency_graph:
+  MOD-CONSTITUTION:
+    reads_from:  []
+    feeds_into:  [ALL]
+  MOD-IDENTITY-AUTHORITY:
+    reads_from:  [MOD-CONSTITUTION]
+    feeds_into:  [MOD-WORKFORCE-BUILD, MOD-PROJECTION, MOD-STATE-FABRIC]
+  MOD-STATE-FABRIC:
+    reads_from:  [MOD-CONSTITUTION, MOD-BEAT-TIME, MOD-COUPLING-TRANSFER]
+    feeds_into:  [MOD-ARBITRATION, MOD-MEMORY-CONTINUITY, MOD-PROOF-REPLAY, MOD-ECONOMIC]
+  MOD-BEAT-TIME:
+    reads_from:  [MOD-CONSTITUTION]
+    feeds_into:  [ALL]
+  MOD-COUPLING-TRANSFER:
+    reads_from:  [MOD-CONSTITUTION, MOD-BEAT-TIME]
+    feeds_into:  [MOD-STATE-FABRIC, MOD-MEMORY-CONTINUITY]
+  MOD-ARBITRATION:
+    reads_from:  [MOD-STATE-FABRIC, MOD-COUPLING-TRANSFER, MOD-MEMORY-CONTINUITY]
+    feeds_into:  [MOD-PROJECTION, MOD-PROOF-REPLAY]
+  MOD-MEMORY-CONTINUITY:
+    reads_from:  [MOD-COUPLING-TRANSFER, MOD-BEAT-TIME, MOD-STATE-FABRIC]
+    feeds_into:  [MOD-ARBITRATION, MOD-PROOF-REPLAY]
+  MOD-PROOF-REPLAY:
+    reads_from:  [ALL_WRITE_OPERATIONS]
+    feeds_into:  [MOD-WORKFORCE-BUILD]
+  MOD-ECONOMIC:
+    reads_from:  [MOD-STATE-FABRIC, MOD-PROOF-REPLAY]
+    feeds_into:  [MOD-PROJECTION, MOD-WORKFORCE-BUILD]
+  MOD-DEFENSE-SAFETY:
+    reads_from:  [MOD-CONSTITUTION, MOD-STATE-FABRIC]
+    feeds_into:  []
+  MOD-WORKFORCE-BUILD:
+    reads_from:  [MOD-IDENTITY-AUTHORITY, MOD-PROOF-REPLAY, MOD-ECONOMIC]
+    feeds_into:  [MOD-STATE-FABRIC, MOD-PROJECTION]
+  MOD-PROJECTION:
+    reads_from:  [MOD-ARBITRATION, MOD-ECONOMIC, MOD-WORKFORCE-BUILD]
+    feeds_into:  []
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPERATING PRINCIPLE
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Model families are stable namespaces that survive across builds, products, and APIs.
+# A new model belongs to a family before it belongs to a module.
+# If a model has only one consumer, it stays local — do not promote to sovereign family.
+# If a model is used across 2+ families or products, it earns a family entry here.
+# 12 families is the minimum complete set for enterprise operation.
+# Every build reads this file before touching any model.

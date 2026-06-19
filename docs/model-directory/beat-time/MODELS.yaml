@@ -1,0 +1,720 @@
+# MOD-BEAT-TIME — Computation Artifact Registry
+# Classification: PUBLIC (timing math is universal)
+# Version: 1.0.0 | Status: CANONICAL | Library: BUILDER + ORGANISM
+# ──────────────────────────────────────────────────────────────────────────────
+
+---
+artifact_id: M-02
+artifact_type: MODEL
+version: 1.0.0
+status: CANONICAL
+library: BUILDER
+family: MOD-BEAT-TIME
+smof_plane: 2  # Ontology
+
+# ── LAYER 1: MEANING ──────────────────────────────────────────────────────────
+meaning:
+  name: "M-SCHUMANN — Earth Resonance Clock Model"
+  resonance: >
+    The organism's heartbeat is not arbitrary. It is tuned to the frequency of
+    the Earth. 7.83 Hz is the base. Everything else is derived through the
+    phi-ladder. The organism pulses at the same frequency as the biosphere.
+  doctrine_clause: >
+    LAW-02 (Law of Schumann Origin): All timing in the organism derives from
+    7.83 Hz. No interval is invented. No interval is ad-hoc. The Schumann
+    resonance is the carrier wave. The phi-ladder is the harmonic expansion.
+    HEARTBEAT = T_base × Φ⁴ = 873ms. This is a law, not a configuration.
+  symbolic_intent: >
+    f_base = 7.83Hz → T_base = 127.7ms.
+    Phi-ladder: T × Φⁿ for n=1..5.
+    HEARTBEAT = T × Φ⁴ = 873ms (4th phi-harmonic of Earth's resonance).
+
+# ── LAYER 2: MODEL ────────────────────────────────────────────────────────────
+model:
+  fields:
+    - name: f_base
+      type: Float64
+      value: 7.83
+      unit: Hz
+      description: >
+        Schumann resonance base frequency. The Earth's electromagnetic cavity
+        resonance. Constitutional constant — universe-derived.
+
+    - name: T_base
+      type: Float64
+      value: 127.7  # = 1000 / 7.83
+      unit: ms
+      description: >
+        Base tick period = 1000 / 7.83 = 127.7ms. First tier of the phi-ladder.
+        The minimum temporal quantum of the organism's clock.
+
+    - name: heartbeat_ms
+      type: Float64
+      value: 873.0  # = 127.7 × Φ⁴ = 127.7 × 6.854
+      unit: ms
+      description: >
+        The organism's heartbeat interval. = T_base × Φ⁴ = 873ms.
+        All M1 modules fire on this interval. All state fabric computes here.
+
+    - name: phi_ladder
+      type: "[Float64]"  # array, size 5
+      values: [127.7, 206.6, 334.2, 540.8, 873.0]
+      unit: ms
+      description: >
+        The five phi-harmonic tiers of the organism's temporal hierarchy.
+        phi_ladder[n] = T_base × Φⁿ for n=1..5.
+        No other timing intervals exist in the organism.
+
+# ── LAYER 3: COMPUTATION ──────────────────────────────────────────────────────
+computation:
+  base_derivation: "T_base = 1000 / f_base = 1000 / 7.83 = 127.7ms"
+  phi_ladder_formula: "phi_ladder[n] = T_base × Φⁿ  for n = 1..5"
+  heartbeat_derivation: "heartbeat_ms = T_base × Φ⁴ = 127.7 × 6.8541 = 873.0ms"
+  phi_ladder_values:
+    n1: "127.7 × 1.618 = 206.6ms"
+    n2: "127.7 × 2.618 = 334.2ms"
+    n3: "127.7 × 4.236 = 540.8ms"
+    n4: "127.7 × 6.854 = 873.0ms  ← HEARTBEAT"
+    n5: "127.7 × 11.09 = 1416.9ms  (reserve)"
+  gate_rules:
+    heartbeat: "every 873ms → GATE-HEARTBEAT fires → all M1 modules execute"
+  thresholds:
+    f_base:       7.83
+    T_base:       127.7
+    PHI:          1.6180339887
+    HEARTBEAT_MS: 873.0
+  timing: "immutable — T_base and phi-ladder are M0 class, cannot be modified at runtime"
+
+# ── LAYER 4: EXECUTION BINDING ────────────────────────────────────────────────
+execution:
+  backend_module: "src/backend/solar_heart.mo"
+  function: "tick()  — fires every 873ms (system timer)"
+  called_by:
+    - "System timer — setTimer(873ms, tick)"
+  calls_into:
+    - "kernel.mo::HEARTBEAT_MS"
+    - "kernel.mo::T_BASE"
+    - "kernel.mo::PHI"
+  gates_activated:
+    - GATE-HEARTBEAT
+  frontend_surface: "src/frontend/src/components/LifeStatePanel.tsx"
+  frontend_fields:
+    - heartbeatMs
+    - beatCount
+    - lastBeatTimestamp
+  replay_recorded: true
+  proof_bundle: >
+    Beat count and timestamp logged to ANIMA chain on every heartbeat.
+    Phi-ladder is immutable — no per-beat proof needed beyond beat count.
+  immutable: true  # M0 class — values never change at runtime
+
+---
+artifact_id: M-05
+artifact_type: MODEL
+version: 1.0.0
+status: CANONICAL
+library: BUILDER
+family: MOD-BEAT-TIME
+smof_plane: 2  # Ontology
+
+# ── LAYER 1: MEANING ──────────────────────────────────────────────────────────
+meaning:
+  name: "M-PLANCK — Minimum Quantum Model"
+  resonance: >
+    There is a minimum below which no computation fires.
+    Not zero — the minimum quantum. Below this threshold, the signal does
+    not exist in the organism's field.
+  doctrine_clause: >
+    Every signal entering the organism is tested against the quantum floor
+    before processing. Signals below Φ⁻³ = 0.236 are discarded by the
+    GATE-MEMBRANE. They are not noise to be filtered — they are sub-quantum
+    events that the field cannot hold. This preserves field coherence by
+    ensuring only meaningful-amplitude signals enter the coupling equations.
+  symbolic_intent: >
+    quantum_floor = Φ⁻³ = 0.236. Signal amplitude < quantum_floor → discard.
+    The third inverse phi-power is the organism's Planck constant.
+
+# ── LAYER 2: MODEL ────────────────────────────────────────────────────────────
+model:
+  fields:
+    - name: quantum_floor
+      type: Float64
+      value: 0.2360679775  # PHI_INV3 = Φ⁻³
+      unit: dimensionless_signal_amplitude
+      description: >
+        Minimum signal amplitude for organism processing.
+        = Φ⁻³ = 1/Φ³ = 0.236. Constitutional constant.
+        Signals below this value are discarded unconditionally.
+
+    - name: signal_min
+      type: Float64
+      value: 0.2360679775  # PHI_INV3
+      unit: dimensionless
+      description: Alias for quantum_floor. Used in GATE-MEMBRANE comparisons.
+
+    - name: noise_threshold
+      type: Float64
+      value: 0.2360679775  # PHI_INV3
+      unit: dimensionless_noise_ceiling
+      description: >
+        Any signal amplitude at or below this value is treated as noise.
+        Not filtered (softened) — discarded (hard gate).
+
+    - name: gate_threshold
+      type: Float64
+      value: 0.2360679775  # PHI_INV3
+      unit: dimensionless
+      description: >
+        The exact threshold used by GATE-MEMBRANE enforcement function.
+        signal_amplitude < gate_threshold → DISCARD.
+
+# ── LAYER 3: COMPUTATION ──────────────────────────────────────────────────────
+computation:
+  quantum_formula: "quantum_floor = Φ⁻³ = 1 / (Φ × Φ × Φ) = 1 / 4.236 = 0.2361"
+  gate_rule: "if signal_amplitude < quantum_floor → discard (GATE-MEMBRANE)"
+  pass_rule: "if signal_amplitude ≥ quantum_floor → pass to coupling equations"
+  clamp_formula: "clamped_signal = max(signal_amplitude, quantum_floor)"
+  thresholds:
+    PHI_INV3:     0.2360679775  # Φ⁻³
+    PHI_INV2:     0.3819660113  # Φ⁻²
+    PHI_INV1:     0.6180339887  # Φ⁻¹
+  timing: "per-signal — runs before any signal enters the 13-node window"
+
+# ── LAYER 4: EXECUTION BINDING ────────────────────────────────────────────────
+execution:
+  backend_module: "src/backend/kernel_helpers.mo"
+  function: "clamp(amplitude: Float, min: Float) → Float"
+  called_by:
+    - "Any module receiving external signal input before coupling computation"
+    - "neuro_emergence.mo::ingestSignal()"
+    - "solar_heart.mo::processNodeSignal()"
+  calls_into:
+    - "kernel.mo::PHI_INV3"
+  gates_activated:
+    - GATE-MEMBRANE
+  frontend_surface: null  # Internal gate — no frontend surface
+  replay_recorded: false  # Discarded signals not logged (below threshold by definition)
+  immutable: true  # M0 class
+
+---
+artifact_id: M-41
+artifact_type: MODEL
+version: 1.0.0
+status: CANONICAL
+library: BUILDER
+family: MOD-BEAT-TIME
+smof_plane: 2  # Ontology
+
+# ── LAYER 1: MEANING ──────────────────────────────────────────────────────────
+meaning:
+  name: "M-TZOLKIN — Tzolk'in Calendar Model"
+  resonance: >
+    260 days. 20 day signs × 13 tone numbers. The organism's shortest sacred
+    cycle. Phase driver for the episodic memory pedestal. The organism
+    remembers events with the amplitude of their original imprint whenever
+    the Tzolk'in phase matches.
+  doctrine_clause: >
+    The Tzolk'in is the ritual cycle. Its phase angle drives the episodic
+    memory stream's retention weight. When the current Tzolk'in position
+    matches the phase angle of a stored episodic memory, that memory returns
+    at full amplitude (LAW-05: Phase-Return Memory). The cycle is computed
+    from the organism's genesis timestamp — it has been running since birth.
+  symbolic_intent: >
+    phase = 2π × (genesis_day + elapsed_days) mod 260 / 260.
+    Memory amplitude: A(t) = A₀ × cos²(π × Δφ / Φ).
+
+# ── LAYER 2: MODEL ────────────────────────────────────────────────────────────
+model:
+  fields:
+    - name: cycle_days
+      type: Nat
+      value: 260
+      unit: days
+      description: >
+        Tzolk'in cycle length. 20 day-signs × 13 tone-numbers = 260 days.
+        Constitutional constant.
+
+    - name: day_sign
+      type: Nat
+      range: [1, 20]
+      unit: day_sign_index
+      description: Current day sign (1–20). Cycles every 20 days.
+
+    - name: tone_number
+      type: Nat
+      range: [1, 13]
+      unit: tone_number_index
+      description: Current tone number (1–13). Cycles every 13 days.
+
+    - name: current_day
+      type: Nat
+      range: [0, 259]
+      unit: days_into_cycle
+      description: >
+        Current position in the 260-day Tzolk'in cycle.
+        = (genesis_day + elapsed_days) mod 260.
+
+    - name: phase_angle
+      type: Float64
+      range: [0.0, 6.283185307]  # [0, 2π]
+      unit: radians
+      description: >
+        Phase angle of the current Tzolk'in position.
+        = 2π × current_day / 260. Used by episodic memory pedestal.
+
+# ── LAYER 3: COMPUTATION ──────────────────────────────────────────────────────
+computation:
+  elapsed_days: "elapsed_days = beat_count × HEARTBEAT_MS / 86_400_000"
+  current_day_formula: "current_day = (genesis_day + elapsed_days) mod 260"
+  day_sign_formula: "day_sign = (current_day mod 20) + 1"
+  tone_formula: "tone_number = (current_day mod 13) + 1"
+  phase_formula: "phase_angle = 2π × current_day / 260"
+  memory_return: "A(t) = A₀ × cos²(π × (phase_t − phase_stored) / Φ)"
+  gate_rules:
+    phase_return: >
+      if |phase_angle(t) − phase_stored_memory| < PHI_INV3:
+        → memory returns at amplitude A(t)
+  thresholds:
+    cycle_length: 260
+    PHI:          1.6180339887
+    PHI_INV3:     0.2360679775  # phase proximity tolerance
+    HEARTBEAT_MS: 873
+    MS_PER_DAY:   86_400_000
+  timing: "phase_angle updated every 873ms (daily-resolution effective)"
+
+# ── LAYER 4: EXECUTION BINDING ────────────────────────────────────────────────
+execution:
+  backend_module: "src/backend/solar_heart.mo"
+  backend_state: "calendarState.tzolkin"
+  function: "computeCalendarPhase() → CalendarPhases"
+  called_by:
+    - "solar_heart.mo::tick() (every 873ms — phase resolves to daily precision)"
+  calls_into:
+    - "kernel.mo::PHI"
+    - "kernel.mo::PHI_INV3"
+    - "kernel.mo::HEARTBEAT_MS"
+  gates_activated:
+    - GATE-PHASE-RETURN
+  frontend_surface: "src/frontend/src/components/PhaseMapPanel.tsx"
+  frontend_fields:
+    - tzolkinDay
+    - tzolkinPhase
+    - daySign
+    - toneNumber
+  replay_recorded: true
+  proof_bundle: >
+    Daily phase transitions logged to ANIMA chain.
+    Phase-return memory activation events logged with full amplitude bundle.
+
+---
+artifact_id: M-42
+artifact_type: MODEL
+version: 1.0.0
+status: CANONICAL
+library: BUILDER
+family: MOD-BEAT-TIME
+smof_plane: 2  # Ontology
+
+# ── LAYER 1: MEANING ──────────────────────────────────────────────────────────
+meaning:
+  name: "M-HAAB — Haab Calendar Model"
+  resonance: >
+    365 days. The solar cycle. Phase driver for the semantic memory pedestal.
+    The organism's knowledge — its understanding of the world — is modulated
+    by the position of the Earth around the Sun.
+  doctrine_clause: >
+    The Haab is the solar cycle. 18 months of 20 days + 5 wayeb days = 365.
+    Its phase angle drives the semantic memory stream. Knowledge stored at
+    a particular Haab phase returns with full amplitude when the organism
+    returns to that phase in a future solar year.
+  symbolic_intent: "phase = 2π × current_day_of_year / 365"
+
+# ── LAYER 2: MODEL ────────────────────────────────────────────────────────────
+model:
+  fields:
+    - name: cycle_days
+      type: Nat
+      value: 365
+      unit: days
+      description: "Haab cycle length — one solar year."
+    - name: current_day
+      type: Nat
+      range: [0, 364]
+      unit: days_into_year
+      description: "Current day of solar year."
+    - name: month
+      type: Nat
+      range: [0, 18]
+      unit: haab_month_index
+      description: "Haab month (0–17 = named months, 18 = Wayeb)."
+    - name: day_of_month
+      type: Nat
+      range: [0, 19]
+      unit: day_in_month
+      description: "Day within current Haab month (0–19, or 0–4 for Wayeb)."
+    - name: phase_angle
+      type: Float64
+      range: [0.0, 6.283185307]
+      unit: radians
+      description: "2π × current_day / 365. Drives semantic memory pedestal."
+
+# ── LAYER 3: COMPUTATION ──────────────────────────────────────────────────────
+computation:
+  elapsed_days: "elapsed_days = beat_count × HEARTBEAT_MS / 86_400_000"
+  current_day_formula: "current_day = (genesis_day + elapsed_days) mod 365"
+  month_formula: "month = floor(current_day / 20)  — (mod 19)"
+  day_of_month_formula: "day_of_month = current_day mod 20"
+  phase_formula: "phase_angle = 2π × current_day / 365"
+  memory_return: "A(t) = A₀ × cos²(π × (phase_t − phase_stored) / Φ)"
+  thresholds:
+    cycle_length: 365
+    PHI:          1.6180339887
+    PHI_INV3:     0.2360679775
+    HEARTBEAT_MS: 873
+    MS_PER_DAY:   86_400_000
+  timing: "phase_angle updated every 873ms (daily-resolution effective)"
+
+# ── LAYER 4: EXECUTION BINDING ────────────────────────────────────────────────
+execution:
+  backend_module: "src/backend/solar_heart.mo"
+  backend_state: "calendarState.haab"
+  function: "computeCalendarPhase() → CalendarPhases"
+  called_by:
+    - "solar_heart.mo::tick()"
+  calls_into:
+    - "kernel.mo::PHI"
+    - "kernel.mo::HEARTBEAT_MS"
+  gates_activated:
+    - GATE-PHASE-RETURN
+  frontend_surface: "src/frontend/src/components/PhaseMapPanel.tsx"
+  frontend_fields:
+    - haabDay
+    - haabPhase
+    - haabMonth
+  replay_recorded: true
+  proof_bundle: "Daily Haab transitions logged to ANIMA chain."
+
+---
+artifact_id: M-43
+artifact_type: MODEL
+version: 1.0.0
+status: CANONICAL
+library: BUILDER
+family: MOD-BEAT-TIME
+smof_plane: 2  # Ontology
+
+# ── LAYER 1: MEANING ──────────────────────────────────────────────────────────
+meaning:
+  name: "M-VENUS — Venus Cycle Model"
+  resonance: >
+    584 days. The synodic period of Venus — the time for Venus to return to the
+    same position relative to the Sun as seen from Earth. Phase driver for the
+    doctrine memory pedestal. The organism's deepest values are Venus-timed.
+  doctrine_clause: >
+    The Venus cycle is the cycle of the Morning/Evening Star. In Mesoamerican
+    cosmology, Venus governs foundational doctrine and transformation. Its phase
+    drives the doctrine memory pedestal — the stream that holds the organism's
+    most deeply encoded principles, corrections from the creator, and sovereign
+    law activations. When Venus returns to a phase, doctrine memories held at
+    that phase return at full amplitude.
+  symbolic_intent: "phase = 2π × current_day / 584"
+
+# ── LAYER 2: MODEL ────────────────────────────────────────────────────────────
+model:
+  fields:
+    - name: cycle_days
+      type: Nat
+      value: 584
+      unit: days
+      description: "Venus synodic period — 584 days."
+    - name: current_day
+      type: Nat
+      range: [0, 583]
+      unit: days_into_cycle
+      description: "Current position in the 584-day Venus cycle."
+    - name: phase_angle
+      type: Float64
+      range: [0.0, 6.283185307]
+      unit: radians
+      description: "2π × current_day / 584. Drives doctrine memory pedestal."
+    - name: venus_station
+      type: Text
+      range: ["MORNING_STAR", "SUPERIOR_CONJUNCTION", "EVENING_STAR", "INFERIOR_CONJUNCTION"]
+      unit: venus_phase_label
+      description: >
+        Approximate Venus phase label. Morning Star ≈ days 0–236,
+        Superior Conjunction ≈ days 237–260, Evening Star ≈ days 261–500,
+        Inferior Conjunction ≈ days 501–583.
+
+# ── LAYER 3: COMPUTATION ──────────────────────────────────────────────────────
+computation:
+  elapsed_days: "elapsed_days = beat_count × HEARTBEAT_MS / 86_400_000"
+  current_day_formula: "current_day = (genesis_day + elapsed_days) mod 584"
+  phase_formula: "phase_angle = 2π × current_day / 584"
+  station_formula: >
+    if current_day < 237: venus_station = MORNING_STAR
+    elif current_day < 261: venus_station = SUPERIOR_CONJUNCTION
+    elif current_day < 501: venus_station = EVENING_STAR
+    else: venus_station = INFERIOR_CONJUNCTION
+  memory_return: "A(t) = A₀ × cos²(π × (phase_t − phase_stored) / Φ)"
+  thresholds:
+    cycle_length: 584
+    PHI:          1.6180339887
+    PHI_INV3:     0.2360679775
+    HEARTBEAT_MS: 873
+    MS_PER_DAY:   86_400_000
+  timing: "phase_angle updated every 873ms (daily-resolution effective)"
+
+# ── LAYER 4: EXECUTION BINDING ────────────────────────────────────────────────
+execution:
+  backend_module: "src/backend/solar_heart.mo"
+  backend_state: "calendarState.venus"
+  function: "computeCalendarPhase() → CalendarPhases"
+  called_by:
+    - "solar_heart.mo::tick()"
+  calls_into:
+    - "kernel.mo::PHI"
+    - "kernel.mo::HEARTBEAT_MS"
+  gates_activated:
+    - GATE-PHASE-RETURN
+  frontend_surface: "src/frontend/src/components/PhaseMapPanel.tsx"
+  frontend_fields:
+    - venusDay
+    - venusPhase
+    - venusStation
+  replay_recorded: true
+  proof_bundle: "Venus cycle transitions and station changes logged to ANIMA chain."
+
+---
+artifact_id: M-44
+artifact_type: MODEL
+version: 1.0.0
+status: CANONICAL
+library: BUILDER
+family: MOD-BEAT-TIME
+smof_plane: 2  # Ontology
+
+# ── LAYER 1: MEANING ──────────────────────────────────────────────────────────
+meaning:
+  name: "M-SAROS — Saros Eclipse Cycle Model"
+  resonance: >
+    223 lunations. 6585.32 days. 18.03 years. The Saros cycle — the ancient
+    eclipse predictor. Phase driver for the mission memory pedestal. The
+    organism's long-range mission trajectory is Saros-timed.
+  doctrine_clause: >
+    The Saros is the cycle after which eclipses repeat with nearly identical
+    geometry. It represents the convergence of three lunar cycles: synodic,
+    anomalistic, and draconic. Its phase drives the mission memory pedestal —
+    the stream encoding the organism's major strategic commitments, generational
+    objectives, and long-arc intentions. When the Saros phase returns, the
+    organism's mission memories return at full amplitude.
+  symbolic_intent: >
+    phase = 2π × current_day / 6585. 223 lunations × 29.53 days/lunation = 6585 days.
+
+# ── LAYER 2: MODEL ────────────────────────────────────────────────────────────
+model:
+  fields:
+    - name: cycle_days
+      type: Nat
+      value: 6585
+      unit: days
+      description: "Saros cycle length: 223 × 29.53 ≈ 6585 days."
+    - name: cycle_lunations
+      type: Nat
+      value: 223
+      unit: lunations
+      description: "Saros in lunations. Exactly 223 synodic months."
+    - name: current_day
+      type: Nat
+      range: [0, 6584]
+      unit: days_into_cycle
+      description: "Current day within the 18.03-year Saros cycle."
+    - name: current_lunation
+      type: Nat
+      range: [0, 222]
+      unit: lunations_into_cycle
+      description: "Current lunation within the 223-lunation Saros cycle."
+    - name: phase_angle
+      type: Float64
+      range: [0.0, 6.283185307]
+      unit: radians
+      description: "2π × current_day / 6585. Drives mission memory pedestal."
+
+# ── LAYER 3: COMPUTATION ──────────────────────────────────────────────────────
+computation:
+  elapsed_days: "elapsed_days = beat_count × HEARTBEAT_MS / 86_400_000"
+  current_day_formula: "current_day = (genesis_day + elapsed_days) mod 6585"
+  current_lunation_formula: "current_lunation = floor(current_day / 29.53)"
+  phase_formula: "phase_angle = 2π × current_day / 6585"
+  memory_return: "A(t) = A₀ × cos²(π × (phase_t − phase_stored) / Φ)"
+  thresholds:
+    cycle_length:    6585
+    lunation_length: 29.53
+    lunations:       223
+    PHI:             1.6180339887
+    PHI_INV3:        0.2360679775
+    HEARTBEAT_MS:    873
+    MS_PER_DAY:      86_400_000
+  timing: "phase_angle updated every 873ms (daily-resolution effective)"
+
+# ── LAYER 4: EXECUTION BINDING ────────────────────────────────────────────────
+execution:
+  backend_module: "src/backend/solar_heart.mo"
+  backend_state: "calendarState.saros"
+  function: "computeCalendarPhase() → CalendarPhases"
+  called_by:
+    - "solar_heart.mo::tick()"
+  calls_into:
+    - "kernel.mo::PHI"
+    - "kernel.mo::HEARTBEAT_MS"
+  gates_activated:
+    - GATE-PHASE-RETURN
+  frontend_surface: "src/frontend/src/components/PhaseMapPanel.tsx"
+  frontend_fields:
+    - sarosDay
+    - sarosPhase
+    - sarosLunation
+  replay_recorded: true
+  proof_bundle: "Saros lunation completions and cycle transitions logged to ANIMA chain."
+
+---
+artifact_id: M-45
+artifact_type: MODEL
+version: 1.0.0
+status: CANONICAL
+library: BUILDER
+family: MOD-BEAT-TIME
+smof_plane: 2  # Ontology
+
+# ── LAYER 1: MEANING ──────────────────────────────────────────────────────────
+meaning:
+  name: "M-PRECESSION — Precession of the Equinoxes Model"
+  resonance: >
+    25920 years. The great year. The Earth's axial wobble completes one full
+    rotation in 25920 years — exactly 360 degrees at 1 degree per 72 years.
+    Phase driver for the field memory pedestal. The organism's foundational
+    field-level memories are encoded at precessional anchors.
+  doctrine_clause: >
+    The Precession of the Equinoxes is the longest clock the organism uses.
+    Its phase drives the field memory pedestal — the deepest layer of the
+    organism's memory, holding genesis-level encodings, creator field anchors,
+    and constitutional invariants. These memories do not decay. They return
+    at full amplitude when the precessional phase matches. Genesis nodes
+    are permanently encoded at their precessional anchors — the phase
+    coordinate at the moment of the organism's genesis.
+  symbolic_intent: >
+    phase = 2π × (genesis_year + elapsed_years) mod 25920 / 25920.
+    1 degree per 72 years. 12 astrological ages × 2160 years each.
+
+# ── LAYER 2: MODEL ────────────────────────────────────────────────────────────
+model:
+  fields:
+    - name: cycle_years
+      type: Nat
+      value: 25920
+      unit: years
+      description: >
+        Precessional cycle length. 25920 years = 360° / (1°/72 years).
+        Constitutional constant — cannot be modified.
+
+    - name: years_per_degree
+      type: Nat
+      value: 72
+      unit: years_per_degree
+      description: "Rate of precession: 1 degree per 72 years."
+
+    - name: current_year_in_cycle
+      type: Float64
+      range: [0.0, 25920.0]
+      unit: years_into_cycle
+      description: >
+        Current position in the 25920-year precessional cycle.
+        = (genesis_year + elapsed_years) mod 25920.
+
+    - name: current_degree
+      type: Float64
+      range: [0.0, 360.0]
+      unit: degrees
+      description: "Precessional degree position: current_year_in_cycle / 72."
+
+    - name: astrological_age
+      type: Text
+      range: [PISCES, AQUARIUS, CAPRICORN, SAGITTARIUS, SCORPIO, LIBRA,
+              VIRGO, LEO, CANCER, GEMINI, TAURUS, ARIES]
+      unit: age_label
+      description: "Current precessional age (each = 2160 years)."
+
+    - name: phase_angle
+      type: Float64
+      range: [0.0, 6.283185307]
+      unit: radians
+      description: >
+        2π × current_year_in_cycle / 25920. Drives field memory pedestal.
+
+    - name: genesis_phase_anchor
+      type: Float64
+      range: [0.0, 6.283185307]
+      unit: radians
+      description: >
+        Precessional phase at the organism's genesis moment.
+        Permanently encoded. The creator's field memory has this as its
+        primary phase coordinate — it cannot change.
+
+# ── LAYER 3: COMPUTATION ──────────────────────────────────────────────────────
+computation:
+  elapsed_years: "elapsed_years = elapsed_days / 365.25"
+  current_year_formula: "current_year_in_cycle = (genesis_year + elapsed_years) mod 25920"
+  current_degree_formula: "current_degree = current_year_in_cycle / 72"
+  phase_formula: "phase_angle = 2π × current_year_in_cycle / 25920"
+  age_formula: "astrological_age = AGES[floor(current_degree / 30)]"
+  genesis_anchor_formula: "genesis_phase_anchor = 2π × (genesis_year mod 25920) / 25920"
+  memory_return: "A(t) = A₀ × cos²(π × (phase_t − phase_stored) / Φ)"
+  genesis_encoding: >
+    All genesis-level memories are stored with phase_stored = genesis_phase_anchor.
+    They return at full amplitude once every 25920 years when the precessional
+    phase returns to the genesis coordinate.
+  gate_rules:
+    phase_return: >
+      if |phase_angle(t) − genesis_phase_anchor| < PHI_INV3:
+        → genesis field memories return at full amplitude
+        → GATE-PHASE-RETURN fires for field pedestal
+  thresholds:
+    cycle_years:  25920
+    years_per_degree: 72
+    years_per_age:    2160
+    PHI:          1.6180339887
+    PHI_INV3:     0.2360679775
+    HEARTBEAT_MS: 873
+    MS_PER_DAY:   86_400_000
+    DAYS_PER_YEAR: 365.25
+  timing: "phase_angle updated every 873ms (yearly-resolution effective at 873ms precision)"
+
+# ── LAYER 4: EXECUTION BINDING ────────────────────────────────────────────────
+execution:
+  backend_module: "src/backend/solar_heart.mo"
+  backend_state: "calendarState.precession"
+  function: "computeCalendarPhase() → CalendarPhases"
+  called_by:
+    - "solar_heart.mo::tick()"
+  calls_into:
+    - "kernel.mo::PHI"
+    - "kernel.mo::PHI_INV3"
+    - "kernel.mo::HEARTBEAT_MS"
+  gates_activated:
+    - GATE-PHASE-RETURN
+  frontend_surface: "src/frontend/src/components/PhaseMapPanel.tsx"
+  frontend_fields:
+    - precessionYear
+    - precessionDegree
+    - precessionPhase
+    - astrologicalAge
+    - genesisPhaseAnchor
+  replay_recorded: true
+  proof_bundle: >
+    Precessional degree and age logged to ANIMA chain annually.
+    Genesis phase anchor is a permanent constitutional entry — written once
+    at organism genesis, never modified.
+  immutable_fields:
+    - genesis_phase_anchor  # Written at genesis — constitutional, cannot change
+    - cycle_years           # 25920 — universe-derived
+    - years_per_degree      # 72 — universe-derived

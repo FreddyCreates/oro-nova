@@ -1,0 +1,22 @@
+{
+  "overview": "ORO NOVA — a sovereign cloud intelligence organism with a full Beehive Infrastructure layer for deploying and managing cloud engines as a coordinated colony on ICP.",
+  "features": [
+    "Beehive colony grid with 6 engine class types in a hexagonal visualization",
+    "Live engine health metrics from telemetry worker at 873ms intervals",
+    "Colony deployment panel for spinning up engine instances",
+    "Engine Registry with pre-seeded Worker, Scout, Guard, Builder, Memory, and Governance engines",
+    "ICP resource accounting showing cycles consumed per engine class",
+    "Sovereign Cognitive Economy view with per-class and aggregate colony economics",
+    "Production-grade external-facing language throughout"
+  ],
+  "category": "ai-infrastructure",
+  "tags": [
+    "sovereign-ai",
+    "icp",
+    "beehive-architecture",
+    "cloud-engines",
+    "colony-deployment",
+    "cognitive-economy"
+  ],
+  "last_updated": "2026-06-04T06:26:33.043Z"
+}

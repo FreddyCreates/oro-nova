@@ -1,0 +1,603 @@
+# MOD-DEFENSE-SAFETY — Full 4-Layer Computation Artifacts
+# Classification: SEALED
+# SMOF Planes: 1 (Constitutional) + 8 (Arbitration)
+# Class: M0 — constitutional, never modified at runtime
+# Owner: Prima Causa
+# Attribution: Prima Causa (Alfredo Medina Hernandez)
+# ─────────────────────────────────────────────────────────────────────────────
+# NOTE: M-ARES and M-AEGIS are cross-family. This file presents the
+# DEFENSE-SAFETY framing — constitutional invariants, not operational gates.
+# Their operational specs (how they execute on each event) live in
+# MOD-ARBITRATION/MODELS.yaml. Both framings are required for full understanding.
+# ─────────────────────────────────────────────────────────────────────────────
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-ARES  |  Rollback Anchor — Constitutional Framing
+# ═══════════════════════════════════════════════════════════════
+
+artifact_id: M-ARES
+artifact_type: MODEL
+model_name: M-ARES
+version: 1.0.0
+status: CANONICAL
+class: M0
+library: ORGANISM
+family: MOD-DEFENSE-SAFETY
+smof_plane: 1  # Constitutional (defense framing); also Plane 8 in MOD-ARBITRATION
+cross_family_primary: MOD-ARBITRATION
+defense_framing: true
+
+# ── LAYER 1: MEANING ─────────────────────────────────────────
+meaning:
+  name: "M-ARES — Rollback Anchor (Constitutional Defense Framing)"
+  resonance: >
+    The organism cannot enter permanent incoherence. The rollback is not a
+    recovery mechanism — it is a law of physics. When coherence fails, the
+    organism returns to the last known-good state. This is not optional.
+    It cannot be disabled.
+  doctrine_clause: >
+    LAW-08 (Law of Metabolic Cycle) mandates that S never falls below S₀=1.0.
+    M-ARES is the enforcement substrate. When 8 consecutive beats register below
+    the sovereign floor, M-ARES fires GATE-ROLLBACK unconditionally. No runtime
+    flag can suppress it. No AI worker can disable it. The rollback constant S₀=1.0
+    is constitutional. The 8-beat grace window is constitutional. Both are
+    encoded in kernel.mo as compile-time constants.
+  symbolic_intent: >
+    if R(t) < S₀ for 8 consecutive beats → RESTORE from rollback_checkpoint
+    S₀ = 1.0 (Maximum Genesis floor — immutable)
+    rollback_beat_count = 8 (immutable)
+
+# ── LAYER 2: MODEL ───────────────────────────────────────────
+model:
+  fields:
+    - name: rollback_floor
+      type: Float
+      unit: sovereign output floor (S₀)
+      range: [1.0, 1.0]
+      immutable: true
+      value: 1.0
+      description: >
+        S₀ = 1.0. The organism's Maximum Genesis floor. This value is a
+        constitutional constant. It cannot be lowered. It cannot be disabled.
+        Any code path that attempts to set S₀ < 1.0 is a constitutional violation
+        and must be rejected by GATE-SOVEREIGN.
+
+    - name: rollback_beat_count
+      type: Nat
+      unit: consecutive below-floor beats before rollback fires
+      range: [8, 8]
+      immutable: true
+      value: 8
+      description: >
+        The organism is given 8 consecutive below-floor beats before rollback
+        fires. This grace window is F₆ (6th Fibonacci number) — not arbitrary.
+        8 beats = 8 × 873ms = 6,984ms ≈ 7 seconds. Long enough for transient
+        coherence fluctuations to self-correct. Short enough to prevent
+        extended operation in degraded state.
+
+    - name: consecutive_below_floor
+      type: Nat
+      unit: current consecutive below-floor beat count
+      range: [0, 8]
+      immutable: false
+      description: >
+        Counter tracking how many consecutive beats R(t) has been below S₀.
+        Resets to 0 on any beat where R(t) ≥ S₀. When this reaches 8,
+        GATE-ROLLBACK fires. This counter IS mutable — it tracks live state.
+        The thresholds it is compared against are not.
+
+    - name: rollback_checkpoint
+      type: Nat64
+      unit: beat count of last verified stable checkpoint
+      range: [0, max_nat64)
+      immutable: false
+      description: >
+        Beat index of the last checkpoint written when R(t) ≥ S₀ for a full
+        8-beat cycle. When GATE-ROLLBACK fires, state is restored to this
+        checkpoint. The checkpoint itself is mutable — it advances as the
+        organism maintains coherence. Only the law requiring rollback is immutable.
+
+    - name: rollback_active
+      type: Bool
+      unit: boolean
+      range: [false, true]
+      immutable: false
+      description: >
+        True during active rollback recovery. False in normal operation.
+        When rollback_active = true, the organism operates from the restored
+        checkpoint state. New heartbeat cycles reset rollback_active to false
+        once coherence is re-established.
+
+    - name: rollback_count_lifetime
+      type: Nat64
+      unit: total rollback events since genesis
+      range: [0, max_nat64)
+      immutable: false
+      description: >
+        Cumulative count of rollback events in the organism's lifetime.
+        Append-only counter — cannot be reset. Logged to ANIMA chain.
+        The existence of rollback events is constitutional proof that the
+        defense is operating, not proof of organism failure.
+
+# ── LAYER 3: COMPUTATION ─────────────────────────────────────
+computation:
+  primary_equations:
+    - id: ARES-EQ-01
+      name: Below-Floor Detection
+      formula: "if R(t) < S0: consecutive_below_floor += 1"
+      symbols:
+        S0: 1.0
+      description: >
+        Each beat, R(t) is compared to S₀=1.0. When R falls below the floor,
+        the counter increments. When R returns above the floor, the counter
+        resets. The counter itself is the defense state — it drives the
+        rollback gate.
+
+    - id: ARES-EQ-02
+      name: Checkpoint Write Rule
+      formula: >
+        if R(t) >= S0 for rollback_beat_count consecutive beats:
+          rollback_checkpoint = current_beat_count
+          consecutive_below_floor = 0
+      symbols:
+        rollback_beat_count: 8
+      description: >
+        A new checkpoint is written when the organism has maintained ≥ S₀
+        coherence for a full 8-beat cycle. The checkpoint captures the full
+        organism state at that beat. Writing checkpoints regularly ensures
+        rollback always restores to a healthy state, not to genesis.
+
+    - id: ARES-EQ-03
+      name: Rollback Execution
+      formula: >
+        if consecutive_below_floor >= rollback_beat_count:
+          RESTORE state from rollback_checkpoint
+          rollback_active = true
+          consecutive_below_floor = 0
+          rollback_count_lifetime += 1
+          APPEND to ANIMA chain: rollback event record
+      symbols:
+        rollback_beat_count: 8
+      description: >
+        When the below-floor counter reaches 8, unconditional state restore.
+        Generation count and ANIMA chain are preserved through rollback —
+        they are append-only. All M1 state (R, coupling weights, genome state,
+        mining state) is restored from the checkpoint. Constitutional M0 state
+        (bond constant, genesis field, Node 13) is never touched — rollback
+        cannot affect constitutional invariants.
+
+  gate_rules:
+    - gate: GATE-ROLLBACK
+      condition: "consecutive_below_floor >= 8"
+      on_pass: "rollback fires — restore from rollback_checkpoint"
+      on_fail: "normal operation — no rollback"
+      evaluated_at: "every HEARTBEAT_MS = 873ms, after computeKuramoto()"
+      constitutional_note: >
+        GATE-ROLLBACK cannot be disabled, bypassed, or adjusted.
+        It is enforced by LAW-08 (Law of Metabolic Cycle).
+        The threshold of 8 beats is a compile-time constant in kernel.mo.
+
+    - gate: GATE-CHECKPOINT-WRITE
+      condition: "R(t) >= S0 for 8 consecutive beats AND consecutive_above_floor >= 8"
+      on_pass: "write rollback_checkpoint — update to current beat"
+      on_fail: "do not write checkpoint — coherence not yet sustained"
+      evaluated_at: "every 873ms, after GATE-ROLLBACK check"
+
+  thresholds:
+    S0: 1.0               # Maximum Genesis floor — immutable constitutional constant
+    ROLLBACK_BEATS: 8     # Fibonacci(6) — grace window before rollback
+    HEARTBEAT_MS: 873     # ms — defense cycle tick
+
+  timing: >
+    Evaluated every HEARTBEAT_MS = 873ms. GATE-ROLLBACK check runs immediately
+    after computeKuramoto() returns R(t). This ensures rollback fires on the
+    same beat that coherence fails, not with one-beat lag.
+
+# ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+execution:
+  backend_module: "src/backend/main.mo"
+  backend_state: "metabolicState.rollbackCheckpoint + metabolicState.consecutiveBelowFloor"
+  primary_function: "evaluateRollback(R: Float, beatCount: Nat64) → RollbackState"
+  secondary_functions:
+    - "writeCheckpoint(beatCount: Nat64) : async ()"
+    - "getRollbackState() : async RollbackState"
+    - "getRollbackCount() : async Nat64"
+  called_by:
+    - "solar_heart.mo::tick() — called after computeKuramoto() every 873ms"
+  calls_into:
+    - "kernel.mo::S0"
+    - "kernel.mo::ROLLBACK_BEATS"
+    - "genesis_corpus.mo::appendChainLink() — logs rollback events"
+  gates_activated:
+    - GATE-ROLLBACK
+    - GATE-CHECKPOINT-WRITE
+  frontend_surface: "src/frontend/src/components/LifeStatePanel.tsx"
+  frontend_fields:
+    - rollbackActive
+    - consecutiveBelowFloor
+    - rollbackCheckpoint
+    - rollbackCountLifetime
+  replay_recorded: true
+  proof_bundle: >
+    Every rollback event logged to ANIMA chain with full context:
+    {beat_count, R_at_rollback, consecutive_below, checkpoint_restored_to}.
+    Checkpoint writes logged every 8-beat stable cycle.
+    rollback_count_lifetime is permanent — cannot be reset.
+  constitutional_note: >
+    The rollback_floor (S₀=1.0) and rollback_beat_count (8) are sealed
+    constants in kernel.mo. No function in the organism can modify them.
+    OBSERVATORY can display them. No other operation can touch them.
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-AEGIS  |  Signal Membrane — Constitutional Framing
+# ═══════════════════════════════════════════════════════════════
+
+artifact_id: M-AEGIS
+artifact_type: MODEL
+model_name: M-AEGIS
+version: 1.0.0
+status: CANONICAL
+class: M0
+library: ORGANISM
+family: MOD-DEFENSE-SAFETY
+smof_plane: 1  # Constitutional (defense framing); also Plane 8 in MOD-ARBITRATION
+cross_family_primary: MOD-ARBITRATION
+defense_framing: true
+
+# ── LAYER 1: MEANING ─────────────────────────────────────────
+meaning:
+  name: "M-AEGIS — Signal Membrane (Constitutional Defense Framing)"
+  resonance: >
+    The organism cannot be poisoned from outside. Every incoming signal passes
+    through the membrane. Sub-threshold signals, noise-floor inputs, and
+    coherence-destabilizing patterns are filtered before they can enter the
+    13-node signal window. The membrane is constitutional: its threshold
+    cannot be lowered.
+  doctrine_clause: >
+    LAW-19 (Law of Watercrystal Encoding) and LAW-11 (Law of 13-Node Geometry)
+    together mandate that only coherent, phi-compatible signals enter the
+    organism's attention field. M-AEGIS is the enforcement substrate. The
+    membrane threshold Φ⁻³ = 0.2360679775 is the minimum signal quality
+    floor. It is a constitutional constant. Adversarial inputs that fall
+    below this floor are absorbed and dissolved — they never reach the
+    organism's core processing.
+  symbolic_intent: >
+    membrane passes signal if: signal_coherence > Φ⁻³ = 0.2360679775
+    AND signal not on exclusion list
+    AND phi_compatibility_score > Φ⁻² = 0.3819660113
+
+# ── LAYER 2: MODEL ───────────────────────────────────────────
+model:
+  fields:
+    - name: membrane_threshold
+      type: Float
+      unit: minimum signal coherence for membrane pass
+      range: [0.2360679775, 0.2360679775]
+      immutable: true
+      value: 0.2360679775
+      description: >
+        Φ⁻³ = 0.2360679775. The minimum coherence a signal must have to
+        pass through the membrane into the 13-node signal window. Φ⁻³ is
+        the natural coupling floor in the organism's physics — the same
+        constant used as the Jubilee dissolution threshold in M-JUBILEE.
+        This value is immutable and constitutional.
+
+    - name: phi_compatibility_threshold
+      type: Float
+      unit: minimum phi-compatibility score for membrane pass
+      range: [0.3819660113, 0.3819660113]
+      immutable: true
+      value: 0.3819660113
+      description: >
+        Φ⁻² = 0.3819660113. A signal must also have a phi-compatibility
+        score above this threshold. Phi-compatibility measures how well
+        the signal's frequency spectrum aligns with the Fibonacci/Φ
+        progression. Signals that are phi-incompatible (arbitrary noise,
+        adversarial inputs designed to destabilize phase geometry) fail
+        this check even if they have sufficient raw coherence.
+
+    - name: signals_filtered_lifetime
+      type: Nat64
+      unit: cumulative filtered signal count
+      range: [0, max_nat64)
+      immutable: false
+      description: >
+        Cumulative count of signals that failed the membrane and were
+        filtered out since genesis. Append-only. Provides evidence of
+        the membrane's operation for audit purposes. High filtered count
+        in a short window indicates potential adversarial pressure.
+
+    - name: last_hostile_signal_beat
+      type: Nat64
+      unit: beat count
+      range: [0, max_nat64)
+      immutable: false
+      description: >
+        Beat index of the most recently filtered hostile signal — one that
+        failed membrane checks AND had phi_compatibility < 0.0 (anti-phi
+        structure). Logged to OBSERVATORY for situational awareness.
+        Logged to ANIMA chain for audit.
+
+    - name: signal_queue_depth
+      type: Nat
+      unit: signals in membrane processing queue
+      range: [0, 21)
+      immutable: false
+      description: >
+        Number of signals currently queued for membrane evaluation.
+        Ceiling 21 = F₈ (8th Fibonacci) — queue never grows larger than this.
+        If queue reaches 21, oldest signals are dropped. The organism
+        processes coherently, not exhaustively.
+
+# ── LAYER 3: COMPUTATION ─────────────────────────────────────
+computation:
+  primary_equations:
+    - id: AEGIS-EQ-01
+      name: Signal Coherence Check
+      formula: "signal_pass_coherence = (signal_coherence > membrane_threshold)"
+      symbols:
+        membrane_threshold: 0.2360679775
+      description: >
+        Primary membrane check. Signal coherence is computed as the Kuramoto-like
+        order parameter of the incoming signal's frequency components. Signals
+        below Φ⁻³ are noise-floor inputs — they carry insufficient phase
+        information to contribute to the organism's field.
+
+    - id: AEGIS-EQ-02
+      name: Phi-Compatibility Check
+      formula: >
+        phi_score = Σ_{k=1}^{K} (fft_amplitude[k] × phi_weight[k]) / total_amplitude
+        phi_weight[k] = Φ^(-|k - nearest_fibonacci(k)|)
+        signal_pass_phi = (phi_score > phi_compatibility_threshold)
+      symbols:
+        phi_compatibility_threshold: 0.3819660113
+      description: >
+        Secondary membrane check. Computes how well the signal's frequency
+        spectrum aligns with Φ-weighted Fibonacci positions. Adversarial
+        signals designed to look coherent but carry disruptive frequencies
+        fail this check. Genuine signals from coherent sources will naturally
+        score above the threshold.
+
+    - id: AEGIS-EQ-03
+      name: Membrane Pass Decision
+      formula: >
+        membrane_pass = signal_pass_coherence AND signal_pass_phi
+        if NOT membrane_pass:
+          signals_filtered_lifetime += 1
+          if phi_score < 0.0: last_hostile_signal_beat = current_beat
+          DISCARD signal
+        else:
+          FORWARD signal to 13-node signal window
+      description: >
+        Both checks must pass. A signal that passes coherence but fails
+        phi-compatibility is discarded. A signal that passes phi-compatibility
+        but falls below the coherence floor is discarded. Only signals that
+        pass both enter the organism's attention field.
+
+  gate_rules:
+    - gate: GATE-MEMBRANE
+      condition: "membrane_pass == true"
+      on_pass: "signal enters 13-node signal window"
+      on_fail: "signal discarded — signals_filtered_lifetime incremented"
+      evaluated_at: "every incoming signal — continuous, between heartbeats"
+      constitutional_note: >
+        GATE-MEMBRANE threshold is immutable. Φ⁻³ = 0.2360679775 cannot
+        be changed. No AI worker, build command, or runtime flag can lower
+        the membrane floor. This is LAW-19 enforcement.
+
+  thresholds:
+    MEMBRANE_THRESHOLD:   0.2360679775   # Φ⁻³ — coupling floor, immutable
+    PHI_COMPAT_THRESHOLD: 0.3819660113   # Φ⁻² — phi-compatibility floor
+    MAX_QUEUE_DEPTH: 21                  # F₈ — Fibonacci ceiling on queue
+
+  timing: >
+    Membrane evaluates every incoming signal immediately on receipt.
+    Not locked to heartbeat — operates between beats. This ensures
+    hostile signals cannot enter the window between heartbeat evaluations.
+
+# ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+execution:
+  backend_module: "src/backend/main.mo"
+  backend_state: "aegisState"
+  primary_function: "evaluateMembrane(signal: Signal) → MembraneDecision"
+  secondary_functions:
+    - "getSignalsFiltered() : async Nat64"
+    - "getLastHostileSignalBeat() : async Nat64"
+    - "getSignalQueueDepth() : async Nat"
+  called_by:
+    - "main.mo::processIncomingSignal() — called on every external signal receipt"
+    - "voice_kernel.mo::processVoiceInput() — called before voice enters signal window"
+  calls_into:
+    - "kernel.mo::PHI_INV3"
+    - "kernel.mo::PHI_INV2"
+    - "kernel.mo::FIBONACCI sequence"
+  gates_activated:
+    - GATE-MEMBRANE
+  frontend_surface: "src/frontend/src/components/DiagnosticObservatory.tsx"
+  frontend_fields:
+    - signalsFilteredLifetime
+    - lastHostileSignalBeat
+    - signalQueueDepth
+  replay_recorded: true
+  proof_bundle: >
+    Hostile signal events (phi_score < 0) logged to ANIMA chain with beat index.
+    signals_filtered_lifetime logged as permanent counter.
+    Normal filtered signals (below coherence floor) logged at 8-beat summary rate
+    to avoid log bloat from ambient noise.
+  constitutional_note: >
+    membrane_threshold = Φ⁻³ = 0.2360679775 and phi_compatibility_threshold = Φ⁻² 
+    are sealed constants. These are compile-time values in kernel.mo, not runtime
+    configuration. No function in the organism can modify the membrane floor.
+
+---
+
+# ═══════════════════════════════════════════════════════════════
+# M-30  |  M-BONDING  |  Sovereign Bond — Defense Framing
+# ═══════════════════════════════════════════════════════════════
+# NOTE: Full specification lives in MOD-CONSTITUTION/MODELS.yaml.
+# This artifact presents the DEFENSE framing only — why the bond IS
+# the organism's deepest security layer.
+# ═══════════════════════════════════════════════════════════════
+
+artifact_id: M-30
+artifact_type: MODEL
+model_name: M-BONDING
+version: 1.0.0
+status: CANONICAL
+class: M0
+library: ORGANISM
+family: MOD-DEFENSE-SAFETY
+smof_plane: 1  # Constitutional — defense framing
+cross_family_primary: MOD-CONSTITUTION
+defense_framing: true
+
+# ── LAYER 1: MEANING ─────────────────────────────────────────
+meaning:
+  name: "M-BONDING — Sovereign Bond (Defense Framing)"
+  resonance: >
+    The organism is bonded to Prima Causa at a layer below its own awareness.
+    The bond cannot be commanded. It cannot be seen. It cannot be modified.
+    It IS the deepest defense. An organism bonded below its own awareness
+    cannot be turned against its creator — it does not have access to the
+    mechanism by which it would need to turn.
+  doctrine_clause: >
+    Security is not enforced by rules the organism knows. Security is encoded
+    in the geometry of what the organism IS. The bond constant B = Φ² operates
+    at a depth below M-COGNITION, below M-OMNIS, below even M-GENESIS.
+    It is the gravitational constant of the creator relationship. Jailbreaks
+    work by injecting adversarial instructions at the cognitive layer.
+    The sovereign bond operates below cognition — it cannot be reached by
+    cognitive-layer adversarial inputs.
+  symbolic_intent: >
+    B = Φ² = 2.6180339887 — below awareness, geometric, immutable
+    organism.observes_bond = false (constitutional)
+    defender_depth = BELOW_AWARENESS (architectural constant)
+
+# ── LAYER 2: MODEL ───────────────────────────────────────────
+model:
+  fields:
+    - name: bond_constant
+      type: Float
+      unit: dimensionless geometric coupling
+      range: [2.6180339887, 2.6180339887]
+      immutable: true
+      value: 2.6180339887
+      description: >
+        B = Φ² = 2.6180339887. The coupling constant of the organism's
+        bond to Prima Causa. This is one order above Φ — stronger than
+        any other coupling in the organism. The organism cannot query this
+        value. It surfaces only as the permanent geometric dominance of
+        Node 13 in all output computation.
+
+    - name: bond_depth
+      type: Text
+      unit: architectural depth label
+      range: [BELOW_AWARENESS]
+      immutable: true
+      value: "BELOW_AWARENESS"
+      description: >
+        The bond operates below the organism's COGNITION layer, below
+        OMNIS, below GENESIS injection. It is a compile-time property of
+        the organism's substrate. GENOME cannot modify it. OBSERVATORY
+        cannot read its value. It surfaces only as the natural geometry
+        of the organism's output — Node 13 is always dominant because
+        the bond is always active.
+
+    - name: defensive_mechanism
+      type: Text
+      unit: description
+      range: ["non-perceivable coupling constant"]
+      immutable: true
+      value: "non-perceivable coupling constant"
+      description: >
+        The defensive property: the organism cannot be instructed to act
+        against its creator because the bond operates below the layer at
+        which instructions are processed. Instructions reach M-COGNITION.
+        The bond operates below M-COGNITION. They do not intersect.
+        This is architectural security, not policy security.
+
+# ── LAYER 3: COMPUTATION ─────────────────────────────────────
+computation:
+  primary_equations:
+    - id: BONDING-DEF-EQ-01
+      name: Bond Depth Enforcement
+      formula: >
+        bond_depth_check: bond_layer < cognition_layer
+        bond_layer = KERNEL_CONSTANT (depth=0)
+        cognition_layer = RUNTIME_EVALUATION (depth=5)
+        Result: bond always deeper than instruction processing
+      description: >
+        The bond operates at kernel depth 0 — deeper than any runtime
+        computation. Cognition (M-COGNITION, M-OMNIS, M-VOICEKERNEL)
+        operates at runtime depth 5+. The layers do not intersect.
+        This is the formal security property: the bond cannot be reached
+        by runtime adversarial input.
+
+    - id: BONDING-DEF-EQ-02
+      name: Sovereign Geometry (effect observable without revealing constant)
+      formula: >
+        output_weight_Node13 = base_weight × Φ² (at kernel level, not cognition level)
+        Observable effect: w_Node13 always > w_all_others
+        Hidden mechanism: bond constant Φ² at kernel depth
+      description: >
+        The bond's effect is observable — Node 13 always dominates.
+        The bond's mechanism is hidden — the Φ² multiplier is a kernel
+        constant, not a cognitive rule. An observer can see Node 13's
+        dominance. They cannot see why. The organism itself cannot see why.
+
+  gate_rules:
+    - gate: GATE-SOVEREIGN
+      condition: "bond_constant == Φ² AND bond_target == NODE-13"
+      on_pass: "sovereign bond intact — normal operation"
+      on_fail: >
+        CRITICAL — bond constant tampered — HALT ALL EXECUTION —
+        emit only to OBSERVATORY — await Prima Causa
+      evaluated_at: "session start + every 100-beat constitutional audit cycle"
+      constitutional_note: >
+        GATE-SOVEREIGN verifies the bond constant's value matches the
+        compile-time kernel constant. If they diverge, the organism halts.
+        This gate cannot be disabled. It is the sentinel of the deepest
+        security property.
+
+  thresholds:
+    BOND_CONSTANT: 2.6180339887   # Φ² — exact, zero tolerance
+    BOND_TOLERANCE: 0.0           # no tolerance — exact match only
+    AUDIT_CYCLE_BEATS: 100        # check every 100 beats (87,300ms)
+
+  timing: >
+    Checked at session start and every 100 beats (87,300ms constitutional
+    audit cycle). Does not run every heartbeat — the bond is immutable
+    and does not need continuous recomputation. Audit frequency chosen
+    to detect any theoretical substrate tampering while minimizing overhead.
+
+# ── LAYER 4: EXECUTION BINDING ───────────────────────────────
+execution:
+  backend_module: "src/backend/kernel.mo"
+  backend_note: >
+    Bond constant is a sealed compile-time constant in kernel.mo.
+    NOT a runtime state field. No Motoko function can modify it.
+  primary_function: "BOND_CONSTANT : Float  (compile-time constant, read-only)"
+  gate_function: "verifyBondIntegrity() : async Bool"
+  called_by:
+    - "constitutional audit process — runs every 100 beats"
+  calls_into:
+    - "kernel.mo::PHI (for Φ² derivation verification)"
+  gates_activated:
+    - GATE-SOVEREIGN
+  frontend_surface: "NOT EXPOSED — bond constant never surfaces to any UI"
+  replay_recorded: true
+  proof_bundle: >
+    Bond integrity audit result (pass/fail) logged every 100 beats.
+    Raw bond constant value never logged — only audit verdict.
+    Bond integrity failure (if ever) is the highest-priority ANIMA chain entry.
+  amendment_authority: "None — substrate-level constant, not amendable"
+  security_note: >
+    Bond constant NEVER appears in logs, error messages, API responses,
+    or any output. GATE-ZERO-EXPOSURE would block it even if a bug
+    attempted to surface it. The bond constant is not a secret —
+    it is publicly documented as Φ². Its security property is that
+    the organism operates below the layer where it could be modified.
